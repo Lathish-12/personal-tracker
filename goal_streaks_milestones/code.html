@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Quiet Discipline - Goal Streaks</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#3f465c",
+                        "primary-container": "#131b2e",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#005047",
+                        "surface-tint": "#565e74",
+                        "error": "#ba1a1a",
+                        "secondary-fixed-dim": "#3cddc7",
+                        "secondary-container": "#62fae3",
+                        "inverse-surface": "#213145",
+                        "surface-container": "#e5eeff",
+                        "on-surface": "#0b1c30",
+                        "on-primary-fixed": "#131b2e",
+                        "surface": "#f8f9ff",
+                        "on-primary-container": "#7c839b",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#191c1e",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#191c1e",
+                        "inverse-on-surface": "#eaf1ff",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary": "#000000",
+                        "outline": "#76777d",
+                        "secondary": "#006b5f",
+                        "background": "#f8f9ff",
+                        "secondary-fixed": "#62fae3",
+                        "on-secondary-fixed": "#00201c",
+                        "on-tertiary-container": "#818486",
+                        "tertiary-fixed": "#e0e3e5",
+                        "on-background": "#0b1c30",
+                        "surface-container-highest": "#d3e4fe",
+                        "surface-bright": "#f8f9ff",
+                        "primary-fixed-dim": "#bec6e0",
+                        "primary-fixed": "#dae2fd",
+                        "surface-container-low": "#eff4ff",
+                        "on-surface-variant": "#45464d",
+                        "tertiary-fixed-dim": "#c4c7c9",
+                        "primary": "#000000",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-container": "#007165",
+                        "inverse-primary": "#bec6e0",
+                        "surface-dim": "#cbdbf5",
+                        "surface-variant": "#d3e4fe",
+                        "surface-container-high": "#dce9ff",
+                        "outline-variant": "#c6c6cd",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "40px",
+                        "gutter": "24px",
+                        "stack-lg": "24px",
+                        "margin-mobile": "16px",
+                        "stack-sm": "4px",
+                        "container-max-width": "1120px",
+                        "stack-md": "12px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "body-lg": ["Inter"],
+                        "display": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "display": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Subtle ambient shadow for hover interactions as per brand guidelines */
+        .ambient-shadow-hover:hover {
+            box-shadow: 0 0 20px rgba(118, 119, 125, 0.1);
+        }
+
+        /* SVG Circle Animation */
+        .progress-ring__circle {
+            transition: stroke-dashoffset 1s ease-in-out;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 left-0 md:left-64 h-16 bg-surface/80 backdrop-blur-xl border-b border-outline-variant flex justify-between items-center px-margin-mobile md:px-margin-desktop w-full z-40">
+<div class="flex items-center gap-4">
+<span class="font-display text-display text-primary text-[24px] tracking-tight">Quiet Discipline</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-primary hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-primary hover:opacity-80 transition-opacity w-8 h-8 rounded-full bg-surface-container-high overflow-hidden border border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<!-- SideNavBar (Desktop Only) -->
+<nav class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 bg-surface border-r border-outline-variant py-base z-50">
+<div class="px-6 py-8 mb-4 border-b border-outline-variant/30">
+<div class="w-12 h-12 rounded-full bg-surface-container-high border border-outline-variant mb-4 overflow-hidden flex items-center justify-center">
+<span class="material-symbols-outlined text-outline">person</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Quiet Discipline</h2>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1 uppercase tracking-wider">Stay Focused</p>
+</div>
+<ul class="flex flex-col gap-2 px-4 flex-1">
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">event_note</span>
+<span class="font-label-md text-label-md">Habit Logs</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">mood</span>
+<span class="font-label-md text-label-md">Mood Tracker</span>
+</a>
+</li>
+<li>
+<!-- Active State -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-surface-container text-primary font-bold border-r-2 border-primary opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined fill">workspace_premium</span>
+<span class="font-label-md text-label-md">Goal Streaks</span>
+</a>
+</li>
+<li class="mt-auto">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</li>
+</ul>
+<div class="px-6 py-4">
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-3 rounded-lg flex justify-center items-center gap-2 hover:bg-primary/90 transition-colors">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                New Habit
+            </button>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="pt-16 md:pl-64 min-h-screen bg-background">
+<div class="max-w-container-max-width mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg md:py-[64px] flex flex-col gap-[64px]">
+<!-- Hero Title -->
+<header>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary">Mastery Streak</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-2 max-w-2xl">The pursuit of absolute clarity. Every day is a brick in the foundation of discipline.</p>
+</header>
+<!-- Bento Grid Hero Section -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Main Counter Card -->
+<div class="md:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-xl p-8 flex flex-col items-center justify-center min-h-[400px] relative overflow-hidden ambient-shadow-hover transition-shadow duration-300">
+<div class="absolute top-6 left-6 flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">target</span>
+<span class="font-label-md text-label-md uppercase tracking-wider">Current Focus</span>
+</div>
+<!-- Circular Progress -->
+<div class="relative w-64 h-64 flex items-center justify-center">
+<svg class="w-full h-full" viewbox="0 0 100 100">
+<!-- Track -->
+<circle class="text-surface-container-highest stroke-current" cx="50" cy="50" fill="transparent" r="45" stroke-width="4"></circle>
+<!-- Progress - Hardcoded to ~60% for Day 42 of 90 -->
+<circle class="text-secondary stroke-current progress-ring__circle" cx="50" cy="50" fill="transparent" r="45" stroke-dasharray="283" stroke-dashoffset="113" stroke-linecap="butt" stroke-width="4"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+<span class="font-display text-[64px] leading-none text-primary tracking-tighter">42</span>
+<span class="font-label-md text-label-md text-on-surface-variant mt-1 uppercase tracking-widest">Days</span>
+</div>
+</div>
+<!-- Reset Action -->
+<div class="mt-12 w-full flex justify-between items-end border-t border-outline-variant/30 pt-6">
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Target Goal</span>
+<span class="font-body-md text-body-md text-primary font-medium">90 Days</span>
+</div>
+<button class="px-6 py-2 border border-outline-variant text-primary font-label-md text-label-md rounded-lg hover:bg-surface-container transition-colors flex items-center gap-2" onclick="document.getElementById('resetModal').classList.remove('hidden')">
+<span class="material-symbols-outlined text-[18px]">restart_alt</span>
+                            Reset Streak
+                        </button>
+</div>
+</div>
+<!-- Supporting Stats & Quotes -->
+<div class="md:col-span-4 flex flex-col gap-gutter">
+<!-- Recent History Heatmap / Pill Row -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 ambient-shadow-hover transition-shadow duration-300">
+<h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-4">Past 7 Days</h3>
+<div class="flex justify-between items-center gap-2">
+<!-- Filled pills for completed days -->
+<div class="h-8 w-full rounded-full bg-secondary" title="6 Days Ago"></div>
+<div class="h-8 w-full rounded-full bg-secondary" title="5 Days Ago"></div>
+<div class="h-8 w-full rounded-full bg-secondary" title="4 Days Ago"></div>
+<div class="h-8 w-full rounded-full bg-secondary" title="3 Days Ago"></div>
+<div class="h-8 w-full rounded-full bg-secondary" title="2 Days Ago"></div>
+<div class="h-8 w-full rounded-full bg-secondary" title="Yesterday"></div>
+<!-- Current day, deep slate focus -->
+<div class="h-8 w-full rounded-full bg-primary ring-2 ring-primary ring-offset-2 ring-offset-surface-container-lowest relative" title="Today">
+<div class="absolute inset-0 m-auto w-2 h-2 rounded-full bg-surface-container-lowest"></div>
+</div>
+</div>
+<div class="mt-4 flex justify-between items-center text-label-sm font-label-sm text-on-surface-variant">
+<span>100% adherence this week</span>
+</div>
+</div>
+<!-- Motivational Quote Card -->
+<div class="bg-surface-container flex-1 border border-outline-variant/50 rounded-xl p-8 flex flex-col justify-center relative overflow-hidden">
+<span class="material-symbols-outlined absolute top-4 left-4 text-[48px] text-surface-tint/10 opacity-50">format_quote</span>
+<blockquote class="font-body-lg text-body-lg text-primary relative z-10">
+                            "Freedom is not the absence of commitments, but the ability to choose — and commit to — what is best for you."
+                        </blockquote>
+<cite class="font-label-sm text-label-sm text-on-surface-variant mt-4 uppercase tracking-widest block not-italic">Daily Reflection</cite>
+</div>
+</div>
+</section>
+<!-- Milestones Section -->
+<section class="flex flex-col gap-stack-lg">
+<div class="flex items-center justify-between border-b border-outline-variant pb-4">
+<h2 class="font-headline-md text-headline-md text-primary">Milestones Achieved</h2>
+<span class="font-label-md text-label-md text-on-surface-variant">3 / 8 Unlocked</span>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-gutter">
+<!-- Achieved Milestone -->
+<div class="bg-secondary/10 border border-secondary rounded-lg p-6 flex flex-col items-center text-center gap-3 ambient-shadow-hover transition-all">
+<div class="w-12 h-12 rounded-full bg-secondary text-on-secondary flex items-center justify-center">
+<span class="material-symbols-outlined fill text-[24px]">flag</span>
+</div>
+<h4 class="font-label-md text-label-md font-bold text-on-secondary-fixed">7 Days</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant">The Foundation</p>
+</div>
+<!-- Achieved Milestone -->
+<div class="bg-secondary/10 border border-secondary rounded-lg p-6 flex flex-col items-center text-center gap-3 ambient-shadow-hover transition-all">
+<div class="w-12 h-12 rounded-full bg-secondary text-on-secondary flex items-center justify-center">
+<span class="material-symbols-outlined fill text-[24px]">military_tech</span>
+</div>
+<h4 class="font-label-md text-label-md font-bold text-on-secondary-fixed">14 Days</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Gaining Momentum</p>
+</div>
+<!-- Achieved Milestone -->
+<div class="bg-secondary/10 border border-secondary rounded-lg p-6 flex flex-col items-center text-center gap-3 ambient-shadow-hover transition-all">
+<div class="w-12 h-12 rounded-full bg-secondary text-on-secondary flex items-center justify-center">
+<span class="material-symbols-outlined fill text-[24px]">verified</span>
+</div>
+<h4 class="font-label-md text-label-md font-bold text-on-secondary-fixed">30 Days</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant">A New Habit</p>
+</div>
+<!-- Locked Milestone -->
+<div class="bg-transparent border border-dashed border-outline-variant rounded-lg p-6 flex flex-col items-center text-center gap-3 opacity-60">
+<div class="w-12 h-12 rounded-full bg-surface-container border border-outline-variant text-outline flex items-center justify-center">
+<span class="material-symbols-outlined text-[24px]">lock</span>
+</div>
+<h4 class="font-label-md text-label-md text-on-surface">60 Days</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant">In Progress</p>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Reset Confirmation Modal -->
+<div class="fixed inset-0 z-[100] hidden" id="resetModal">
+<!-- Backdrop -->
+<div class="absolute inset-0 bg-surface-container/20 backdrop-blur-[12px]" onclick="document.getElementById('resetModal').classList.add('hidden')"></div>
+<!-- Modal Content -->
+<div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-surface-container-lowest border border-outline-variant rounded-xl p-8 shadow-2xl flex flex-col gap-6">
+<div class="flex items-center gap-4 text-error">
+<span class="material-symbols-outlined text-[32px]">warning</span>
+<h3 class="font-headline-md text-headline-md text-primary">Reset Streak?</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                Are you sure you want to reset your progress to zero? This action cannot be undone. Remember that a slip is not a fall. Honesty is part of the discipline.
+            </p>
+<div class="flex gap-4 mt-4">
+<button class="flex-1 py-3 px-4 border border-outline-variant rounded-lg font-label-md text-label-md text-on-surface hover:bg-surface-container transition-colors" onclick="document.getElementById('resetModal').classList.add('hidden')">
+                    Cancel
+                </button>
+<button class="flex-1 py-3 px-4 bg-primary text-on-primary rounded-lg font-label-md text-label-md hover:bg-primary/90 transition-colors" onclick="document.getElementById('resetModal').classList.add('hidden')">
+                    Acknowledge &amp; Reset
+                </button>
+</div>
+</div>
+</div>
+</body></html>

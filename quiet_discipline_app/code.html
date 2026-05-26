@@ -1,0 +1,2778 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Quiet Discipline - Personal Growth Hub</title>
+    
+    <!-- Initial theme check to prevent flash in dark mode -->
+    <script>
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (savedTheme === 'dark') {
+            document.documentElement.classList.add('dark');
+            document.documentElement.classList.remove('light');
+        } else {
+            document.documentElement.classList.add('light');
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+
+    <!-- Google Fonts & Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <!-- Google Identity Services (GSI) SDK -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
+    <style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+        /* Custom scrollbar for clean minimal look */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e0e3e5;
+            border-radius: 4px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #444749;
+        }
+        /* SVG Circle progress logic */
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.6s ease-in-out;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        /* Animated gradient blobs */
+        @keyframes float-blob {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.15); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+        .animate-blob {
+            animation: float-blob 16s infinite ease-in-out;
+        }
+        .animation-delay-2000 {
+            animation-delay: 2s;
+        }
+        .animation-delay-4000 {
+            animation-delay: 4s;
+        }
+    </style>
+
+    <!-- Tailwind CSS with Forms and Container Queries -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#3f465c",
+                        "primary-container": "#131b2e",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#005047",
+                        "surface-tint": "#565e74",
+                        "error": "#ba1a1a",
+                        "secondary-fixed-dim": "#3cddc7",
+                        "secondary-container": "#62fae3",
+                        "inverse-surface": "#213145",
+                        "surface-container": "#e5eeff",
+                        "on-surface": "#0b1c30",
+                        "on-primary-fixed": "#131b2e",
+                        "surface": "#f8f9ff",
+                        "on-primary-container": "#7c839b",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#191c1e",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#191c1e",
+                        "inverse-on-surface": "#eaf1ff",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary": "#000000",
+                        "outline": "#76777d",
+                        "secondary": "#006b5f",
+                        "background": "#f8f9ff",
+                        "secondary-fixed": "#62fae3",
+                        "on-secondary-fixed": "#00201c",
+                        "on-tertiary-container": "#818486",
+                        "tertiary-fixed": "#e0e3e5",
+                        "on-background": "#0b1c30",
+                        "surface-container-highest": "#d3e4fe",
+                        "surface-bright": "#f8f9ff",
+                        "primary-fixed-dim": "#bec6e0",
+                        "primary-fixed": "#dae2fd",
+                        "surface-container-low": "#eff4ff",
+                        "on-surface-variant": "#45464d",
+                        "tertiary-fixed-dim": "#c4c7c9",
+                        "primary": "#000000",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-container": "#007165",
+                        "inverse-primary": "#bec6e0",
+                        "surface-dim": "#cbdbf5",
+                        "surface-variant": "#d3e4fe",
+                        "surface-container-high": "#dce9ff",
+                        "outline-variant": "#c6c6cd",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "40px",
+                        "gutter": "24px",
+                        "stack-lg": "24px",
+                        "margin-mobile": "16px",
+                        "stack-sm": "4px",
+                        "container-max-width": "1120px",
+                        "stack-md": "12px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Inter", "sans-serif"],
+                        "label-md": ["Inter", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"],
+                        "headline-md": ["Hanken Grotesk", "sans-serif"],
+                        "headline-lg-mobile": ["Hanken Grotesk", "sans-serif"],
+                        "headline-lg": ["Hanken Grotesk", "sans-serif"],
+                        "body-lg": ["Inter", "sans-serif"],
+                        "display": ["Hanken Grotesk", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "display": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background dark:bg-primary-container text-on-background dark:text-inverse-on-surface min-h-screen font-body-md text-body-md flex selection:bg-surface-container-highest selection:text-on-surface antialiased transition-colors duration-300">
+
+    <!-- ==================== AUTHENTICATION SCREEN ==================== -->
+    <div id="auth-screen" class="w-full min-h-screen flex items-center justify-center bg-background dark:bg-primary-container p-margin-mobile transition-all duration-500 relative overflow-hidden">
+        
+        <!-- Animated Ambient Blur Blobs in Background -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
+            <div class="absolute top-[15%] left-[15%] w-72 h-72 bg-secondary/15 dark:bg-secondary/5 rounded-full filter blur-[80px] animate-blob"></div>
+            <div class="absolute bottom-[20%] right-[15%] w-80 h-80 bg-surface-tint/20 dark:bg-surface-tint/5 rounded-full filter blur-[100px] animate-blob animation-delay-2000"></div>
+            <div class="absolute top-[50%] right-[30%] w-64 h-64 bg-secondary-container/20 dark:bg-secondary-container/10 rounded-full filter blur-[70px] animate-blob animation-delay-4000"></div>
+        </div>
+
+        <div class="w-full max-w-md bg-surface-container-lowest/80 dark:bg-on-primary-fixed/80 backdrop-blur-xl border border-outline-variant/65 dark:border-on-tertiary-container rounded-2xl shadow-2xl p-8 flex flex-col gap-6 relative overflow-hidden transition-all duration-300 z-10">
+            <!-- Top brand header -->
+            <div class="text-center space-y-2">
+                <div class="w-16 h-16 rounded-full bg-primary dark:bg-secondary text-on-primary dark:text-on-secondary flex items-center justify-center mx-auto text-3xl font-display shadow-md">
+                    🧘
+                </div>
+                <h1 class="font-headline-lg text-[28px] text-primary dark:text-inverse-primary tracking-tight">Quiet Discipline</h1>
+                <p class="font-label-sm text-label-sm text-on-surface-variant dark:text-outline uppercase tracking-wider">Personal Growth Hub</p>
+            </div>
+
+            <!-- Credentials Input Fields -->
+            <div class="space-y-4">
+                <div>
+                    <label class="block font-label-md text-label-md text-on-surface dark:text-inverse-on-surface mb-1" for="auth-email">Email Address</label>
+                    <input class="w-full bg-surface/50 dark:bg-on-tertiary-container/30 border border-outline-variant dark:border-on-tertiary-container rounded-lg p-3 focus:border-primary focus:ring-1 focus:ring-primary text-on-surface dark:text-inverse-on-surface text-sm placeholder:text-outline" id="auth-email" placeholder="name@domain.com" type="email" value="protocol@growth.io"/>
+                </div>
+                <div>
+                    <label class="block font-label-md text-label-md text-on-surface dark:text-inverse-on-surface mb-1" for="auth-password">Passphrase</label>
+                    <div class="relative">
+                        <input class="w-full bg-surface/50 dark:bg-on-tertiary-container/30 border border-outline-variant dark:border-on-tertiary-container rounded-lg p-3 pr-10 focus:border-primary focus:ring-1 focus:ring-primary text-on-surface dark:text-inverse-on-surface text-sm placeholder:text-outline" id="auth-password" type="password" value="passphrase123"/>
+                        <button class="absolute inset-y-0 right-3 flex items-center text-outline hover:text-primary dark:hover:text-inverse-primary cursor-pointer" onclick="togglePasswordVisibility()" title="Toggle Password Visibility">
+                            <span class="material-symbols-outlined text-[20px]" id="password-toggle-icon">visibility</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Standalone login CTA -->
+            <button class="w-full bg-primary dark:bg-secondary text-on-primary dark:text-on-secondary font-label-md text-label-md py-3 rounded-lg hover:opacity-90 active:scale-95 transition-all flex justify-center items-center gap-2 cursor-pointer" id="btn-login-local" onclick="handleSimulatedLogin('Local Credentials')">
+                <span class="material-symbols-outlined text-[18px]">login</span>
+                <span>Access Protocols</span>
+            </button>
+
+            <!-- OAuth Divider -->
+            <div class="flex items-center gap-3">
+                <div class="flex-1 border-t border-outline-variant/50 dark:border-on-tertiary-container/50"></div>
+                <span class="font-label-sm text-label-sm text-outline dark:text-outline-variant uppercase text-[10px]">Or continue with</span>
+                <div class="flex-1 border-t border-outline-variant/50 dark:border-on-tertiary-container/50"></div>
+            </div>
+
+            <!-- OAuth Buttons -->
+            <div class="flex flex-col sm:flex-row gap-3">
+                <!-- Google OAuth Wrapper -->
+                <div id="google-signin-wrapper" class="flex-1 flex justify-center">
+                    <button id="google-signin-btn-custom" class="w-full flex items-center justify-center gap-3 py-3 border border-outline-variant dark:border-on-tertiary-container text-on-surface dark:text-inverse-on-surface font-label-md text-sm rounded-lg hover:bg-surface-container dark:hover:bg-on-tertiary-container/30 active:scale-95 transition-all cursor-pointer bg-transparent" onclick="checkGoogleAuthConfiguration()">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24">
+                            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
+                            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                        </svg>
+                        <span>Google</span>
+                    </button>
+                    <!-- Official Google GSI Button Slot -->
+                    <div id="google-signin-btn-official" class="hidden w-full flex justify-center"></div>
+                </div>
+                <!-- GitHub OAuth -->
+                <button class="flex-1 flex items-center justify-center gap-3 py-3 bg-[#24292e] hover:bg-[#1a1e22] text-white font-label-md text-sm rounded-lg active:scale-95 transition-all cursor-pointer" onclick="checkGitHubAuthConfiguration()">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.167 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91 1.033.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.579.688.481C19.137 20.164 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+                    </svg>
+                    <span>GitHub</span>
+                </button>
+            </div>
+            <!-- Setup links for OAuth keys -->
+            <p class="text-center font-label-sm text-[11px] text-outline mt-3">
+                Need to adjust OAuth credentials? 
+                <span class="text-primary dark:text-inverse-primary hover:underline cursor-pointer font-semibold ml-1" onclick="openGitHubConfigModal()">Setup GitHub</span> 
+                or 
+                <span class="text-primary dark:text-inverse-primary hover:underline cursor-pointer font-semibold ml-1" onclick="openGoogleConfigModal()">Setup Google</span>
+            </p>
+
+            <!-- Loader Layer -->
+            <div id="auth-loader" class="absolute inset-0 bg-surface-container-lowest/90 dark:bg-on-primary-fixed/90 backdrop-blur-xl flex flex-col items-center justify-center gap-5 transition-all duration-300 opacity-0 pointer-events-none z-30">
+                <div class="relative w-16 h-16 flex items-center justify-center">
+                    <!-- Spinning glowing outer ring -->
+                    <div class="absolute inset-0 rounded-full border-[3px] border-outline-variant/30 dark:border-on-tertiary-container/30 border-t-secondary animate-spin shadow-[0_0_15px_rgba(98,250,227,0.2)]"></div>
+                    <!-- Pulsing center core icon -->
+                    <span class="material-symbols-outlined text-[28px] text-secondary animate-pulse">lock_open</span>
+                </div>
+                <div class="text-center space-y-1">
+                    <p class="font-headline-md text-sm text-primary dark:text-inverse-primary font-bold tracking-tight uppercase" id="loader-message">Connecting securely...</p>
+                    <p class="font-label-sm text-[11px] text-on-surface-variant dark:text-outline animate-pulse">Establishing handshake protocol</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MAIN WORKSPACE CONTAINER ==================== -->
+    <div id="app-workspace" class="hidden w-full min-h-screen flex flex-col md:flex-row transition-all duration-300">
+
+        <!-- Mobile Drawer Sidebar Backdrop -->
+        <div class="fixed inset-0 bg-primary/20 backdrop-blur-sm z-30 hidden md:hidden" id="mobile-sidebar-backdrop"></div>
+
+    <!-- SideNavBar (Shared Navigation Drawer Component) -->
+    <nav class="bg-surface dark:bg-on-primary-fixed h-screen w-64 fixed left-0 top-0 border-r border-outline-variant dark:border-on-tertiary-container flex flex-col h-full py-base z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-300 md:flex" id="sidebar">
+        <!-- Header Profile Area -->
+        <div class="px-gutter py-stack-lg mb-stack-md flex flex-col items-center border-b border-outline-variant/30 w-full">
+            <div class="w-16 h-16 rounded-full bg-surface-container-highest overflow-hidden mb-stack-md flex items-center justify-center border border-outline-variant/50 relative shadow-inner">
+                <img id="sidebar-avatar" class="w-full h-full object-cover hidden" src="" alt="Sidebar avatar">
+                <span id="sidebar-avatar-placeholder" class="material-symbols-outlined text-outline" style="font-size: 32px;">person</span>
+            </div>
+            <h2 id="sidebar-username" class="font-headline-md text-headline-md text-on-surface dark:text-inverse-on-surface font-semibold text-center truncate w-full px-2">Quiet Discipline</h2>
+            <p id="sidebar-email" class="font-label-sm text-label-sm text-on-surface-variant dark:text-on-primary-container mt-stack-sm text-center truncate w-full px-4 font-normal">Compounding Progress</p>
+        </div>
+        <!-- Navigation Links -->
+        <div class="flex-1 overflow-y-auto px-base">
+            <ul class="space-y-1">
+                <li>
+                    <button class="nav-tab w-full flex items-center gap-stack-md px-stack-md py-stack-md rounded-lg text-primary dark:text-inverse-primary font-bold border-r-2 border-primary bg-surface-container-low dark:bg-on-tertiary-container/30 transition-all duration-200" data-target="view-dashboard">
+                        <span class="material-symbols-outlined">dashboard</span>
+                        <span class="font-label-md text-label-md">Dashboard</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-tab w-full flex items-center gap-stack-md px-stack-md py-stack-md rounded-lg text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface hover:bg-surface-container-low dark:hover:bg-on-tertiary-container/20 transition-all duration-200" data-target="view-habit-logs">
+                        <span class="material-symbols-outlined">event_note</span>
+                        <span class="font-label-md text-label-md">Habit Logs</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-tab w-full flex items-center gap-stack-md px-stack-md py-stack-md rounded-lg text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface hover:bg-surface-container-low dark:hover:bg-on-tertiary-container/20 transition-all duration-200" data-target="view-mood-tracker">
+                        <span class="material-symbols-outlined">mood</span>
+                        <span class="font-label-md text-label-md">Mood Tracker</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-tab w-full flex items-center gap-stack-md px-stack-md py-stack-md rounded-lg text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface hover:bg-surface-container-low dark:hover:bg-on-tertiary-container/20 transition-all duration-200" data-target="view-goal-streaks">
+                        <span class="material-symbols-outlined">workspace_premium</span>
+                        <span class="font-label-md text-label-md">Goal Streaks</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-tab w-full flex items-center gap-stack-md px-stack-md py-stack-md rounded-lg text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface hover:bg-surface-container-low dark:hover:bg-on-tertiary-container/20 transition-all duration-200" data-target="view-settings">
+                        <span class="material-symbols-outlined">settings</span>
+                        <span class="font-label-md text-label-md">Settings</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <!-- Sidebar CTA Action -->
+        <div class="p-gutter mt-auto">
+            <button class="w-full bg-primary dark:bg-secondary text-on-primary dark:text-on-secondary font-label-md text-label-md py-stack-md px-gutter rounded-lg hover:opacity-90 active:scale-95 transition-all flex justify-center items-center gap-stack-sm" onclick="openHabitModal()">
+                <span class="material-symbols-outlined text-[18px]">add</span>
+                New Habit
+            </button>
+        </div>
+    </nav>
+
+    <!-- Fixed Standalone Sidebar Drawer Toggle (3-Lines circular button) fixed permanently in top-left -->
+    <button class="fixed top-3 left-4 w-10 h-10 rounded-full bg-surface-container-high dark:bg-on-tertiary-container/30 hover:bg-surface-container-highest dark:hover:bg-on-tertiary-container/50 transition-all cursor-pointer z-50 flex items-center justify-center text-on-surface dark:text-inverse-on-surface active:scale-95 hidden" id="sidebar-toggle-btn" title="Toggle Menu">
+        <span class="material-symbols-outlined">menu</span>
+    </button>
+
+    <!-- TopAppBar -->
+    <header class="bg-surface/80 dark:bg-on-primary-fixed/80 backdrop-blur-xl fixed top-0 right-0 left-0 md:left-64 h-16 border-b border-outline-variant dark:border-on-tertiary-container flex justify-between items-center px-margin-mobile md:px-margin-desktop w-full md:w-[calc(100%-16rem)] z-30 transition-all duration-300" id="header">
+        <div class="flex items-center gap-stack-md pl-14 md:pl-0">
+            <span class="absolute left-1/2 transform -translate-x-1/2 font-display text-display text-primary dark:text-inverse-primary text-[20px] md:text-[24px] leading-none whitespace-nowrap" id="page-header-title">Personal Discipline Tracker</span>
+        </div>
+        <div class="flex items-center gap-stack-lg">
+            <!-- Trailing Icons / Action buttons -->
+            <div class="flex items-center gap-stack-md text-on-surface-variant dark:text-outline">
+                <!-- Theme Toggle -->
+                <button class="hover:text-primary dark:hover:text-inverse-on-surface transition-colors p-stack-sm rounded-full hover:bg-surface-container-low dark:hover:bg-on-tertiary-container/30 active:scale-95 transition-transform flex items-center justify-center" id="theme-toggle" title="Toggle Theme">
+                    <span class="material-symbols-outlined" id="theme-toggle-icon">dark_mode</span>
+                </button>
+                <!-- Notifications -->
+                <button class="hover:text-primary dark:hover:text-inverse-on-surface transition-colors p-stack-sm rounded-full hover:bg-surface-container-low dark:hover:bg-on-tertiary-container/30 active:scale-95 transition-transform relative flex items-center justify-center">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span class="absolute top-1 right-1 w-2 h-2 bg-secondary rounded-full border border-surface"></span>
+                </button>
+                <!-- Profile Details & Dropdown Trigger -->
+                <div class="relative" id="profile-dropdown-container">
+                    <button class="hover:text-primary dark:hover:text-inverse-on-surface transition-colors p-0.5 rounded-full hover:bg-surface-container-low dark:hover:bg-on-tertiary-container/30 active:scale-95 transition-transform flex items-center justify-center w-9 h-9 overflow-hidden border border-outline-variant/30 dark:border-on-tertiary-container/30 cursor-pointer bg-transparent" id="profile-dropdown-btn" title="Profile Options">
+                        <img id="topbar-avatar" class="w-full h-full object-cover hidden" src="" alt="Profile">
+                        <span id="topbar-avatar-placeholder" class="material-symbols-outlined text-[24px]">account_circle</span>
+                    </button>
+                    <!-- Dropdown Menu -->
+                    <div id="profile-dropdown-menu" class="absolute right-0 mt-3 w-64 bg-surface/90 dark:bg-on-primary-fixed/95 backdrop-blur-xl border border-outline-variant dark:border-on-tertiary-container rounded-xl shadow-2xl py-3 z-50 transform scale-95 opacity-0 pointer-events-none transition-all duration-200 origin-top-right">
+                        <!-- Profile Card info -->
+                        <div class="px-4 py-3 flex items-center gap-3 border-b border-outline-variant/30 dark:border-on-tertiary-container/30">
+                            <img id="dropdown-avatar" class="w-10 h-10 rounded-full object-cover border border-outline-variant/50" src="" alt="Dropdown profile">
+                            <div class="flex-1 min-w-0">
+                                <p id="dropdown-username" class="font-label-md text-label-md font-bold text-on-surface dark:text-inverse-on-surface truncate">User Name</p>
+                                <p id="dropdown-email" class="font-label-sm text-[11px] text-on-surface-variant dark:text-outline truncate">user@domain.com</p>
+                            </div>
+                        </div>
+                        <!-- Menu Items -->
+                        <div class="px-2 pt-2 space-y-1">
+                            <button onclick="switchTab('view-settings'); closeProfileDropdown();" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface hover:bg-surface-container-low dark:hover:bg-on-tertiary-container/20 transition-all font-label-md text-sm text-left border-0 cursor-pointer bg-transparent">
+                                <span class="material-symbols-outlined text-[18px]">settings</span>
+                                <span>System Settings</span>
+                            </button>
+                            <button onclick="handleLogout(); closeProfileDropdown();" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-error hover:bg-error/10 transition-all font-label-md text-sm text-left border-0 cursor-pointer bg-transparent">
+                                <span class="material-symbols-outlined text-[18px]">logout</span>
+                                <span>Sign Out Session</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Canvas -->
+    <main class="flex-1 ml-0 md:ml-64 pt-16 min-h-screen transition-all duration-300" id="main-content">
+
+        <!-- ==================== VIEW 1: DASHBOARD ==================== -->
+        <div class="view-pane max-w-container-max-width mx-auto p-margin-mobile md:p-margin-desktop pb-24 space-y-gutter" id="view-dashboard">
+            <!-- Header Section -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-stack-md">
+                <div>
+                    <h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface dark:text-inverse-on-surface">Protocols Active</h1>
+                    <p class="font-body-lg text-body-lg text-on-surface-variant dark:text-outline mt-stack-sm">compounding consistency, day by day.</p>
+                </div>
+                <div class="text-left sm:text-right">
+                    <p class="font-label-sm text-label-sm text-outline dark:text-outline-variant tracking-widest uppercase">Today</p>
+                    <p class="font-headline-md text-headline-md text-on-surface dark:text-inverse-on-surface current-date-label">---</p>
+                </div>
+            </div>
+
+            <!-- Prominent Streak Card -->
+            <section>
+                <div class="bg-primary dark:bg-on-tertiary-container text-on-primary rounded-xl p-gutter md:p-margin-desktop flex flex-col md:flex-row items-center justify-between gap-stack-lg relative overflow-hidden group hover:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] transition-all duration-300">
+                    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-white via-transparent to-transparent pointer-events-none"></div>
+                    <div class="flex items-center gap-gutter relative z-10">
+                        <div class="w-20 h-20 md:w-24 md:h-24 rounded-full border-4 border-secondary-container/30 flex items-center justify-center bg-on-primary/10">
+                            <span class="material-symbols-outlined text-[40px] text-secondary-container" style="font-variation-settings: 'FILL' 1;">shield</span>
+                        </div>
+                        <div>
+                            <h2 class="font-label-sm text-label-sm text-on-primary/70 tracking-[0.2em] uppercase mb-stack-sm">Current Focus Streak</h2>
+                            <div class="flex items-baseline gap-stack-sm">
+                                <span class="font-display text-display text-on-primary leading-none streak-count-label">42</span>
+                                <span class="font-headline-md text-headline-md text-on-primary/80">Days</span>
+                            </div>
+                            <p class="font-body-md text-body-md text-secondary-container mt-stack-sm">"Quiet Discipline" protocol active.</p>
+                        </div>
+                    </div>
+                    <!-- Streak Milestone progress -->
+                    <div class="w-full md:w-1/3 relative z-10 flex flex-col gap-stack-md">
+                        <div class="flex justify-between font-label-sm text-label-sm text-on-primary/70">
+                            <span id="next-milestone-label">Next Milestone: 50 Days</span>
+                            <span id="milestone-progress-percent">84%</span>
+                        </div>
+                        <div class="h-[4px] bg-on-primary/20 w-full overflow-hidden">
+                            <div class="h-full bg-secondary-container transition-all duration-500" id="milestone-progress-bar" style="width: 84%"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bento Columns -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+                <!-- Left Column - Today's Checklist -->
+                <div class="lg:col-span-2 space-y-gutter">
+                    <div class="bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container p-gutter rounded-xl shadow-sm space-y-stack-lg">
+                        <div class="flex justify-between items-center pb-stack-sm border-b border-outline-variant/50 dark:border-on-tertiary-container/50">
+                            <h3 class="font-headline-md text-headline-md text-on-surface dark:text-inverse-on-surface">Daily Checklist</h3>
+                            <span class="font-label-sm text-label-sm bg-surface-container-high dark:bg-on-tertiary-container text-on-surface dark:text-inverse-on-surface px-stack-md py-1 rounded-full" id="completion-stats-label">0 / 0 Completed</span>
+                        </div>
+                        <!-- Daily checklist items injected here -->
+                        <div class="space-y-stack-md" id="dashboard-checklist-container"></div>
+                    </div>
+                </div>
+                <!-- Right Column - State Tracker & Highlights -->
+                <div class="flex flex-col gap-gutter">
+                    <!-- Mood Log Card -->
+                    <div class="bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container p-gutter rounded-xl shadow-sm text-center space-y-stack-lg">
+                        <h3 class="font-headline-md text-headline-md text-on-surface dark:text-inverse-on-surface">Current State</h3>
+                        <p class="font-label-sm text-label-sm text-on-surface-variant dark:text-outline">Log your clarity for today</p>
+                        <div class="flex justify-between px-stack-md" id="dashboard-mood-container">
+                            <button class="flex flex-col items-center gap-stack-sm text-outline hover:text-error transition-colors group" onclick="switchTab('view-mood-tracker')">
+                                <span class="text-3xl filter grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all">😫</span>
+                                <span class="font-label-sm text-label-sm">Foggy</span>
+                            </button>
+                            <button class="flex flex-col items-center gap-stack-sm text-outline hover:text-primary dark:hover:text-inverse-primary transition-colors group" onclick="switchTab('view-mood-tracker')">
+                                <span class="text-3xl filter grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all">😐</span>
+                                <span class="font-label-sm text-label-sm">Neutral</span>
+                            </button>
+                            <button class="flex flex-col items-center gap-stack-sm text-outline hover:text-secondary transition-colors group" onclick="switchTab('view-mood-tracker')">
+                                <span class="text-3xl filter grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all">🤩</span>
+                                <span class="font-label-sm text-label-sm">Clear</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Dynamic Streaks Widget -->
+                    <div class="bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container p-gutter rounded-xl shadow-sm space-y-stack-lg">
+                        <h3 class="font-headline-md text-headline-md text-on-surface dark:text-inverse-on-surface pb-stack-sm border-b border-outline-variant/50 dark:border-on-tertiary-container/50">Habit Streaks</h3>
+                        <div class="space-y-stack-lg" id="dashboard-streaks-widget">
+                            <!-- Injected Streaks -->
+                        </div>
+                        <button class="w-full text-center font-label-md text-label-md text-on-surface-variant dark:text-outline hover:text-primary dark:hover:text-inverse-primary transition-colors py-stack-sm border border-outline-variant dark:border-on-tertiary-container rounded-lg hover:bg-surface-container-low dark:hover:bg-on-tertiary-container/20" onclick="switchTab('view-habit-logs')">
+                            View Analytical Grid
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== VIEW 2: HABIT LOGS ==================== -->
+        <div class="view-pane max-w-container-max-width mx-auto p-margin-mobile md:p-margin-desktop pb-24 space-y-stack-lg hidden" id="view-habit-logs">
+            <header class="flex flex-col md:flex-row md:items-end justify-between gap-stack-lg">
+                <div>
+                    <h2 class="font-headline-lg text-headline-lg text-primary dark:text-inverse-primary">Habit Logs</h2>
+                    <p class="font-body-md text-body-md text-on-surface-variant dark:text-outline mt-stack-sm">Review your consistency and manage your daily routines.</p>
+                </div>
+                <div class="flex items-center gap-stack-md text-label-sm font-label-sm text-on-surface-variant dark:text-outline-variant">
+                    <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-secondary"></span> Completed</span>
+                    <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full border border-outline-variant dark:border-on-tertiary-container bg-surface dark:bg-on-primary-fixed"></span> Pending</span>
+                </div>
+            </header>
+
+            <!-- Weekly Consistency Grid -->
+            <section class="bg-surface dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container rounded-xl p-gutter shadow-sm space-y-stack-lg">
+                <div class="flex justify-between items-center">
+                    <h3 class="font-headline-md text-headline-md text-primary dark:text-inverse-primary">Weekly Grid</h3>
+                    <div class="font-label-md text-label-md text-on-surface-variant dark:text-outline">Active Week</div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full min-w-[600px] text-left border-collapse">
+                        <thead>
+                            <tr class="text-on-surface-variant dark:text-outline font-label-sm text-label-sm border-b border-outline-variant/50 dark:border-on-tertiary-container/50">
+                                <th class="pb-stack-md font-medium w-1/3">Habit</th>
+                                <th class="pb-stack-md text-center">Mon</th>
+                                <th class="pb-stack-md text-center">Tue</th>
+                                <th class="pb-stack-md text-center">Wed</th>
+                                <th class="pb-stack-md text-center">Thu</th>
+                                <th class="pb-stack-md text-center">Fri</th>
+                                <th class="pb-stack-md text-center">Sat</th>
+                                <th class="pb-stack-md text-center">Sun</th>
+                            </tr>
+                        </thead>
+                        <tbody class="font-body-md text-body-md divide-y divide-outline-variant/30 dark:divide-on-tertiary-container/30" id="weekly-grid-body">
+                            <!-- Injected Grid rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Detailed Habit Cards Grid -->
+            <section class="space-y-stack-md">
+                <h3 class="font-headline-md text-headline-md text-primary dark:text-inverse-primary">Habit Protocols</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter animate-fade-in" id="habit-cards-container">
+                    <!-- Injected Cards -->
+                </div>
+            </section>
+        </div>
+
+        <!-- ==================== VIEW 3: MOOD TRACKER ==================== -->
+        <div class="view-pane max-w-container-max-width mx-auto p-margin-mobile md:p-margin-desktop pb-24 space-y-gutter hidden" id="view-mood-tracker">
+            <header>
+                <h2 class="font-headline-lg text-headline-lg text-primary dark:text-inverse-primary">Clarity Logging</h2>
+                <p class="font-body-lg text-body-lg text-on-surface-variant dark:text-outline mt-stack-sm">Document your mental state to map correlations with habit completions.</p>
+            </header>
+
+            <div class="grid grid-cols-1 xl:grid-cols-12 gap-gutter">
+                <!-- Log Entry Form (Span 5) -->
+                <div class="xl:col-span-5 bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container rounded-xl p-8 flex flex-col gap-6 shadow-sm relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1.5 bg-secondary-fixed-dim"></div>
+                    <div>
+                        <label class="block font-headline-md text-headline-md text-on-surface dark:text-inverse-on-surface mb-4">Clarity Level</label>
+                        <!-- Selector -->
+                        <div class="flex justify-between items-center gap-1" id="mood-selector">
+                            <button class="mood-select-btn flex flex-col items-center gap-1 p-2 rounded-xl border border-transparent hover:bg-surface-container-low dark:hover:bg-on-tertiary-container/20 transition-all" data-mood="1" title="Terrible">
+                                <span class="text-3xl opacity-50 grayscale transition-all">😫</span>
+                                <span class="font-label-sm text-[10px] text-outline">Terrible</span>
+                            </button>
+                            <button class="mood-select-btn flex flex-col items-center gap-1 p-2 rounded-xl border border-transparent hover:bg-surface-container-low dark:hover:bg-on-tertiary-container/20 transition-all" data-mood="2" title="Foggy">
+                                <span class="text-3xl opacity-50 grayscale transition-all">🙁</span>
+                                <span class="font-label-sm text-[10px] text-outline">Foggy</span>
+                            </button>
+                            <button class="mood-select-btn flex flex-col items-center gap-1 p-2 rounded-xl border border-transparent hover:bg-surface-container-low dark:hover:bg-on-tertiary-container/20 transition-all" data-mood="3" title="Neutral">
+                                <span class="text-3xl opacity-50 grayscale transition-all">😐</span>
+                                <span class="font-label-sm text-[10px] text-outline">Neutral</span>
+                            </button>
+                            <button class="mood-select-btn flex flex-col items-center gap-1 p-2 rounded-xl border border-transparent hover:bg-surface-container-low dark:hover:bg-on-tertiary-container/20 transition-all" data-mood="4" title="Focused">
+                                <span class="text-3xl opacity-50 grayscale transition-all">🙂</span>
+                                <span class="font-label-sm text-[10px] text-outline">Focused</span>
+                            </button>
+                            <button class="mood-select-btn flex flex-col items-center gap-1 p-2 rounded-xl border border-transparent hover:bg-surface-container-low dark:hover:bg-on-tertiary-container/20 transition-all" data-mood="5" title="Unstoppable">
+                                <span class="text-3xl opacity-50 grayscale transition-all">🤩</span>
+                                <span class="font-label-sm text-[10px] text-outline">Clear</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex-1 flex flex-col">
+                        <label class="block font-label-md text-label-md text-on-surface-variant dark:text-outline mb-2" for="journal">Journal Reflection</label>
+                        <textarea class="w-full flex-1 min-h-[140px] bg-transparent border-0 border-b border-outline-variant focus:border-primary dark:focus:border-inverse-primary focus:ring-0 resize-none font-body-md text-body-md text-on-surface dark:text-inverse-on-surface px-0 py-2 placeholder-outline/50 transition-colors" id="journal" placeholder="What influenced your focus or clarity today?" spellcheck="false"></textarea>
+                    </div>
+                    <div class="pt-4 flex justify-end">
+                        <button class="bg-primary dark:bg-secondary text-on-primary dark:text-on-secondary font-label-md text-label-md px-6 py-2.5 rounded-lg hover:opacity-90 active:scale-95 transition-all flex items-center gap-2" onclick="saveMoodEntry()">
+                            <span class="material-symbols-outlined text-[18px]">done</span>
+                            Save Daily State
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 30-Day Trend Chart & Insights (Span 7) -->
+                <div class="xl:col-span-7 bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container rounded-xl p-8 flex flex-col shadow-sm relative space-y-6">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-headline-md text-headline-md text-on-surface dark:text-inverse-on-surface">30-Day Clarity Curve</h3>
+                        <div class="flex items-center gap-2 text-on-surface-variant dark:text-outline font-label-sm text-label-sm bg-surface-container dark:bg-on-tertiary-container py-1 px-3 rounded-full">
+                            <span class="w-2 h-2 rounded-full bg-secondary-fixed-dim"></span>
+                            Average: <span id="avg-mood-label">Neutral</span>
+                        </div>
+                    </div>
+                    <!-- SVN Chart Container -->
+                    <div class="flex-1 relative w-full min-h-[260px] flex items-end pb-8">
+                        <div class="absolute inset-0 flex flex-col justify-between pb-8 z-0">
+                            <div class="border-b border-outline-variant/20 w-full h-0"></div>
+                            <div class="border-b border-outline-variant/20 w-full h-0"></div>
+                            <div class="border-b border-outline-variant/20 w-full h-0"></div>
+                            <div class="border-b border-outline-variant/20 w-full h-0"></div>
+                            <div class="border-b border-on-surface/10 dark:border-inverse-on-surface/10 w-full h-0"></div>
+                        </div>
+                        <div class="absolute left-0 top-0 h-full flex flex-col justify-between pb-8 pr-4 font-label-sm text-[9px] text-outline z-0 translate-y-1.5 -translate-x-6">
+                            <span>Exc</span>
+                            <span>Good</span>
+                            <span>Okay</span>
+                            <span>Foggy</span>
+                            <span>Bad</span>
+                        </div>
+                        <!-- Reactive SVG Chart -->
+                        <svg class="w-full h-full overflow-visible z-10" id="mood-svg-chart" preserveAspectRatio="none" viewBox="0 0 100 100">
+                            <!-- Dynamically generated path and markers -->
+                        </svg>
+                        <div class="absolute bottom-0 left-0 w-full flex justify-between font-label-sm text-[9px] text-outline pt-2 z-0">
+                            <span>30 Days Ago</span>
+                            <span>15 Days Ago</span>
+                            <span>Today</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- List of Recent Reflection Logs -->
+            <div class="space-y-stack-md">
+                <h3 class="font-headline-md text-headline-md text-on-surface dark:text-inverse-on-surface">Recent Reflections</h3>
+                <div class="flex flex-col gap-3" id="mood-logs-container">
+                    <!-- Injected Entries -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== VIEW 4: GOAL STREAKS ==================== -->
+        <div class="view-pane max-w-container-max-width mx-auto p-margin-mobile md:p-margin-desktop pb-24 space-y-[64px] hidden" id="view-goal-streaks">
+            <header>
+                <h1 class="font-headline-lg text-headline-lg text-primary dark:text-inverse-primary">Streaks &amp; Milestones</h1>
+                <p class="font-body-lg text-body-lg text-on-surface-variant dark:text-outline mt-2 max-w-2xl">Visualizing compound discipline. Unlocked milestones are badges of consistent effort.</p>
+            </header>
+
+            <section class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+                <!-- Tracker 1: No Fab Circular Counter -->
+                <div class="md:col-span-6 bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container rounded-xl p-6 flex flex-col items-center justify-center min-h-[440px] relative overflow-hidden shadow-sm">
+                    <!-- Top header -->
+                    <div class="absolute top-5 left-5 flex items-center gap-2 text-on-surface-variant dark:text-outline">
+                        <span class="material-symbols-outlined text-[20px] text-secondary">bolt</span>
+                        <span class="font-label-md text-label-md uppercase tracking-wider font-bold">No Fab Protocol</span>
+                    </div>
+
+                    <!-- Panic Button (Top Right) -->
+                    <button onclick="triggerPanicModal('nofab')" class="absolute top-4 right-4 flex flex-col items-center justify-center p-2 rounded-lg hover:bg-error/10 active:scale-95 transition-all text-error cursor-pointer">
+                        <span class="material-symbols-outlined text-[24px] animate-pulse text-red-500">campaign</span>
+                        <span class="text-[8px] uppercase font-bold tracking-tight mt-0.5">Panic</span>
+                    </button>
+                    
+                    <!-- Sobriety Circle Progress -->
+                    <div class="relative w-56 h-56 flex items-center justify-center mt-8">
+                        <!-- SVG Ring -->
+                        <svg class="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                            <!-- Background track ring -->
+                            <circle class="text-surface-container-highest dark:text-on-tertiary-container/30 stroke-current" cx="50" cy="50" fill="transparent" r="45" stroke-width="5"></circle>
+                            <!-- Progress ring with beautiful gradient color or secondary color -->
+                            <circle class="text-secondary stroke-current progress-ring__circle transition-all duration-300" cx="50" cy="50" fill="transparent" r="45" stroke-dasharray="282.7" stroke-dashoffset="282.7" stroke-linecap="round" stroke-width="5" id="nofab-ring-bar"></circle>
+                        </svg>
+                        
+                        <!-- Internal content aligned vertically -->
+                        <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-2">
+                            <span class="font-label-sm text-[9px] text-on-surface-variant dark:text-outline tracking-[0.2em] uppercase font-bold border-b border-secondary/30 pb-0.5 mb-1">NO FAB</span>
+                            
+                            <!-- Days Count -->
+                            <div class="flex items-baseline justify-center gap-0.5">
+                                <span class="font-display text-[38px] font-extrabold leading-none text-primary dark:text-inverse-primary tracking-tighter" id="nofab-days-count">0</span>
+                                <span class="text-[10px] font-semibold text-on-surface-variant dark:text-outline">Days</span>
+                            </div>
+
+                            <!-- Hours & Mins -->
+                            <div class="flex items-baseline justify-center gap-0.5 mt-0.5 text-xs font-semibold text-primary/80 dark:text-inverse-primary/80">
+                                <span id="nofab-hours-count">0</span><span class="text-[9px] text-on-surface-variant dark:text-outline mr-0.5">h</span>
+                                <span id="nofab-mins-count">0</span><span class="text-[9px] text-on-surface-variant dark:text-outline">m</span>
+                            </div>
+
+                            <!-- Seconds -->
+                            <div class="flex items-baseline justify-center gap-0.5 text-[10px] font-medium text-on-surface-variant dark:text-outline mt-0.5">
+                                <span id="nofab-secs-count">00</span><span class="text-[8px] uppercase tracking-wider ml-0.5">s</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Countdown line -->
+                    <div class="mt-4 text-center">
+                        <span class="font-label-sm text-[10px] font-bold text-secondary tracking-wider uppercase" id="nofab-countdown-label">ONLY 19Days 23h 55m 33s REMAINING</span>
+                    </div>
+
+                    <!-- Sub metrics: Best, Attempts, and Mantra Icon Link -->
+                    <div class="mt-4 w-full grid grid-cols-3 items-center border-t border-outline-variant/30 dark:border-on-tertiary-container/30 pt-3 text-center">
+                        <!-- Best Streak -->
+                        <div class="flex flex-col items-center">
+                            <span class="font-label-sm text-[9px] text-secondary uppercase font-bold tracking-wider">Best</span>
+                            <div class="flex items-baseline gap-0.5 mt-0.5">
+                                <span class="font-display text-base font-bold text-primary dark:text-inverse-primary" id="nofab-best-days">119</span>
+                                <span class="text-[9px] text-on-surface-variant dark:text-outline">days</span>
+                            </div>
+                        </div>
+
+                        <!-- Center Zen Tree/Mantra Link -->
+                        <button onclick="openMantraModal()" class="flex flex-col items-center justify-center p-1 rounded-xl bg-surface-container hover:bg-secondary/15 active:scale-95 transition-all text-secondary cursor-pointer">
+                            <span class="material-symbols-outlined text-[20px] text-secondary">nature_people</span>
+                            <span class="text-[8px] text-on-surface-variant dark:text-outline font-medium mt-0.5">Mantras</span>
+                        </button>
+
+                        <!-- Attempts Count -->
+                        <div class="flex flex-col items-center">
+                            <span class="font-label-sm text-[9px] text-secondary uppercase font-bold tracking-wider">Attempts</span>
+                            <div class="flex items-baseline gap-0.5 mt-0.5">
+                                <span class="font-display text-base font-bold text-primary dark:text-inverse-primary" id="nofab-attempts-count">13</span>
+                                <span class="text-[9px] text-on-surface-variant dark:text-outline">times</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reset & Edit Buttons Footer -->
+                    <div class="mt-4 w-full flex gap-3">
+                        <button onclick="openResetModal('nofab')" class="flex-1 py-1.5 px-2 border border-outline-variant text-primary dark:text-inverse-primary font-label-md text-[10px] rounded-lg hover:bg-surface-container transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+                            <span class="material-symbols-outlined text-[14px]">restart_alt</span>
+                            Reset
+                        </button>
+                        <button onclick="openEditTargetModal('nofab')" class="flex-1 py-1.5 px-2 bg-secondary/10 border border-secondary/20 text-secondary dark:text-secondary rounded-lg font-label-md text-[10px] hover:bg-secondary/20 transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+                            <span class="material-symbols-outlined text-[14px]">edit</span>
+                            Goal
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tracker 2: No Porn Circular Counter -->
+                <div class="md:col-span-6 bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container rounded-xl p-6 flex flex-col items-center justify-center min-h-[440px] relative overflow-hidden shadow-sm">
+                    <!-- Top header -->
+                    <div class="absolute top-5 left-5 flex items-center gap-2 text-on-surface-variant dark:text-outline">
+                        <span class="material-symbols-outlined text-[20px] text-primary">visibility_off</span>
+                        <span class="font-label-md text-label-md uppercase tracking-wider font-bold">No Porn Protocol</span>
+                    </div>
+
+                    <!-- Panic Button (Top Right) -->
+                    <button onclick="triggerPanicModal('noporn')" class="absolute top-4 right-4 flex flex-col items-center justify-center p-2 rounded-lg hover:bg-error/10 active:scale-95 transition-all text-error cursor-pointer">
+                        <span class="material-symbols-outlined text-[24px] animate-pulse text-red-500">campaign</span>
+                        <span class="text-[8px] uppercase font-bold tracking-tight mt-0.5">Panic</span>
+                    </button>
+                    
+                    <!-- Sobriety Circle Progress -->
+                    <div class="relative w-56 h-56 flex items-center justify-center mt-8">
+                        <!-- SVG Ring -->
+                        <svg class="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                            <!-- Background track ring -->
+                            <circle class="text-surface-container-highest dark:text-on-tertiary-container/30 stroke-current" cx="50" cy="50" fill="transparent" r="45" stroke-width="5"></circle>
+                            <!-- Progress ring with beautiful gradient color or primary color -->
+                            <circle class="text-primary stroke-current progress-ring__circle transition-all duration-300" cx="50" cy="50" fill="transparent" r="45" stroke-dasharray="282.7" stroke-dashoffset="282.7" stroke-linecap="round" stroke-width="5" id="noporn-ring-bar"></circle>
+                        </svg>
+                        
+                        <!-- Internal content aligned vertically -->
+                        <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-2">
+                            <span class="font-label-sm text-[9px] text-on-surface-variant dark:text-outline tracking-[0.2em] uppercase font-bold border-b border-primary/30 pb-0.5 mb-1">NO PORN</span>
+                            
+                            <!-- Days Count -->
+                            <div class="flex items-baseline justify-center gap-0.5">
+                                <span class="font-display text-[38px] font-extrabold leading-none text-primary dark:text-inverse-primary tracking-tighter" id="noporn-days-count">0</span>
+                                <span class="text-[10px] font-semibold text-on-surface-variant dark:text-outline">Days</span>
+                            </div>
+
+                            <!-- Hours & Mins -->
+                            <div class="flex items-baseline justify-center gap-0.5 mt-0.5 text-xs font-semibold text-primary/80 dark:text-inverse-primary/80">
+                                <span id="noporn-hours-count">0</span><span class="text-[9px] text-on-surface-variant dark:text-outline mr-0.5">h</span>
+                                <span id="noporn-mins-count">0</span><span class="text-[9px] text-on-surface-variant dark:text-outline">m</span>
+                            </div>
+
+                            <!-- Seconds -->
+                            <div class="flex items-baseline justify-center gap-0.5 text-[10px] font-medium text-on-surface-variant dark:text-outline mt-0.5">
+                                <span id="noporn-secs-count">00</span><span class="text-[8px] uppercase tracking-wider ml-0.5">s</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Countdown line -->
+                    <div class="mt-4 text-center">
+                        <span class="font-label-sm text-[10px] font-bold text-primary dark:text-inverse-primary tracking-wider uppercase" id="noporn-countdown-label">ONLY 19Days 23h 55m 33s REMAINING</span>
+                    </div>
+
+                    <!-- Sub metrics: Best, Attempts, and Mantra Icon Link -->
+                    <div class="mt-4 w-full grid grid-cols-3 items-center border-t border-outline-variant/30 dark:border-on-tertiary-container/30 pt-3 text-center">
+                        <!-- Best Streak -->
+                        <div class="flex flex-col items-center">
+                            <span class="font-label-sm text-[9px] text-primary dark:text-inverse-primary uppercase font-bold tracking-wider">Best</span>
+                            <div class="flex items-baseline gap-0.5 mt-0.5">
+                                <span class="font-display text-base font-bold text-primary dark:text-inverse-primary" id="noporn-best-days">95</span>
+                                <span class="text-[9px] text-on-surface-variant dark:text-outline">days</span>
+                            </div>
+                        </div>
+
+                        <!-- Center Zen Tree/Mantra Link -->
+                        <button onclick="openMantraModal()" class="flex flex-col items-center justify-center p-1 rounded-xl bg-surface-container hover:bg-primary/15 active:scale-95 transition-all text-primary cursor-pointer">
+                            <span class="material-symbols-outlined text-[20px] text-primary">nature_people</span>
+                            <span class="text-[8px] text-on-surface-variant dark:text-outline font-medium mt-0.5">Mantras</span>
+                        </button>
+
+                        <!-- Attempts Count -->
+                        <div class="flex flex-col items-center">
+                            <span class="font-label-sm text-[9px] text-primary dark:text-inverse-primary uppercase font-bold tracking-wider">Attempts</span>
+                            <div class="flex items-baseline gap-0.5 mt-0.5">
+                                <span class="font-display text-base font-bold text-primary dark:text-inverse-primary" id="noporn-attempts-count">8</span>
+                                <span class="text-[9px] text-on-surface-variant dark:text-outline">times</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reset & Edit Buttons Footer -->
+                    <div class="mt-4 w-full flex gap-3">
+                        <button onclick="openResetModal('noporn')" class="flex-1 py-1.5 px-2 border border-outline-variant text-primary dark:text-inverse-primary font-label-md text-[10px] rounded-lg hover:bg-surface-container transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+                            <span class="material-symbols-outlined text-[14px]">restart_alt</span>
+                            Reset
+                        </button>
+                        <button onclick="openEditTargetModal('noporn')" class="flex-1 py-1.5 px-2 bg-primary/10 border border-primary/20 text-primary dark:text-inverse-primary rounded-lg font-label-md text-[10px] hover:bg-primary/20 transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+                            <span class="material-symbols-outlined text-[14px]">edit</span>
+                            Goal
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Row 2: Secondary stats and reflections -->
+            <section class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+                <!-- Adherence widget -->
+                <div class="bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container p-6 rounded-xl shadow-sm space-y-4">
+                    <h3 class="font-label-sm text-label-sm text-on-surface-variant dark:text-outline uppercase tracking-wider">Weekly Integrity</h3>
+                    <div class="flex justify-between items-center gap-1.5" id="streaks-week-bar">
+                        <!-- Injected pills -->
+                    </div>
+                    <div class="text-label-sm font-label-sm text-on-surface-variant dark:text-outline-variant" id="integrity-percentage">
+                        100% adherence this week
+                    </div>
+                </div>
+                <!-- Quotes -->
+                <div class="bg-surface-container dark:bg-on-tertiary-container border border-outline-variant/50 dark:border-on-tertiary-container/20 rounded-xl p-6 flex flex-col justify-center relative overflow-hidden min-h-[140px]">
+                    <span class="material-symbols-outlined absolute top-2 left-2 text-[40px] text-surface-tint/10 opacity-30">format_quote</span>
+                    <blockquote class="font-body-md text-body-md text-primary dark:text-inverse-on-surface relative z-10 italic">
+                        "Freedom is not the absence of commitments, but the ability to choose — and commit to — what is best for your growth."
+                    </blockquote>
+                    <cite class="font-label-sm text-[10px] text-on-surface-variant dark:text-outline-variant mt-2 uppercase tracking-widest block not-italic">Daily Meditation</cite>
+                </div>
+            </section>
+
+            <!-- Milestones Achievements Grid -->
+            <section class="space-y-stack-lg">
+                <div class="flex items-center justify-between border-b border-outline-variant dark:border-on-tertiary-container pb-4">
+                    <h2 class="font-headline-md text-headline-md text-primary dark:text-inverse-primary">Milestones Achieved</h2>
+                    <span class="font-label-md text-label-md text-on-surface-variant dark:text-outline" id="milestones-count-label">0 / 8 Unlocked</span>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-gutter" id="milestones-grid-container">
+                    <!-- Injected milestones -->
+                </div>
+            </section>
+        </div>
+
+        <!-- ==================== VIEW 5: SETTINGS ==================== -->
+        <div class="view-pane max-w-container-max-width mx-auto p-margin-mobile md:p-margin-desktop pb-24 space-y-gutter hidden" id="view-settings">
+            <header>
+                <h2 class="font-headline-lg text-headline-lg text-primary dark:text-inverse-primary">Settings</h2>
+                <p class="font-body-lg text-body-lg text-on-surface-variant dark:text-outline mt-stack-sm">Configure your trackers, themes, and workspace parameters.</p>
+            </header>
+
+            <div class="bg-surface dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container rounded-xl p-gutter max-w-2xl shadow-sm space-y-6">
+                <h3 class="font-headline-md text-headline-md text-primary dark:text-inverse-primary border-b border-outline-variant/30 pb-2">Preferences</h3>
+                
+                <div class="space-y-6">
+                    <div class="flex items-center justify-between border-b border-outline-variant/30 dark:border-on-tertiary-container/30 pb-4">
+                        <div>
+                            <p class="font-body-md text-body-md text-on-surface dark:text-inverse-on-surface font-medium">Automatic Dark Mode</p>
+                            <p class="font-label-sm text-label-sm text-on-surface-variant dark:text-outline">Sync interface theme with your system preferences</p>
+                        </div>
+                        <button class="relative inline-flex h-6 w-11 items-center rounded-full bg-outline-variant dark:bg-on-tertiary-container transition-all" id="sync-system-toggle">
+                            <span class="inline-block h-4 w-4 transform rounded-full bg-white transition duration-200 translate-x-1" id="sync-system-dot"></span>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center justify-between border-b border-outline-variant/30 dark:border-on-tertiary-container/30 pb-4">
+                        <div>
+                            <p class="font-body-md text-body-md text-on-surface dark:text-inverse-on-surface font-medium">Daily Reset Anchor</p>
+                            <p class="font-label-sm text-label-sm text-on-surface-variant dark:text-outline">Rollover Time indicating when daily checklist resets</p>
+                        </div>
+                        <select class="bg-surface-container dark:bg-on-tertiary-container border border-outline-variant dark:border-on-tertiary-container rounded p-2 text-on-surface dark:text-inverse-on-surface focus:ring-0 focus:outline-none text-sm font-label-md">
+                            <option>12:00 AM (Midnight)</option>
+                            <option>3:00 AM</option>
+                            <option selected>4:00 AM (Recommended)</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center justify-between border-b border-outline-variant/30 dark:border-on-tertiary-container/30 pb-4">
+                        <div>
+                            <p class="font-body-md text-body-md text-on-surface dark:text-inverse-on-surface font-medium">Clear Dashboard Logs</p>
+                            <p class="font-label-sm text-label-sm text-on-surface-variant dark:text-outline">Wipe all cached localStorage content (Habits &amp; Moods)</p>
+                        </div>
+                        <button class="bg-error-container text-on-error-container border border-error/30 hover:bg-error hover:text-white rounded-lg px-4 py-2 font-label-sm text-label-sm transition-all" onclick="resetAllApplicationData()">
+                            Wipe Local Data
+                        </button>
+                    </div>
+
+                    <div class="flex flex-col gap-4 pb-2">
+                        <!-- Google OAuth Configuration Panel -->
+                        <div class="flex flex-col gap-3 border-b border-outline-variant/30 dark:border-on-tertiary-container/30 pb-5">
+                            <div>
+                                <p class="font-body-md text-body-md text-on-surface dark:text-inverse-on-surface font-semibold">Google Sign-In Integration</p>
+                                <p class="font-label-sm text-label-sm text-on-surface-variant dark:text-outline mb-2">Provide your custom Google OAuth Client ID to activate real sign-in credentials</p>
+                            </div>
+                            <div class="flex gap-2 w-full">
+                                <input type="text" id="settings-google-client-id" class="flex-1 bg-surface/50 dark:bg-on-tertiary-container/30 border border-outline-variant dark:border-on-tertiary-container rounded-lg p-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary text-on-surface dark:text-inverse-on-surface placeholder:text-outline/40" placeholder="e.g. 123456-abcdef.apps.googleusercontent.com"/>
+                                <button onclick="saveGoogleClientId()" class="bg-primary dark:bg-secondary text-on-primary dark:text-on-secondary rounded-lg px-4 py-2 font-label-md text-sm hover:opacity-90 active:scale-95 transition-all">Save Key</button>
+                            </div>
+                        </div>
+
+                        <!-- GitHub OAuth Configuration Panel -->
+                        <div class="flex flex-col gap-3 border-b border-outline-variant/30 dark:border-on-tertiary-container/30 pb-5">
+                            <div>
+                                <p class="font-body-md text-body-md text-on-surface dark:text-inverse-on-surface font-semibold">GitHub Sign-In Integration</p>
+                                <p class="font-label-sm text-label-sm text-on-surface-variant dark:text-outline mb-2">Configure real GitHub OAuth settings for profile synchronization</p>
+                            </div>
+                            <div class="flex flex-col sm:flex-row gap-3 w-full">
+                                <input type="text" id="settings-github-client-id" class="flex-1 bg-surface/50 dark:bg-on-tertiary-container/30 border border-outline-variant dark:border-on-tertiary-container rounded-lg p-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary text-on-surface dark:text-inverse-on-surface placeholder:text-outline/40" placeholder="GitHub Client ID (e.g. Ov23...)"/>
+                                <input type="text" id="settings-github-client-secret" class="flex-1 bg-surface/50 dark:bg-on-tertiary-container/30 border border-outline-variant dark:border-on-tertiary-container rounded-lg p-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary text-on-surface dark:text-inverse-on-surface placeholder:text-outline/40" placeholder="GitHub Client Secret"/>
+                                <button onclick="saveGitHubCredentials()" class="bg-[#24292e] text-white dark:bg-secondary dark:text-on-secondary rounded-lg px-4 py-2 font-label-md text-sm hover:opacity-90 active:scale-95 transition-all self-stretch sm:self-auto">Save Keys</button>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center border-b border-outline-variant/30 dark:border-on-tertiary-container/30 pb-4">
+                            <div>
+                                <p class="font-body-md text-body-md text-on-surface dark:text-inverse-on-surface font-medium">Active Protocol Session</p>
+                                <p class="font-label-sm text-label-sm text-on-surface-variant dark:text-outline font-normal">Active authentication profile & credentials</p>
+                            </div>
+                            <span id="settings-provider-badge" class="font-label-sm text-label-sm bg-secondary/15 dark:bg-secondary/20 text-secondary border border-secondary/30 px-3 py-1 rounded-full uppercase tracking-wider font-bold">OAuth</span>
+                        </div>
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-surface-container-low dark:bg-on-tertiary-container/20 p-4 rounded-xl border border-outline-variant/50 dark:border-on-tertiary-container/40">
+                            <div class="flex items-center gap-3">
+                                <img id="settings-avatar" class="w-12 h-12 rounded-full object-cover border border-outline-variant/80" src="" alt="Settings avatar">
+                                <div class="min-w-0">
+                                    <p id="settings-username" class="font-body-md text-body-md text-on-surface dark:text-inverse-on-surface font-bold truncate">User Name</p>
+                                    <p id="settings-email" class="font-label-sm text-label-sm text-on-surface-variant dark:text-outline truncate">user@domain.com</p>
+                                </div>
+                            </div>
+                            <button class="bg-primary dark:bg-secondary text-on-primary dark:text-on-secondary rounded-lg px-5 py-2.5 font-label-md text-sm hover:opacity-90 active:scale-95 transition-all cursor-pointer flex justify-center items-center gap-2 border-0" onclick="handleLogout()">
+                                <span class="material-symbols-outlined text-[18px]">logout</span>
+                                <span>Sign Out</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    </div> <!-- /#app-workspace -->
+
+    <!-- ==================== DIALOG 1: CREATE NEW HABIT ==================== -->
+    <div class="fixed inset-0 z-50 flex items-center justify-center hidden" id="habitModal">
+        <div class="absolute inset-0 bg-primary/20 backdrop-blur-md" onclick="closeHabitModal()"></div>
+        <div class="relative bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container rounded-xl w-full max-w-md p-8 shadow-2xl flex flex-col gap-6 transform scale-95 transition-all">
+            <h3 class="font-headline-md text-headline-md text-primary dark:text-inverse-primary border-b border-outline-variant/30 pb-2">New Habit Protocol</h3>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block font-label-md text-label-md text-on-surface dark:text-inverse-on-surface mb-1">Habit Title</label>
+                    <input class="w-full bg-surface/50 dark:bg-on-tertiary-container/30 border border-outline-variant dark:border-on-tertiary-container rounded-lg p-3 focus:border-primary focus:ring-1 focus:ring-primary text-on-surface dark:text-inverse-on-surface placeholder:text-outline" id="modal-habit-title" placeholder="e.g. Cold Plunge" type="text"/>
+                </div>
+                <div>
+                    <label class="block font-label-md text-label-md text-on-surface dark:text-inverse-on-surface mb-1">Target Duration/Details</label>
+                    <input class="w-full bg-surface/50 dark:bg-on-tertiary-container/30 border border-outline-variant dark:border-on-tertiary-container rounded-lg p-3 focus:border-primary focus:ring-1 focus:ring-primary text-on-surface dark:text-inverse-on-surface placeholder:text-outline" id="modal-habit-detail" placeholder="e.g. 3 minutes, deep breathing" type="text"/>
+                </div>
+                <div>
+                    <label class="block font-label-md text-label-md text-on-surface dark:text-inverse-on-surface mb-1">Visual Symbol (Icon)</label>
+                    <select class="w-full bg-surface/50 dark:bg-on-tertiary-container/30 border border-outline-variant dark:border-on-tertiary-container rounded-lg p-3 focus:border-primary text-on-surface dark:text-inverse-on-surface" id="modal-habit-icon">
+                        <option value="self_improvement">🧘 Meditation (Self Improvement)</option>
+                        <option value="fitness_center">🏋️ Training (Fitness Center)</option>
+                        <option value="menu_book">📚 Learning (Menu Book)</option>
+                        <option value="ac_unit">❄️ Cold Exposure (AC Unit)</option>
+                        <option value="bolt">⚡ Energy (Bolt)</option>
+                        <option value="local_fire_department">🔥 Discipline (Fire)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex gap-4 mt-2">
+                <button class="flex-1 py-3 px-4 border border-outline-variant dark:border-on-tertiary-container rounded-lg font-label-md text-label-md text-on-surface dark:text-inverse-on-surface hover:bg-surface-container dark:hover:bg-on-tertiary-container/30 transition-all" onclick="closeHabitModal()">
+                    Cancel
+                </button>
+                <button class="flex-1 py-3 px-4 bg-primary dark:bg-secondary text-on-primary dark:text-on-secondary rounded-lg font-label-md text-label-md hover:opacity-90 active:scale-95 transition-all" onclick="createNewHabitFromModal()">
+                    Establish Protocol
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== DIALOG 3: GOOGLE OAUTH CONFIGURATION ==================== -->
+    <div class="fixed inset-0 z-50 flex items-center justify-center hidden" id="googleConfigModal">
+        <div class="absolute inset-0 bg-primary/20 backdrop-blur-md" onclick="closeGoogleConfigModal()"></div>
+        <div class="relative bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container rounded-xl w-full max-w-md p-8 shadow-2xl flex flex-col gap-6 transform scale-95 transition-all">
+            <div class="flex items-center gap-4 text-secondary">
+                <span class="material-symbols-outlined text-[32px]">key</span>
+                <h3 class="font-headline-md text-headline-md text-primary dark:text-inverse-primary">Google Sign-In Setup</h3>
+            </div>
+            
+            <div class="space-y-4">
+                <p class="font-body-md text-body-md text-on-surface-variant dark:text-outline">
+                    Activate real authentication by linking your Google Cloud OAuth Client ID.
+                </p>
+                <div class="text-xs bg-surface-container dark:bg-on-tertiary-container/30 border border-outline-variant/30 rounded-lg p-4 space-y-2 text-on-surface-variant dark:text-outline-variant">
+                    <p class="font-bold">How to obtain a Client ID:</p>
+                    <ol class="list-decimal list-inside space-y-1">
+                        <li>Go to the <a href="https://console.cloud.google.com/" target="_blank" class="text-secondary hover:underline">Google Cloud Console</a>.</li>
+                        <li>Create a project and configure the OAuth Consent Screen.</li>
+                        <li>Create credentials of type <span class="font-semibold">OAuth client ID</span> (Web Application).</li>
+                        <li>Add <span class="font-mono bg-surface p-0.5 rounded text-[10px]">http://localhost:8000</span> to Authorized JavaScript origins.</li>
+                    </ol>
+                </div>
+                <div>
+                    <label class="block font-label-md text-label-md text-on-surface dark:text-inverse-on-surface mb-1">OAuth Client ID</label>
+                    <input class="w-full bg-surface/50 dark:bg-on-tertiary-container/30 border border-outline-variant dark:border-on-tertiary-container rounded-lg p-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary text-on-surface dark:text-inverse-on-surface placeholder:text-outline/40" id="google-setup-client-id" placeholder="e.g. 123456-abcdef.apps.googleusercontent.com" type="text"/>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-2 mt-2">
+                <button class="w-full py-3 bg-primary dark:bg-secondary text-on-primary dark:text-on-secondary rounded-lg font-label-md text-label-md hover:opacity-90 active:scale-95 transition-all" onclick="saveGoogleClientIdFromModal()">
+                    Activate Real Sign-In
+                </button>
+                <div class="flex gap-2">
+                    <button class="flex-1 py-2 px-3 border border-outline-variant dark:border-on-tertiary-container rounded-lg font-label-md text-xs text-on-surface dark:text-inverse-on-surface hover:bg-surface-container dark:hover:bg-on-tertiary-container/30 transition-all" onclick="closeGoogleConfigModal()">
+                        Cancel
+                    </button>
+                    <button class="flex-1 py-2 px-3 bg-secondary/15 text-secondary border border-secondary/20 rounded-lg font-label-md text-xs hover:bg-secondary/25 transition-all" onclick="handleSimulatedLogin('Google'); closeGoogleConfigModal();">
+                        Use Simulation Mode
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== DIALOG 4: GITHUB OAUTH CONFIGURATION ==================== -->
+    <div class="fixed inset-0 z-50 flex items-center justify-center hidden" id="githubConfigModal">
+        <div class="absolute inset-0 bg-primary/20 backdrop-blur-md" onclick="closeGitHubConfigModal()"></div>
+        <div class="relative bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container rounded-xl w-full max-w-md p-8 shadow-2xl flex flex-col gap-6 transform scale-95 transition-all">
+            <div class="flex items-center gap-4 text-[#24292e] dark:text-white">
+                <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.167 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91 1.033.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.579.688.481C19.137 20.164 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+                </svg>
+                <h3 class="font-headline-md text-headline-md text-primary dark:text-inverse-primary">GitHub Sign-In Setup</h3>
+            </div>
+            
+            <div class="space-y-4">
+                <p class="font-body-md text-body-md text-on-surface-variant dark:text-outline">
+                    Link your GitHub OAuth keys to enable real user authentication profiles.
+                </p>
+                <div class="text-xs bg-surface-container dark:bg-on-tertiary-container/30 border border-outline-variant/30 rounded-lg p-4 space-y-2 text-on-surface-variant dark:text-outline-variant">
+                    <p class="font-bold">Register your app on GitHub Developer Settings:</p>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>Set <span class="font-semibold">Homepage URL</span> to: <span class="font-mono bg-surface px-1 py-0.5 rounded text-[10px]">http://localhost:8000</span></li>
+                        <li>Set <span class="font-semibold">Authorization callback URL</span> to: <span class="font-mono bg-surface px-1 py-0.5 rounded text-[10px]">http://localhost:8000</span></li>
+                    </ul>
+                </div>
+                <div class="space-y-3">
+                    <div>
+                        <label class="block font-label-md text-label-md text-on-surface dark:text-inverse-on-surface mb-1">GitHub Client ID</label>
+                        <input class="w-full bg-surface/50 dark:bg-on-tertiary-container/30 border border-outline-variant dark:border-on-tertiary-container rounded-lg p-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary text-on-surface dark:text-inverse-on-surface placeholder:text-outline/40" id="github-setup-client-id" placeholder="e.g. Ov23liBM28s2..." type="text"/>
+                    </div>
+                    <div>
+                        <label class="block font-label-md text-label-md text-on-surface dark:text-inverse-on-surface mb-1">GitHub Client Secret</label>
+                        <input class="w-full bg-surface/50 dark:bg-on-tertiary-container/30 border border-outline-variant dark:border-on-tertiary-container rounded-lg p-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary text-on-surface dark:text-inverse-on-surface placeholder:text-outline/40" id="github-setup-client-secret" placeholder="Enter your client secret key" type="text"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-2 mt-2">
+                <button class="w-full py-3 bg-[#24292e] text-white rounded-lg font-label-md text-label-md hover:bg-[#1a1e22] active:scale-95 transition-all" onclick="saveGitHubCredentialsFromModal()">
+                    Activate Real GitHub Login
+                </button>
+                <div class="flex gap-2">
+                    <button class="flex-1 py-2 px-3 border border-outline-variant dark:border-on-tertiary-container rounded-lg font-label-md text-xs text-on-surface dark:text-inverse-on-surface hover:bg-surface-container dark:hover:bg-on-tertiary-container/30 transition-all" onclick="closeGitHubConfigModal()">
+                        Cancel
+                    </button>
+                    <button class="flex-1 py-2 px-3 bg-secondary/15 text-secondary border border-secondary/20 rounded-lg font-label-md text-xs hover:bg-secondary/25 transition-all" onclick="handleSimulatedLogin('GitHub'); closeGitHubConfigModal();">
+                        Use Simulation Mode
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== DIALOG 2: RESET FOCUS STREAK ==================== -->
+    <div class="fixed inset-0 z-50 flex items-center justify-center hidden" id="resetModal">
+        <div class="absolute inset-0 bg-primary/20 backdrop-blur-md" onclick="closeResetModal()"></div>
+        <div class="relative bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container rounded-xl w-full max-w-md p-8 shadow-2xl flex flex-col gap-6 transform scale-95 transition-all">
+            <div class="flex items-center gap-4 text-error">
+                <span class="material-symbols-outlined text-[32px]">warning</span>
+                <h3 class="font-headline-md text-headline-md text-primary dark:text-inverse-primary">Reset Streaks?</h3>
+            </div>
+            <p class="font-body-md text-body-md text-on-surface-variant dark:text-outline">
+                This actions clears your absolute streak counters. Commencing a reset requires courage and absolute integrity.
+            </p>
+            <div class="flex gap-4 mt-2">
+                <button class="flex-1 py-3 px-4 border border-outline-variant dark:border-on-tertiary-container rounded-lg font-label-md text-label-md text-on-surface dark:text-inverse-on-surface hover:bg-surface-container dark:hover:bg-on-tertiary-container/30 transition-all" onclick="closeResetModal()">
+                    Cancel
+                </button>
+                <button class="flex-1 py-3 px-4 bg-primary dark:bg-error text-on-primary dark:text-on-error rounded-lg font-label-md text-label-md hover:opacity-90 transition-all" onclick="confirmResetStreak()">
+                    Acknowledge &amp; Reset
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- ==================== DIALOG 2.1: EDIT TARGET GOAL ==================== -->
+    <div class="fixed inset-0 z-50 flex items-center justify-center hidden" id="editTargetModal">
+        <div class="absolute inset-0 bg-primary/20 backdrop-blur-md" onclick="closeEditTargetModal()"></div>
+        <div class="relative bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container rounded-xl w-full max-w-md p-8 shadow-2xl flex flex-col gap-6 transform scale-95 transition-all">
+            <div class="flex items-center gap-4 text-secondary">
+                <span class="material-symbols-outlined text-[32px]">edit_calendar</span>
+                <h3 class="font-headline-md text-headline-md text-primary dark:text-inverse-primary">Adjust Streak Target</h3>
+            </div>
+            <p class="font-body-md text-body-md text-on-surface-variant dark:text-outline">
+                Configure your target days and customized focus label to match your specific developmental journey.
+            </p>
+            <div class="space-y-4">
+                <div>
+                    <label class="block font-label-md text-label-md text-on-surface dark:text-inverse-on-surface mb-1">Target Goal (Days)</label>
+                    <input class="w-full bg-surface/50 dark:bg-on-tertiary-container/30 border border-outline-variant dark:border-on-tertiary-container rounded-lg p-3 text-sm text-on-surface dark:text-inverse-on-surface" id="target-goal-days-input" type="number" min="1" max="365" value="90"/>
+                </div>
+                <div>
+                    <label class="block font-label-md text-label-md text-on-surface dark:text-inverse-on-surface mb-1">Focus Type (e.g. of sobriety, of focus)</label>
+                    <input class="w-full bg-surface/50 dark:bg-on-tertiary-container/30 border border-outline-variant dark:border-on-tertiary-container rounded-lg p-3 text-sm text-on-surface dark:text-inverse-on-surface" id="target-focus-label-input" type="text" value="of sobriety"/>
+                </div>
+            </div>
+            <div class="flex gap-4 mt-2">
+                <button class="flex-1 py-3 px-4 border border-outline-variant dark:border-on-tertiary-container rounded-lg font-label-md text-label-md text-on-surface dark:text-inverse-on-surface hover:bg-surface-container dark:hover:bg-on-tertiary-container/30 transition-all" onclick="closeEditTargetModal()">
+                    Cancel
+                </button>
+                <button class="flex-1 py-3 px-4 bg-primary dark:bg-secondary text-on-primary dark:text-on-secondary rounded-lg font-label-md text-label-md hover:opacity-90 transition-all font-bold" onclick="saveTargetGoalSettings()">
+                    Save &amp; Apply
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== DIALOG 2.2: ZEN MANTRAS PORTAL ==================== -->
+    <div class="fixed inset-0 z-50 flex items-center justify-center hidden" id="mantraModal">
+        <div class="absolute inset-0 bg-primary/20 backdrop-blur-md" onclick="closeMantraModal()"></div>
+        <div class="relative bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container rounded-xl w-full max-w-lg p-8 shadow-2xl flex flex-col gap-6 transform scale-95 transition-all max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center gap-4 text-secondary">
+                <span class="material-symbols-outlined text-[32px]">nature_people</span>
+                <h3 class="font-headline-md text-headline-md text-primary dark:text-inverse-primary">Zen Meditations &amp; Mantras</h3>
+            </div>
+            <p class="font-body-md text-body-md text-on-surface-variant dark:text-outline">
+                Reflect on these ancient pillars of wisdom to restore clarity, anchor your focus, and maintain absolute compounding consistency.
+            </p>
+            
+            <div class="space-y-4" id="mantras-container">
+                <!-- Mantras injection -->
+                <div class="p-4 rounded-xl bg-secondary/5 border border-secondary/15 space-y-2">
+                    <p class="font-body-md text-primary dark:text-inverse-primary italic">"This too shall pass. Urges are temporary waves; you are the immutable, deep ocean."</p>
+                    <p class="text-right text-[10px] uppercase font-bold text-secondary tracking-widest">— Wave Principle</p>
+                </div>
+                <div class="p-4 rounded-xl bg-secondary/5 border border-secondary/15 space-y-2">
+                    <p class="font-body-md text-primary dark:text-inverse-primary italic">"Every second of resistance is a second of building an iron, unbreakable willpower."</p>
+                    <p class="text-right text-[10px] uppercase font-bold text-secondary tracking-widest">— Compound Mastery</p>
+                </div>
+                <div class="p-4 rounded-xl bg-secondary/5 border border-secondary/15 space-y-2">
+                    <p class="font-body-md text-primary dark:text-inverse-primary italic">"Discipline is simply choosing between what you want now, and what you want most."</p>
+                    <p class="text-right text-[10px] uppercase font-bold text-secondary tracking-widest">— The Ultimate Tradeoff</p>
+                </div>
+            </div>
+
+            <div class="flex gap-4 mt-2">
+                <button class="w-full py-3 px-4 bg-secondary text-on-secondary rounded-lg font-label-md text-label-md hover:opacity-90 transition-all font-bold" onclick="closeMantraModal()">
+                    Return to Protocol
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== DIALOG 2.3: EMERGENCY PANIC COMPASS ==================== -->
+    <div class="fixed inset-0 z-50 flex items-center justify-center hidden" id="panicModal">
+        <div class="absolute inset-0 bg-error-container/30 backdrop-blur-md" onclick="closePanicModal()"></div>
+        <div class="relative bg-surface-container-lowest dark:bg-on-primary-fixed border border-error dark:border-error rounded-xl w-full max-w-lg p-8 shadow-2xl flex flex-col gap-6 transform scale-95 transition-all max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center gap-4 text-error">
+                <span class="material-symbols-outlined text-[36px] animate-bounce text-red-500">campaign</span>
+                <h3 class="font-headline-md text-headline-md text-error dark:text-error-container font-extrabold uppercase tracking-wide">EMERGENCY COMPASS</h3>
+            </div>
+            
+            <p class="font-body-md text-body-md text-on-surface-variant dark:text-outline font-semibold">
+                Sensing an urge to break? STOP. Do not erase your hard work. Take a deep breath and invoke this protocol.
+            </p>
+
+            <!-- Boxed Breathing Trainer -->
+            <div class="bg-error/5 rounded-xl p-6 border border-error/20 flex flex-col items-center justify-center gap-4">
+                <h4 class="font-label-md text-label-md uppercase tracking-widest text-error font-bold">Box Breathing Rhythm</h4>
+                <div class="w-24 h-24 rounded-full border-4 border-error/40 border-t-error flex items-center justify-center animate-spin" style="animation-duration: 4s;">
+                    <span class="material-symbols-outlined text-[32px] text-error">air</span>
+                </div>
+                <div class="text-center space-y-1">
+                    <p class="font-body-md font-bold text-primary dark:text-inverse-primary" id="breathing-status">Breath In (4s)... Hold (4s)... Exhale (4s)... Hold (4s)</p>
+                    <p class="text-[10px] text-on-surface-variant dark:text-outline uppercase">Focus 100% on the rotating circle</p>
+                </div>
+            </div>
+
+            <!-- Absolute Urge Reminders -->
+            <div class="space-y-3">
+                <h4 class="font-label-sm text-xs uppercase tracking-wider text-secondary font-bold">Urgent Pillars to Remember:</h4>
+                <ul class="list-disc list-inside text-sm text-on-surface-variant dark:text-outline space-y-2">
+                    <li><span class="font-semibold text-primary dark:text-inverse-primary">Urges are like waves:</span> They peak at 10-15 minutes and then naturally subside. You only need to survive this wave!</li>
+                    <li><span class="font-semibold text-primary dark:text-inverse-primary">The cost of resetting:</span> One second of simulated escape is not worth erasing all your days of compound progress!</li>
+                </ul>
+            </div>
+
+            <!-- Emergency Actions -->
+            <div class="space-y-2">
+                <h4 class="font-label-sm text-xs uppercase tracking-wider text-error font-bold">Immediate Safe Actions:</h4>
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <div class="p-3 rounded-lg bg-surface-container border border-outline-variant/50 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-secondary text-sm">shower</span>
+                        <span>Take a cold shower!</span>
+                    </div>
+                    <div class="p-3 rounded-lg bg-surface-container border border-outline-variant/50 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-secondary text-sm">fitness_center</span>
+                        <span>Do 20 solid pushups!</span>
+                    </div>
+                    <div class="p-3 rounded-lg bg-surface-container border border-outline-variant/50 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-secondary text-sm">directions_walk</span>
+                        <span>Walk outside immediately!</span>
+                    </div>
+                    <div class="p-3 rounded-lg bg-surface-container border border-outline-variant/50 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-secondary text-sm">edit_document</span>
+                        <span>Write your urges down!</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex gap-4 mt-2">
+                <button class="flex-1 py-3 px-4 border border-outline-variant rounded-lg font-label-md text-label-md text-on-surface dark:text-inverse-on-surface hover:bg-surface-container transition-all cursor-pointer" onclick="closePanicModal()">
+                    Urge Conquered
+                </button>
+                <button class="flex-1 py-3 px-4 bg-error text-white font-label-md text-label-md hover:bg-error/90 transition-all font-bold uppercase tracking-wide cursor-pointer animate-pulse" onclick="openResetModal(activePanicTracker); closePanicModal();">
+                    I Reset My Streak
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== JAVASCRIPT STATE ENGINE ==================== -->
+    <script>
+        // Google Sign-In SDK configuration parameters
+        let googleClientId = localStorage.getItem('google_oauth_client_id') || '115402068413-j6robukrcuu0j9pjas0mi3d91fpoutd3.apps.googleusercontent.com';
+        
+        // GitHub Sign-In configuration parameters
+        let githubClientId = localStorage.getItem('github_oauth_client_id') || 'Ov23liBM28s2G9e7bzOK';
+        let githubClientSecret = localStorage.getItem('github_oauth_client_secret') || '';
+
+        // Reactive core state
+        let state = {
+            habits: [],
+            completions: {}, // dateString -> [habitId]
+            moods: [],       // Array of { date, value, note }
+            focusStreak: 42,
+            targetGoal: 90,
+            streakStartDate: Date.now() - (42 * 24 * 60 * 60 * 1000), // Default to 42 days ago
+            bestStreak: 119, // Default best streak
+            streakAttempts: 13, // Default attempts
+            sobrietyLabel: "of sobriety",
+            isAuthenticated: false,
+            user: {
+                name: "Quiet Discipline",
+                email: "Compounding Progress",
+                avatar: "",
+                provider: "System"
+            },
+            settings: {
+                autoDarkMode: true
+            }
+        };
+
+        // Seed default habits if localStorage is blank
+        const DEFAULT_HABITS = [
+            { id: "1", title: "Morning Meditation", detail: "20 minutes focused breathing", icon: "self_improvement", streak: 14 },
+            { id: "2", title: "Deep Work Session", detail: "90 minutes, uninterrupted", icon: "bolt", streak: 8 },
+            { id: "3", title: "Physical Training", detail: "Weightlifting protocol", icon: "fitness_center", streak: 5 },
+            { id: "4", title: "Cold Exposure", detail: "3 minutes cold tub", icon: "ac_unit", streak: 42 },
+            { id: "5", title: "Evening Review", detail: "Reflection & scheduling", icon: "menu_book", streak: 12 }
+        ];
+
+        const SEED_MOODS = [
+            { date: "Oct 1", value: 3, note: "Felt steady, focused on cold plunge." },
+            { date: "Oct 8", value: 4, note: "Productive morning, clarity was high." },
+            { date: "Oct 15", value: 3, note: "Slightly scattered after several emails." },
+            { date: "Oct 22", value: 5, note: "Exceptional deep work session." },
+            { date: "Today", value: 4, note: "Steady compounding consistency today." }
+        ];
+
+        // On document load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Boot-up real-time ticking streak clock
+            setInterval(updateRealTimeStreak, 1000);
+
+            // Check for GitHub OAuth callback query code first
+            const urlParams = new URLSearchParams(window.location.search);
+            const callbackCode = urlParams.get('code');
+            
+            if (callbackCode) {
+                // Clear the code query parameter from browser address bar smoothly
+                window.history.replaceState({}, document.title, window.location.pathname);
+                loadState();
+                updateRealTimeStreak(); // Update streak immediately on load
+                initializeDOMEvents();
+                setCurrentDates();
+                handleGitHubOAuthCallback(callbackCode);
+                return;
+            }
+
+            loadState();
+            updateRealTimeStreak(); // Update streak immediately on load
+            initializeDOMEvents();
+            setCurrentDates();
+            switchTab('view-dashboard');
+
+            // Synchronize Google OAuth settings input value
+            const clientInput = document.getElementById('settings-google-client-id');
+            if (clientInput) clientInput.value = googleClientId;
+
+            // Synchronize GitHub OAuth settings input values
+            const settingsCid = document.getElementById('settings-github-client-id');
+            const settingsSecret = document.getElementById('settings-github-client-secret');
+            if (settingsCid) settingsCid.value = githubClientId;
+            if (settingsSecret) settingsSecret.value = githubClientSecret;
+            
+            // Try to initialize Google Sign-In Client
+            initializeGoogleAuth();
+            
+            // Check dynamic auth status
+            const isAuthenticated = localStorage.getItem('quiet_discipline_auth') === 'true';
+            if (isAuthenticated) {
+                state.isAuthenticated = true;
+                
+                // Load user profile
+                const savedUser = localStorage.getItem('quiet_discipline_user');
+                if (savedUser) {
+                    try {
+                        state.user = JSON.parse(savedUser);
+                    } catch (e) {
+                        console.error("Error loading user profile", e);
+                    }
+                }
+                updateProfileVisuals();
+                showAppWorkspace();
+            } else {
+                state.isAuthenticated = false;
+                showAuthScreen();
+            }
+        });
+
+        // Load state from local storage or seed initial
+        function loadState() {
+            const raw = localStorage.getItem('quiet_discipline_state');
+            if (raw) {
+                try {
+                    const parsed = JSON.parse(raw);
+                    // Backport new properties if they don't exist
+                    if (parsed.streakStartDate === undefined) {
+                        parsed.streakStartDate = Date.now() - ((parsed.focusStreak || 42) * 24 * 60 * 60 * 1000);
+                    }
+                    if (parsed.bestStreak === undefined) {
+                        parsed.bestStreak = 119;
+                    }
+                    if (parsed.streakAttempts === undefined) {
+                        parsed.streakAttempts = 13;
+                    }
+                    if (parsed.sobrietyLabel === undefined) {
+                        parsed.sobrietyLabel = "of sobriety";
+                    }
+                    state = parsed;
+                } catch (e) {
+                    console.error("Error parsing stored state", e);
+                }
+            } else {
+                state.habits = DEFAULT_HABITS;
+                state.moods = SEED_MOODS;
+                state.streakStartDate = Date.now() - (42 * 24 * 60 * 60 * 1000);
+                state.bestStreak = 119;
+                state.streakAttempts = 13;
+                state.sobrietyLabel = "of sobriety";
+                saveState();
+            }
+        }
+
+        // Save state to local storage
+        function saveState() {
+            localStorage.setItem('quiet_discipline_state', JSON.stringify(state));
+        }
+
+        // Synchronize and redraw all elements
+        function renderAll() {
+            renderDashboardChecklist();
+            renderDashboardStreaks();
+            renderHabitLogsGrid();
+            renderHabitLogsCards();
+            renderMoodAnalytics();
+            renderGoalStreaksPage();
+            updateTopBarStreakLabel();
+        }
+
+        // Get current date string representation (YYYY-MM-DD)
+        function getTodayString() {
+            const d = new Date();
+            return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+        }
+
+        // Set date text in DOM
+        function setCurrentDates() {
+            const labels = document.querySelectorAll('.current-date-label');
+            const options = { month: 'short', day: 'numeric', year: 'numeric' };
+            const dateStr = new Date().toLocaleDateString('en-US', options);
+            labels.forEach(lbl => lbl.textContent = dateStr);
+        }
+
+        // Toggle state completions
+        function toggleHabitCompletion(habitId) {
+            const todayStr = getTodayString();
+            if (!state.completions[todayStr]) {
+                state.completions[todayStr] = [];
+            }
+
+            const idx = state.completions[todayStr].indexOf(habitId);
+            if (idx > -1) {
+                // Remove completion
+                state.completions[todayStr].splice(idx, 1);
+                // Adjust individual habit streak tracker
+                const hb = state.habits.find(h => h.id === habitId);
+                if (hb && hb.streak > 0) hb.streak--;
+            } else {
+                // Add completion
+                state.completions[todayStr].push(habitId);
+                const hb = state.habits.find(h => h.id === habitId);
+                if (hb) hb.streak++;
+            }
+            saveState();
+            renderAll();
+        }
+
+        // RENDER 1: Dashboard Protocols Checklist
+        function renderDashboardChecklist() {
+            const container = document.getElementById('dashboard-checklist-container');
+            const statsLabel = document.getElementById('completion-stats-label');
+            container.innerHTML = '';
+
+            const todayStr = getTodayString();
+            const completed = state.completions[todayStr] || [];
+
+            if (state.habits.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8 text-on-surface-variant dark:text-outline font-medium">
+                        No active protocols. Establish a new habit below.
+                    </div>`;
+                statsLabel.textContent = "0 / 0 Completed";
+                return;
+            }
+
+            state.habits.forEach(hb => {
+                const isDone = completed.includes(hb.id);
+                const item = document.createElement('div');
+                item.className = `group flex items-center justify-between p-stack-md border rounded-lg transition-all cursor-pointer ${
+                    isDone 
+                    ? 'border-secondary-container bg-secondary-container/5 dark:bg-on-tertiary-container/30' 
+                    : 'border-outline-variant dark:border-on-tertiary-container bg-surface dark:bg-on-tertiary-container/10 hover:border-surface-tint'
+                }`;
+                item.onclick = () => toggleHabitCompletion(hb.id);
+
+                item.innerHTML = `
+                    <div class="flex items-center gap-stack-md">
+                        <button class="w-6 h-6 rounded-full flex items-center justify-center transition-all ${
+                            isDone 
+                            ? 'bg-secondary text-on-secondary' 
+                            : 'border-2 border-outline-variant dark:border-on-tertiary-container group-hover:border-primary dark:group-hover:border-inverse-primary'
+                        }">
+                            ${isDone ? '<span class="material-symbols-outlined text-[16px]">check</span>' : ''}
+                        </button>
+                        <div>
+                            <p class="font-body-md text-body-md text-on-surface dark:text-inverse-on-surface font-medium ${isDone ? 'line-through opacity-60' : ''}">${hb.title}</p>
+                            <p class="font-label-sm text-label-sm text-on-surface-variant dark:text-outline opacity-70">${hb.detail}</p>
+                        </div>
+                    </div>
+                    <span class="font-label-sm text-label-sm font-bold transition-all ${isDone ? 'text-secondary opacity-100' : 'text-on-surface-variant dark:text-outline opacity-0 group-hover:opacity-100'}">
+                        ${isDone ? 'Checked' : 'Log Daily'}
+                    </span>
+                `;
+                container.appendChild(item);
+            });
+
+            statsLabel.textContent = `${completed.length} / ${state.habits.length} Completed`;
+        }
+
+        // RENDER 2: Dashboard Streaks Side-Widget
+        function renderDashboardStreaks() {
+            const container = document.getElementById('dashboard-streaks-widget');
+            container.innerHTML = '';
+
+            const sublist = state.habits.slice(0, 3);
+            if (sublist.length === 0) {
+                container.innerHTML = `<div class="text-label-sm text-on-surface-variant dark:text-outline">No active streaks.</div>`;
+                return;
+            }
+
+            sublist.forEach(hb => {
+                const row = document.createElement('div');
+                row.className = 'space-y-stack-sm';
+                
+                // Calculate percentage
+                const val = hb.streak;
+                const width = Math.min((val / 30) * 100, 100);
+
+                row.innerHTML = `
+                    <div class="flex justify-between items-end">
+                        <span class="font-label-md text-label-md text-on-surface dark:text-inverse-on-surface font-medium">${hb.title}</span>
+                        <span class="font-label-sm text-label-sm text-on-surface-variant dark:text-outline font-bold">${val} Days</span>
+                    </div>
+                    <div class="flex gap-1 h-2.5">
+                        <div class="flex-1 bg-secondary-container rounded-full overflow-hidden">
+                            <div class="h-full bg-secondary transition-all duration-500" style="width: ${width}%"></div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        // RENDER 3: Habit Logs Weekly Grid Table
+        function renderHabitLogsGrid() {
+            const tbody = document.getElementById('weekly-grid-body');
+            tbody.innerHTML = '';
+
+            if (state.habits.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="py-8 text-center text-on-surface-variant dark:text-outline font-medium">No habits registered. Create one to populate the log.</td>
+                    </tr>`;
+                return;
+            }
+
+            state.habits.forEach(hb => {
+                const tr = document.createElement('tr');
+                tr.className = 'group hover:bg-surface-container-lowest dark:hover:bg-on-tertiary-container/30 transition-colors';
+
+                let weeklyButtons = '';
+                // Render Monday to Sunday checks (mocking previous completed logs based on state values)
+                for (let i = 0; i < 7; i++) {
+                    const isCompletedMock = (hb.streak > i);
+                    weeklyButtons += `
+                        <td class="text-center py-stack-md">
+                            <button onclick="toggleHabitCompletion('${hb.id}')" class="w-6 h-6 rounded-full flex items-center justify-center mx-auto transition-all ${
+                                isCompletedMock 
+                                ? 'bg-secondary text-on-secondary border border-secondary hover:scale-115' 
+                                : 'bg-surface dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container hover:border-primary dark:hover:border-inverse-primary'
+                            }">
+                                ${isCompletedMock ? '<span class="material-symbols-outlined text-[12px]">check</span>' : ''}
+                            </button>
+                        </td>`;
+                }
+
+                tr.innerHTML = `
+                    <td class="py-stack-md flex items-center gap-stack-md text-on-surface dark:text-inverse-on-surface font-medium pl-2">
+                        <div class="w-8 h-8 rounded bg-surface-container dark:bg-on-tertiary-container flex items-center justify-center text-on-surface-variant dark:text-outline">
+                            <span class="material-symbols-outlined text-[18px]">${hb.icon}</span>
+                        </div>
+                        ${hb.title}
+                    </td>
+                    ${weeklyButtons}
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // RENDER 4: Habit Cards list with CRUD support
+        function renderHabitLogsCards() {
+            const container = document.getElementById('habit-cards-container');
+            container.innerHTML = '';
+
+            state.habits.forEach(hb => {
+                const card = document.createElement('div');
+                card.className = 'bg-surface dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container rounded-xl p-gutter hover:shadow-lg transition-all duration-300 flex flex-col h-full relative overflow-hidden group';
+                
+                const percent = Math.min((hb.streak / 30) * 100, 100).toFixed(0);
+
+                card.innerHTML = `
+                    <div class="absolute top-0 left-0 w-1.5 h-full bg-secondary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="flex justify-between items-start mb-stack-md">
+                        <div class="w-10 h-10 rounded bg-surface-container-low dark:bg-on-tertiary-container flex items-center justify-center text-on-surface dark:text-inverse-on-surface">
+                            <span class="material-symbols-outlined">${hb.icon}</span>
+                        </div>
+                        <!-- Delete Action Button -->
+                        <button class="text-on-surface-variant dark:text-outline hover:text-error dark:hover:text-error transition-colors p-1" onclick="deleteHabit('${hb.id}')" title="Archive Protocol">
+                            <span class="material-symbols-outlined text-[20px]">delete</span>
+                        </button>
+                    </div>
+                    <h4 class="font-headline-md text-headline-md text-primary dark:text-inverse-primary mb-1">${hb.title}</h4>
+                    <p class="font-body-md text-body-md text-on-surface-variant dark:text-outline mb-stack-lg flex-1">${hb.detail}</p>
+                    <div class="space-y-stack-md pt-2 border-t border-outline-variant/30 dark:border-on-tertiary-container/30">
+                        <div class="flex justify-between items-center font-label-sm text-label-sm">
+                            <span class="text-on-surface-variant dark:text-outline">Active Streak</span>
+                            <span class="text-primary dark:text-inverse-primary font-bold bg-surface-container-highest dark:bg-on-tertiary-container px-2 py-1 rounded-full">${hb.streak} Days</span>
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-end mb-1">
+                                <span class="font-label-sm text-label-sm text-on-surface-variant dark:text-outline">Mastery Rate (30d)</span>
+                                <span class="font-label-md text-label-md text-primary dark:text-inverse-primary">${percent}%</span>
+                            </div>
+                            <div class="h-1 w-full bg-surface-variant dark:bg-on-tertiary-container rounded-none overflow-hidden">
+                                <div class="h-full bg-secondary transition-all" style="width: ${percent}%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            // Add Habit CTA Card
+            const addCard = document.createElement('div');
+            addCard.className = 'bg-surface-container-lowest dark:bg-on-primary-fixed border border-dashed border-outline-variant dark:border-on-tertiary-container rounded-xl p-gutter hover:shadow-lg transition-all duration-300 flex flex-col items-center justify-center h-full min-h-[240px] cursor-pointer text-on-surface-variant hover:text-primary dark:text-outline dark:hover:text-inverse-primary';
+            addCard.onclick = openHabitModal;
+            addCard.innerHTML = `
+                <span class="material-symbols-outlined text-[36px] mb-stack-sm text-secondary">add_circle</span>
+                <span class="font-label-md text-label-md font-medium">Add New Habit</span>
+            `;
+            container.appendChild(addCard);
+        }
+
+        // RENDER 5: Mood Analytics Logs & Dynamic SVG
+        function renderMoodAnalytics() {
+            const container = document.getElementById('mood-logs-container');
+            container.innerHTML = '';
+
+            if (state.moods.length === 0) {
+                container.innerHTML = `<div class="text-center py-4 text-outline">No reflections logged yet.</div>`;
+                return;
+            }
+
+            // Populate text items list
+            state.moods.slice().reverse().forEach(log => {
+                const emojis = ["😫", "🙁", "😐", "🙂", "🤩"];
+                const emoji = emojis[log.value - 1] || "😐";
+                const levelNames = ["Terrible", "Foggy", "Neutral", "Focused", "Unstoppable"];
+                const level = levelNames[log.value - 1] || "Neutral";
+
+                const logItem = document.createElement('div');
+                logItem.className = 'bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant/30 dark:border-on-tertiary-container/30 rounded-lg p-5 flex items-start gap-4 hover:shadow-sm transition-shadow';
+                logItem.innerHTML = `
+                    <div class="text-3xl mt-0.5">${emoji}</div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-label-md text-label-md text-on-surface dark:text-inverse-on-surface font-semibold">${level} Clarity</span>
+                            <span class="font-label-sm text-label-sm text-outline">${log.date}</span>
+                        </div>
+                        <p class="font-body-md text-body-md text-on-surface-variant dark:text-outline">${log.note || 'No notes provided.'}</p>
+                    </div>
+                `;
+                container.appendChild(logItem);
+            });
+
+            // Calculate Mood averages
+            const avg = (state.moods.reduce((acc, curr) => acc + curr.value, 0) / state.moods.length).toFixed(1);
+            const score = Math.round(parseFloat(avg));
+            const labels = ["Terrible", "Foggy", "Neutral", "Focused", "Unstoppable"];
+            document.getElementById('avg-mood-label').textContent = labels[score - 1] || "Neutral";
+
+            // REDRAW DYNAMIC SVG CHART
+            redrawMoodSVGChart();
+        }
+
+        function redrawMoodSVGChart() {
+            const svg = document.getElementById('mood-svg-chart');
+            svg.innerHTML = '';
+
+            const points = state.moods.slice(-5); // take last 5 entries
+            if (points.length < 2) return;
+
+            // Generate coordinate mapping.
+            // x: distributed from 0 to 100
+            // y: mapped inversely from value 1 (y=90) to value 5 (y=10)
+            const coords = points.map((p, idx) => {
+                const x = (idx / (points.length - 1)) * 100;
+                const y = 90 - ((p.value - 1) / 4) * 80;
+                return { x, y, val: p.value };
+            });
+
+            // Draw line curve
+            let d = `M ${coords[0].x},${coords[0].y}`;
+            for (let i = 1; i < coords.length; i++) {
+                // Bezier curve calculations for organic look
+                const cpX1 = coords[i - 1].x + 12;
+                const cpY1 = coords[i - 1].y;
+                const cpX2 = coords[i].x - 12;
+                const cpY2 = coords[i].y;
+                d += ` C ${cpX1},${cpY1} ${cpX2},${cpY2} ${coords[i].x},${coords[i].y}`;
+            }
+
+            // Path element
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', d);
+            path.setAttribute('fill', 'none');
+            path.setAttribute('stroke', '#006b5f'); // Soft Mint/Teal
+            path.setAttribute('stroke-width', '3');
+            path.setAttribute('stroke-linecap', 'round');
+            path.setAttribute('stroke-linejoin', 'round');
+            svg.appendChild(path);
+
+            // Draw circles for nodes
+            coords.forEach(pt => {
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('cx', pt.x);
+                circle.setAttribute('cy', pt.y);
+                circle.setAttribute('r', '4');
+                circle.setAttribute('fill', '#ffffff');
+                circle.setAttribute('stroke', '#0b1c30'); // Deep Slate outline
+                circle.setAttribute('stroke-width', '2');
+                svg.appendChild(circle);
+            });
+        }
+
+        // RENDER 6: Goal Streaks page calculations
+        function renderGoalStreaksPage() {
+            // Set Streaks count labels
+            const labels = document.querySelectorAll('.streak-count-label');
+            labels.forEach(lbl => lbl.textContent = state.focusStreak);
+
+            // Circular progress bar
+            const ring = document.getElementById('circular-ring-bar');
+            // Circular perimeter is 2 * pi * r (2 * 3.14 * 45) = 283
+            const limit = 283;
+            const progressRatio = Math.min(state.focusStreak / state.targetGoal, 1);
+            const offset = limit - progressRatio * limit;
+            ring.setAttribute('stroke-dashoffset', offset);
+
+            // Milestone header calculations
+            const nextMilestone = Math.ceil(state.focusStreak / 10) * 10 || 10;
+            document.getElementById('next-milestone-label').textContent = `Next Milestone: ${nextMilestone} Days`;
+            document.getElementById('milestone-badge-text').textContent = `${state.targetGoal} Days Protocol`;
+
+            const percentage = Math.round(progressRatio * 100);
+            document.getElementById('milestone-progress-percent').textContent = `${percentage}%`;
+            document.getElementById('milestone-progress-bar').style.width = `${percentage}%`;
+
+            // Streaks Weekly Grid pills
+            const weekBar = document.getElementById('streaks-week-bar');
+            weekBar.innerHTML = '';
+            // Render 7 adherence pills (active soft mint for logged completeness)
+            for (let i = 0; i < 7; i++) {
+                const pill = document.createElement('div');
+                if (i < 6) {
+                    pill.className = 'h-8 w-full rounded-full bg-secondary'; // Unlocked achievements
+                } else {
+                    pill.className = 'h-8 w-full rounded-full bg-primary relative ring-2 ring-primary ring-offset-2 dark:ring-offset-on-primary-fixed'; // Today
+                    pill.innerHTML = `<div class="absolute inset-0 m-auto w-2 h-2 rounded-full bg-white"></div>`;
+                }
+                weekBar.appendChild(pill);
+            }
+
+            // Milestone badges grid
+            const milestones = [
+                { days: 7, name: "The Foundation", desc: "Consistency initiated." },
+                { days: 14, name: "Momentum", desc: "Streaks compound." },
+                { days: 30, name: "New Identity", desc: "Habits hardwire." },
+                { days: 40, name: "The Forge", desc: "Forged in routine." },
+                { days: 50, name: "Fortitude", desc: "Iron resilience." },
+                { days: 60, name: "Absolute Calm", desc: "Quiet clarity." },
+                { days: 80, name: "Unstoppable", desc: "Virtue achieved." },
+                { days: 90, name: "Sovereign Self", desc: "Absolute mastery." }
+            ];
+
+            let unlockedCount = 0;
+            const container = document.getElementById('milestones-grid-container');
+            container.innerHTML = '';
+
+            milestones.forEach(m => {
+                const isUnlocked = state.focusStreak >= m.days;
+                if (isUnlocked) unlockedCount++;
+
+                const box = document.createElement('div');
+                box.className = isUnlocked 
+                ? 'bg-secondary/10 border border-secondary rounded-lg p-6 flex flex-col items-center text-center gap-2.5 shadow-sm'
+                : 'bg-transparent border border-dashed border-outline-variant dark:border-on-tertiary-container rounded-lg p-6 flex flex-col items-center text-center gap-2.5 opacity-40';
+
+                box.innerHTML = `
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center ${isUnlocked ? 'bg-secondary text-on-secondary' : 'bg-surface-container border border-outline-variant text-outline'}">
+                        <span class="material-symbols-outlined text-[24px]">${isUnlocked ? 'verified' : 'lock'}</span>
+                    </div>
+                    <h4 class="font-label-md text-label-md font-bold text-on-surface dark:text-inverse-on-surface">${m.days} Days</h4>
+                    <p class="font-label-sm text-[11px] text-on-surface-variant dark:text-outline">${m.name}</p>
+                `;
+                container.appendChild(box);
+            });
+
+            document.getElementById('milestones-count-label').textContent = `${unlockedCount} / ${milestones.length} Unlocked`;
+        }
+
+        // State changes: Create habit from modal
+        function createNewHabitFromModal() {
+            const titleInput = document.getElementById('modal-habit-title');
+            const detailInput = document.getElementById('modal-habit-detail');
+            const iconInput = document.getElementById('modal-habit-icon');
+
+            const title = titleInput.value.trim();
+            const detail = detailInput.value.trim();
+            const icon = iconInput.value;
+
+            if (!title) {
+                alert("Please declare a title for the protocol.");
+                return;
+            }
+
+            const newHabit = {
+                id: Date.now().toString(),
+                title,
+                detail: detail || "Established daily protocol",
+                icon,
+                streak: 0
+            };
+
+            state.habits.push(newHabit);
+            saveState();
+            closeHabitModal();
+            renderAll();
+
+            // Clear inputs
+            titleInput.value = '';
+            detailInput.value = '';
+        }
+
+        // State changes: Delete habit
+        function deleteHabit(habitId) {
+            if (confirm("Archive this discipline protocol? Historics are retained but today's tracker deletes.")) {
+                state.habits = state.habits.filter(h => h.id !== habitId);
+                saveState();
+                renderAll();
+            }
+        }
+
+        // State changes: Mood check-in
+        let selectedMoodValue = 3; // default neutral
+        function initializeMoodSelectorButtons() {
+            const btnGroup = document.querySelectorAll('.mood-select-btn');
+            btnGroup.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    btnGroup.forEach(b => {
+                        b.classList.remove('bg-surface-container', 'border-outline-variant/60', 'scale-105', 'shadow-sm');
+                        b.querySelector('span').classList.add('opacity-50', 'grayscale');
+                    });
+                    btn.classList.add('bg-surface-container', 'border-outline-variant/60', 'scale-105', 'shadow-sm');
+                    btn.querySelector('span').classList.remove('opacity-50', 'grayscale');
+                    selectedMoodValue = parseInt(btn.getAttribute('data-mood'));
+                });
+            });
+
+            // Set initial neutral active
+            const neutralBtn = document.querySelector('[data-mood="3"]');
+            if (neutralBtn) neutralBtn.click();
+        }
+
+        function saveMoodEntry() {
+            const noteText = document.getElementById('journal').value.trim();
+            const newLog = {
+                date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+                value: selectedMoodValue,
+                note: noteText || "Compounding daily reflections."
+            };
+
+            state.moods.push(newLog);
+            saveState();
+            renderMoodAnalytics();
+            alert("Mental state successfully cataloged.");
+            document.getElementById('journal').value = '';
+        }
+
+        // State changes: Reset absolute focus streaks
+        // State changes: Reset absolute focus streaks
+        let activeResetTracker = 'nofab';
+        function openResetModal(trackerType) {
+            activeResetTracker = trackerType || 'nofab';
+            document.getElementById('resetModal').classList.remove('hidden');
+        }
+
+        function closeResetModal() {
+            document.getElementById('resetModal').classList.add('hidden');
+        }
+
+        function confirmResetStreak() {
+            if (activeResetTracker === 'nofab') {
+                const diff = Date.now() - state.nofabStartDate;
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                if (days > state.nofabBest) {
+                    state.nofabBest = days;
+                }
+                state.nofabAttempts = (state.nofabAttempts || 0) + 1;
+                state.nofabStartDate = Date.now();
+            } else {
+                const diff = Date.now() - state.nopornStartDate;
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                if (days > state.nopornBest) {
+                    state.nopornBest = days;
+                }
+                state.nopornAttempts = (state.nopornAttempts || 0) + 1;
+                state.nopornStartDate = Date.now();
+            }
+            saveState();
+            closeResetModal();
+            renderAll();
+            updateRealTimeStreak(); // Update immediately
+        }
+
+        // Target goal settings dialogs
+        let activeEditTracker = 'nofab';
+        function openEditTargetModal(trackerType) {
+            activeEditTracker = trackerType || 'nofab';
+            document.getElementById('editTargetModal').classList.remove('hidden');
+            if (activeEditTracker === 'nofab') {
+                document.getElementById('target-goal-days-input').value = state.nofabTarget || 90;
+                document.getElementById('target-focus-label-input').value = state.nofabLabel || 'No Fab';
+            } else {
+                document.getElementById('target-goal-days-input').value = state.nopornTarget || 90;
+                document.getElementById('target-focus-label-input').value = state.nopornLabel || 'No Porn';
+            }
+        }
+
+        function closeEditTargetModal() {
+            document.getElementById('editTargetModal').classList.add('hidden');
+        }
+
+        function saveTargetGoalSettings() {
+            const goalDays = parseInt(document.getElementById('target-goal-days-input').value) || 90;
+            const focusLabel = document.getElementById('target-focus-label-input').value.trim() || 'No Fab';
+            
+            if (activeEditTracker === 'nofab') {
+                state.nofabTarget = goalDays;
+                state.nofabLabel = focusLabel;
+            } else {
+                state.nopornTarget = goalDays;
+                state.nopornLabel = focusLabel;
+            }
+            saveState();
+            closeEditTargetModal();
+            renderAll();
+            updateRealTimeStreak();
+        }
+
+        // Mantra portal modals
+        function openMantraModal() {
+            document.getElementById('mantraModal').classList.remove('hidden');
+        }
+
+        function closeMantraModal() {
+            document.getElementById('mantraModal').classList.add('hidden');
+        }
+
+        // Panic emergencies modals
+        let breathingTimer = null;
+        let breathingPhase = 0; // 0=inhale, 1=hold, 2=exhale, 3=hold again
+        let activePanicTracker = 'nofab';
+        
+        function triggerPanicModal(trackerType) {
+            activePanicTracker = trackerType || 'nofab';
+            document.getElementById('panicModal').classList.remove('hidden');
+            startBreathingTrainer();
+        }
+
+        function closePanicModal() {
+            document.getElementById('panicModal').classList.add('hidden');
+            stopBreathingTrainer();
+        }
+
+        function startBreathingTrainer() {
+            const statusEl = document.getElementById('breathing-status');
+            const phases = [
+                "Breathe In deeply (4s)...",
+                "Hold your breath (4s)...",
+                "Exhale slowly (4s)...",
+                "Hold your breath (4s)..."
+            ];
+            breathingPhase = 0;
+            if (statusEl) statusEl.textContent = phases[0];
+            
+            breathingTimer = setInterval(() => {
+                breathingPhase = (breathingPhase + 1) % 4;
+                if (statusEl) statusEl.textContent = phases[breathingPhase];
+            }, 4000);
+        }
+
+        function stopBreathingTrainer() {
+            if (breathingTimer) {
+                clearInterval(breathingTimer);
+                breathingTimer = null;
+            }
+        }
+
+        // Real-time ticking streak engine
+        function updateRealTimeStreak() {
+            // Check initialization of both
+            if (!state.nofabStartDate) {
+                state.nofabStartDate = state.streakStartDate || (Date.now() - ((state.focusStreak || 0) * 24 * 60 * 60 * 1000));
+            }
+            if (!state.nopornStartDate) {
+                state.nopornStartDate = Date.now() - (30 * 24 * 60 * 60 * 1000);
+            }
+            
+            const now = Date.now();
+            
+            // --- 1. UPDATE NO FAB TRACKER ---
+            const diffNoFab = now - state.nofabStartDate;
+            const daysNoFab = Math.floor(diffNoFab / (1000 * 60 * 60 * 24));
+            const hoursNoFab = Math.floor((diffNoFab % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minsNoFab = Math.floor((diffNoFab % (1000 * 60 * 60)) / (1000 * 60));
+            const secsNoFab = Math.floor((diffNoFab % (1000 * 60)) / 1000);
+            
+            const nfDaysEl = document.getElementById('nofab-days-count');
+            const nfHoursEl = document.getElementById('nofab-hours-count');
+            const nfMinsEl = document.getElementById('nofab-mins-count');
+            const nfSecsEl = document.getElementById('nofab-secs-count');
+            
+            if (nfDaysEl) nfDaysEl.textContent = daysNoFab;
+            if (nfHoursEl) nfHoursEl.textContent = hoursNoFab;
+            if (nfMinsEl) nfMinsEl.textContent = minsNoFab;
+            if (nfSecsEl) nfSecsEl.textContent = String(secsNoFab).padStart(2, '0');
+            
+            // Sync with global state for dashboard displays (we will use No Fab as the main focusStreak)
+            if (state.focusStreak !== daysNoFab) {
+                state.focusStreak = daysNoFab;
+                saveState();
+            }
+            const labels = document.querySelectorAll('.streak-count-label');
+            labels.forEach(lbl => lbl.textContent = daysNoFab);
+            
+            // Best & Attempts
+            const nfBestEl = document.getElementById('nofab-best-days');
+            const nfAttemptsEl = document.getElementById('nofab-attempts-count');
+            if (nfBestEl) nfBestEl.textContent = state.nofabBest || 119;
+            if (nfAttemptsEl) nfAttemptsEl.textContent = state.nofabAttempts || 13;
+            
+            // SVG Progress (Circumference 282.7 for r=45)
+            const targetMsNoFab = (state.nofabTarget || 90) * 24 * 60 * 60 * 1000;
+            const progressRatioNoFab = Math.min(diffNoFab / targetMsNoFab, 1);
+            const dashOffsetNoFab = 282.7 - (progressRatioNoFab * 282.7);
+            const nfRing = document.getElementById('nofab-ring-bar');
+            if (nfRing) nfRing.setAttribute('stroke-dashoffset', dashOffsetNoFab);
+            
+            // Countdown No Fab
+            const nfCountdown = document.getElementById('nofab-countdown-label');
+            if (nfCountdown) {
+                const remainingMs = targetMsNoFab - diffNoFab;
+                if (remainingMs > 0) {
+                    const rDays = Math.floor(remainingMs / (1000 * 60 * 60 * 24));
+                    const rHours = Math.floor((remainingMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const rMins = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60));
+                    const rSecs = Math.floor((remainingMs % (1000 * 60)) / 1000);
+                    nfCountdown.textContent = `ONLY ${rDays}Days ${rHours}h ${rMins}m ${rSecs}s REMAINING`;
+                    nfCountdown.className = "font-label-sm text-[10px] font-bold text-secondary tracking-wider uppercase animate-pulse";
+                } else {
+                    nfCountdown.textContent = "🏆 GOAL TARGET ACHIEVED! PROTOCOL EXCEEDED 🏆";
+                    nfCountdown.className = "font-label-sm text-[10px] font-bold text-green-500 tracking-wider uppercase";
+                }
+            }
+
+            // --- 2. UPDATE NO PORN TRACKER ---
+            const diffNoPorn = now - state.nopornStartDate;
+            const daysNoPorn = Math.floor(diffNoPorn / (1000 * 60 * 60 * 24));
+            const hoursNoPorn = Math.floor((diffNoPorn % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minsNoPorn = Math.floor((diffNoPorn % (1000 * 60 * 60)) / (1000 * 60));
+            const secsNoPorn = Math.floor((diffNoPorn % (1000 * 60)) / 1000);
+            
+            const npDaysEl = document.getElementById('noporn-days-count');
+            const npHoursEl = document.getElementById('noporn-hours-count');
+            const npMinsEl = document.getElementById('noporn-mins-count');
+            const npSecsEl = document.getElementById('noporn-secs-count');
+            
+            if (npDaysEl) npDaysEl.textContent = daysNoPorn;
+            if (npHoursEl) npHoursEl.textContent = hoursNoPorn;
+            if (npMinsEl) npMinsEl.textContent = minsNoPorn;
+            if (npSecsEl) npSecsEl.textContent = String(secsNoPorn).padStart(2, '0');
+            
+            // Best & Attempts
+            const npBestEl = document.getElementById('noporn-best-days');
+            const npAttemptsEl = document.getElementById('noporn-attempts-count');
+            if (npBestEl) npBestEl.textContent = state.nopornBest || 95;
+            if (npAttemptsEl) npAttemptsEl.textContent = state.nopornAttempts || 8;
+            
+            // SVG Progress
+            const targetMsNoPorn = (state.nopornTarget || 90) * 24 * 60 * 60 * 1000;
+            const progressRatioNoPorn = Math.min(diffNoPorn / targetMsNoPorn, 1);
+            const dashOffsetNoPorn = 282.7 - (progressRatioNoPorn * 282.7);
+            const npRing = document.getElementById('noporn-ring-bar');
+            if (npRing) npRing.setAttribute('stroke-dashoffset', dashOffsetNoPorn);
+            
+            // Countdown No Porn
+            const npCountdown = document.getElementById('noporn-countdown-label');
+            if (npCountdown) {
+                const remainingMs = targetMsNoPorn - diffNoPorn;
+                if (remainingMs > 0) {
+                    const rDays = Math.floor(remainingMs / (1000 * 60 * 60 * 24));
+                    const rHours = Math.floor((remainingMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const rMins = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60));
+                    const rSecs = Math.floor((remainingMs % (1000 * 60)) / 1000);
+                    npCountdown.textContent = `ONLY ${rDays}Days ${rHours}h ${rMins}m ${rSecs}s REMAINING`;
+                    npCountdown.className = "font-label-sm text-[10px] font-bold text-primary tracking-wider uppercase animate-pulse";
+                } else {
+                    npCountdown.textContent = "🏆 GOAL TARGET ACHIEVED! PROTOCOL EXCEEDED 🏆";
+                    npCountdown.className = "font-label-sm text-[10px] font-bold text-green-500 tracking-wider uppercase";
+                }
+            }
+        }
+
+        // Application wipe utility
+        function resetAllApplicationData() {
+            if (confirm("WARNING: This permanently wipes all dynamic habits, mood logs, and storage keys. Proceed?")) {
+                localStorage.removeItem('quiet_discipline_state');
+                location.reload();
+            }
+        }
+
+        // DOM dynamic tab switching
+        function switchTab(targetId) {
+            const viewPanes = document.querySelectorAll('.view-pane');
+            const tabButtons = document.querySelectorAll('.nav-tab');
+
+            // Hide panes
+            viewPanes.forEach(p => p.classList.add('hidden'));
+
+            // Show active pane
+            const activePane = document.getElementById(targetId);
+            if (activePane) activePane.classList.remove('hidden');
+
+            // Set dynamic browser tab titles
+            const titles = {
+                'view-dashboard': 'Day at a Glance',
+                'view-habit-logs': 'Habit Logs',
+                'view-mood-tracker': 'Clarity Log',
+                'view-goal-streaks': 'Mastery Streak',
+                'view-settings': 'System Settings'
+            };
+            document.title = "Quiet Discipline - " + (titles[targetId] || 'Personal Growth Hub');
+
+            // Toggle active classes on tab buttons
+            tabButtons.forEach(btn => {
+                const target = btn.getAttribute('data-target');
+                if (target === targetId) {
+                    btn.className = "nav-tab w-full flex items-center gap-stack-md px-stack-md py-stack-md rounded-lg text-primary dark:text-inverse-primary font-bold border-r-2 border-primary bg-surface-container-low dark:bg-on-tertiary-container/30 transition-all duration-200";
+                } else {
+                    btn.className = "nav-tab w-full flex items-center gap-stack-md px-stack-md py-stack-md rounded-lg text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface hover:bg-surface-container-low dark:hover:bg-on-tertiary-container/20 transition-all duration-200";
+                }
+            });
+
+            // Close sidebar drawers on mobile after click
+            closeMobileMenu();
+        }
+
+        function updateTopBarStreakLabel() {
+            // Proactively show current streak metric next to title if desired
+        }
+
+        // Modal triggers
+        function openHabitModal() {
+            const modal = document.getElementById('habitModal');
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.querySelector('.relative').classList.remove('scale-95'), 10);
+        }
+
+        function closeHabitModal() {
+            const modal = document.getElementById('habitModal');
+            modal.querySelector('.relative').classList.add('scale-95');
+            setTimeout(() => modal.classList.add('hidden'), 150);
+        }
+
+        // Mobile Responsive sidebar controllers
+        function openMobileMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('mobile-sidebar-backdrop');
+            sidebar.classList.remove('-translate-x-full');
+            backdrop.classList.remove('hidden');
+        }
+
+        function closeMobileMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('mobile-sidebar-backdrop');
+            sidebar.classList.add('-translate-x-full');
+            backdrop.classList.add('hidden');
+        }
+
+        // Dark/Light theme toggles
+        function initializeThemeController() {
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeToggleIcon = document.getElementById('theme-toggle-icon');
+            const html = document.documentElement;
+
+            themeToggle.addEventListener('click', () => {
+                if (html.classList.contains('dark')) {
+                    html.classList.remove('dark');
+                    html.classList.add('light');
+                    themeToggleIcon.textContent = 'dark_mode';
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    html.classList.remove('light');
+                    html.classList.add('dark');
+                    themeToggleIcon.textContent = 'light_mode';
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+
+            // Apply icons based on current state
+            themeToggleIcon.textContent = html.classList.contains('dark') ? 'light_mode' : 'dark_mode';
+
+            // Preferences Toggle switch handler inside Settings
+            const prefToggle = document.getElementById('sync-system-toggle');
+            const prefDot = document.getElementById('sync-system-dot');
+            prefToggle.addEventListener('click', () => {
+                prefDot.classList.toggle('translate-x-5');
+                prefDot.classList.toggle('translate-x-1');
+                prefToggle.classList.toggle('bg-secondary');
+                prefToggle.classList.toggle('bg-outline-variant');
+            });
+        }
+
+        // Initialize events
+        function initializeDOMEvents() {
+            // Tab anchors
+            document.querySelectorAll('.nav-tab').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const target = btn.getAttribute('data-target');
+                    switchTab(target);
+                });
+            });
+
+            // Collapsible Sidebar Toggles for Desktop and Mobile
+            const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
+            const sidebar = document.getElementById('sidebar');
+            const header = document.getElementById('header');
+            const mainContent = document.getElementById('main-content');
+            const backdrop = document.getElementById('mobile-sidebar-backdrop');
+            
+            sidebarToggleBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isMobile = window.innerWidth < 768;
+                if (isMobile) {
+                    // Mobile Drawer toggle
+                    if (sidebar.classList.contains('-translate-x-full')) {
+                        sidebar.classList.remove('-translate-x-full');
+                        backdrop.classList.remove('hidden');
+                    } else {
+                        sidebar.classList.add('-translate-x-full');
+                        backdrop.classList.add('hidden');
+                    }
+                } else {
+                    // Desktop collapse toggle
+                    if (sidebar.classList.contains('-translate-x-full') || sidebar.classList.contains('md:-translate-x-full')) {
+                        // Open sidebar on desktop
+                        sidebar.classList.remove('-translate-x-full', 'md:-translate-x-full');
+                        header.classList.remove('left-0', 'w-full');
+                        header.classList.add('md:left-64', 'md:w-[calc(100%-16rem)]');
+                        mainContent.classList.remove('ml-0', 'md:ml-0');
+                        mainContent.classList.add('md:ml-64');
+                    } else {
+                        // Collapse sidebar on desktop
+                        sidebar.classList.add('-translate-x-full', 'md:-translate-x-full');
+                        header.classList.add('left-0', 'w-full');
+                        header.classList.remove('md:left-64', 'md:w-[calc(100%-16rem)]');
+                        mainContent.classList.add('ml-0', 'md:ml-0');
+                        mainContent.classList.remove('md:ml-64');
+                    }
+                }
+            });
+
+            // Close mobile sidebar on backdrop click
+            backdrop.addEventListener('click', closeMobileMenu);
+
+            // Theme setup
+            initializeThemeController();
+
+            // Mood buttons
+            initializeMoodSelectorButtons();
+
+            // Top-right Profile Dropdown Triggers
+            const profileDropdownBtn = document.getElementById('profile-dropdown-btn');
+            const profileDropdownMenu = document.getElementById('profile-dropdown-menu');
+
+            if (profileDropdownBtn && profileDropdownMenu) {
+                profileDropdownBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    toggleProfileDropdown();
+                });
+
+                // Dismiss profile dropdown on outside clicks
+                window.addEventListener('click', (e) => {
+                    const container = document.getElementById('profile-dropdown-container');
+                    if (container && !container.contains(e.target)) {
+                        closeProfileDropdown();
+                    }
+                });
+            }
+        }
+
+        // Toggle header profile dropdown with smooth animations
+        function toggleProfileDropdown() {
+            const menu = document.getElementById('profile-dropdown-menu');
+            if (menu) {
+                const isOpen = !menu.classList.contains('pointer-events-none');
+                if (isOpen) {
+                    closeProfileDropdown();
+                } else {
+                    menu.classList.remove('scale-95', 'opacity-0', 'pointer-events-none');
+                    menu.classList.add('scale-100', 'opacity-100', 'pointer-events-auto');
+                }
+            }
+        }
+
+        function closeProfileDropdown() {
+            const menu = document.getElementById('profile-dropdown-menu');
+            if (menu) {
+                menu.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto');
+                menu.classList.add('scale-95', 'opacity-0', 'pointer-events-none');
+            }
+        }
+
+        // Toggle password fields visibility
+        function togglePasswordVisibility() {
+            const pwdInput = document.getElementById('auth-password');
+            const icon = document.getElementById('password-toggle-icon');
+            if (pwdInput && icon) {
+                if (pwdInput.type === 'password') {
+                    pwdInput.type = 'text';
+                    icon.textContent = 'visibility_off';
+                } else {
+                    pwdInput.type = 'password';
+                    icon.textContent = 'visibility';
+                }
+            }
+        }
+
+        // Dynamic visual profile syncer
+        function updateProfileVisuals() {
+            const user = state.user;
+
+            // 1. Sidebar profile fields
+            const sidebarAvatar = document.getElementById('sidebar-avatar');
+            const sidebarPlaceholder = document.getElementById('sidebar-avatar-placeholder');
+            const sidebarName = document.getElementById('sidebar-username');
+            const sidebarEmail = document.getElementById('sidebar-email');
+
+            if (user.avatar) {
+                if (sidebarAvatar) {
+                    sidebarAvatar.src = user.avatar;
+                    sidebarAvatar.classList.remove('hidden');
+                }
+                if (sidebarPlaceholder) sidebarPlaceholder.classList.add('hidden');
+            } else {
+                if (sidebarAvatar) sidebarAvatar.classList.add('hidden');
+                if (sidebarPlaceholder) sidebarPlaceholder.classList.remove('hidden');
+            }
+
+            if (sidebarName) sidebarName.textContent = user.name;
+            if (sidebarEmail) sidebarEmail.textContent = user.email;
+
+            // 2. Top-navigation bar profile fields
+            const topbarAvatar = document.getElementById('topbar-avatar');
+            const topbarPlaceholder = document.getElementById('topbar-avatar-placeholder');
+
+            if (user.avatar) {
+                if (topbarAvatar) {
+                    topbarAvatar.src = user.avatar;
+                    topbarAvatar.classList.remove('hidden');
+                }
+                if (topbarPlaceholder) topbarPlaceholder.classList.add('hidden');
+            } else {
+                if (topbarAvatar) topbarAvatar.classList.add('hidden');
+                if (topbarPlaceholder) topbarPlaceholder.classList.remove('hidden');
+            }
+
+            // 3. Floating dropdown profile fields
+            const dropAvatar = document.getElementById('dropdown-avatar');
+            const dropName = document.getElementById('dropdown-username');
+            const dropEmail = document.getElementById('dropdown-email');
+
+            if (dropAvatar) dropAvatar.src = user.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80';
+            if (dropName) dropName.textContent = user.name;
+            if (dropEmail) dropEmail.textContent = user.email;
+
+            // 4. Settings tab profile fields
+            const setAvatar = document.getElementById('settings-avatar');
+            const setName = document.getElementById('settings-username');
+            const setEmail = document.getElementById('settings-email');
+            const setBadge = document.getElementById('settings-provider-badge');
+
+            if (setAvatar) setAvatar.src = user.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80';
+            if (setName) setName.textContent = user.name;
+            if (setEmail) setEmail.textContent = user.email;
+            if (setBadge) setBadge.textContent = user.provider;
+        }
+
+        // Authentication Helper Functions
+        function showAuthScreen() {
+            document.getElementById('auth-screen').classList.remove('hidden');
+            document.getElementById('auth-screen').classList.add('flex');
+            document.getElementById('app-workspace').classList.add('hidden');
+            document.getElementById('sidebar-toggle-btn').classList.add('hidden');
+        }
+
+        function showAppWorkspace() {
+            document.getElementById('auth-screen').classList.add('hidden');
+            document.getElementById('auth-screen').classList.remove('flex');
+            document.getElementById('app-workspace').classList.remove('hidden');
+            document.getElementById('sidebar-toggle-btn').classList.remove('hidden');
+            renderAll();
+        }
+
+        function handleSimulatedLogin(provider) {
+            const loader = document.getElementById('auth-loader');
+            const message = document.getElementById('loader-message');
+            
+            message.textContent = `Connecting to ${provider}...`;
+            loader.classList.remove('opacity-0', 'pointer-events-none');
+            loader.classList.add('opacity-100', 'pointer-events-auto');
+
+            setTimeout(() => {
+                let userObj = {
+                    provider: provider.toUpperCase(),
+                    email: 'protocol@growth.io',
+                    name: 'Discipline Master',
+                    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80'
+                };
+
+                if (provider === 'Google') {
+                    userObj.email = 'zen.practitioner@gmail.com';
+                    userObj.name = 'Zen Explorer';
+                    userObj.avatar = 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80';
+                } else if (provider === 'GitHub') {
+                    userObj.email = 'git.discipline@github.com';
+                    userObj.name = 'Code Alchemist';
+                    userObj.avatar = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80';
+                } else {
+                    const emailInput = document.getElementById('auth-email');
+                    if (emailInput && emailInput.value.trim()) {
+                        userObj.email = emailInput.value.trim();
+                    }
+                    userObj.name = 'Focus Scholar';
+                    userObj.avatar = 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&w=150&q=80';
+                }
+
+                localStorage.setItem('quiet_discipline_auth', 'true');
+                localStorage.setItem('quiet_discipline_user', JSON.stringify(userObj));
+                state.isAuthenticated = true;
+                state.user = userObj;
+                
+                // Hide loader
+                loader.classList.add('opacity-0', 'pointer-events-none');
+                loader.classList.remove('opacity-100', 'pointer-events-auto');
+                
+                // Sync profile visual elements
+                updateProfileVisuals();
+                
+                // Switch screen to Workspace Dashboard
+                showAppWorkspace();
+            }, 1500);
+        }
+
+        // Google Sign-In Integration Handlers
+        function initializeGoogleAuth() {
+            if (!googleClientId) {
+                // Keep simulated button if unconfigured
+                const customBtn = document.getElementById('google-signin-btn-custom');
+                const officialBtn = document.getElementById('google-signin-btn-official');
+                if (customBtn) customBtn.classList.remove('hidden');
+                if (officialBtn) officialBtn.classList.add('hidden');
+                return;
+            }
+
+            if (typeof google === 'undefined') {
+                console.warn("GSI SDK not loaded yet, retrying...");
+                setTimeout(initializeGoogleAuth, 300);
+                return;
+            }
+
+            try {
+                google.accounts.id.initialize({
+                    client_id: googleClientId,
+                    callback: handleGoogleCredentialResponse,
+                    auto_select: false,
+                    cancel_on_tap_outside: true
+                });
+
+                const customBtn = document.getElementById('google-signin-btn-custom');
+                const officialBtn = document.getElementById('google-signin-btn-official');
+                
+                if (customBtn) customBtn.classList.add('hidden');
+                if (officialBtn) {
+                    officialBtn.classList.remove('hidden');
+                    officialBtn.innerHTML = ''; // clear previous if any
+                    
+                    google.accounts.id.renderButton(
+                        officialBtn,
+                        { 
+                            theme: "outline", 
+                            size: "large", 
+                            width: "280",
+                            type: "standard",
+                            shape: "rectangular",
+                            text: "signin_with",
+                            logo_alignment: "left"
+                        }
+                    );
+                }
+
+                // Smoothly trigger Google One-Tap Prompt
+                google.accounts.id.prompt();
+
+            } catch (err) {
+                console.error("Failed to initialize Google Sign-In:", err);
+                const customBtn = document.getElementById('google-signin-btn-custom');
+                const officialBtn = document.getElementById('google-signin-btn-official');
+                if (customBtn) customBtn.classList.remove('hidden');
+                if (officialBtn) officialBtn.classList.add('hidden');
+            }
+        }
+
+        function handleGoogleCredentialResponse(response) {
+            const jwt = response.credential;
+            try {
+                // Secure client-side base64 JWT decoding
+                const payloadBase64 = jwt.split('.')[1];
+                const payloadDecoded = atob(payloadBase64.replace(/-/g, '+').replace(/_/g, '/'));
+                const userPayload = JSON.parse(payloadDecoded);
+                
+                let userObj = {
+                    provider: 'GOOGLE',
+                    email: userPayload.email,
+                    name: userPayload.name,
+                    avatar: userPayload.picture
+                };
+
+                const loader = document.getElementById('auth-loader');
+                const message = document.getElementById('loader-message');
+                
+                message.textContent = `Establishing Google Authentication...`;
+                loader.classList.remove('opacity-0', 'pointer-events-none');
+                loader.classList.add('opacity-100', 'pointer-events-auto');
+
+                setTimeout(() => {
+                    localStorage.setItem('quiet_discipline_auth', 'true');
+                    localStorage.setItem('quiet_discipline_user', JSON.stringify(userObj));
+                    state.isAuthenticated = true;
+                    state.user = userObj;
+                    
+                    loader.classList.add('opacity-0', 'pointer-events-none');
+                    loader.classList.remove('opacity-100', 'pointer-events-auto');
+                    
+                    updateProfileVisuals();
+                    showAppWorkspace();
+                }, 1200);
+
+            } catch (e) {
+                console.error("JWT token decoding failed", e);
+                alert("Handshake parsing error. Please check your credentials.");
+            }
+        }
+
+        function checkGoogleAuthConfiguration() {
+            if (!googleClientId) {
+                openGoogleConfigModal();
+            } else {
+                initializeGoogleAuth();
+            }
+        }
+
+        function openGoogleConfigModal() {
+            const modal = document.getElementById('googleConfigModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                setTimeout(() => modal.querySelector('.relative').classList.remove('scale-95'), 10);
+            }
+            const input = document.getElementById('google-setup-client-id');
+            if (input) input.value = googleClientId;
+        }
+
+        function closeGoogleConfigModal() {
+            const modal = document.getElementById('googleConfigModal');
+            if (modal) {
+                modal.querySelector('.relative').classList.add('scale-95');
+                setTimeout(() => modal.classList.add('hidden'), 150);
+            }
+        }
+
+        function saveGoogleClientIdFromModal() {
+            const val = document.getElementById('google-setup-client-id').value.trim();
+            if (!val) {
+                alert("Please declare a valid Google Client ID.");
+                return;
+            }
+            googleClientId = val;
+            localStorage.setItem('google_oauth_client_id', val);
+            
+            const clientInput = document.getElementById('settings-google-client-id');
+            if (clientInput) clientInput.value = val;
+            
+            closeGoogleConfigModal();
+            initializeGoogleAuth();
+            alert("Google Sign-In activated! The official secure login button has been loaded.");
+        }
+
+        function saveGoogleClientId() {
+            const val = document.getElementById('settings-google-client-id').value.trim();
+            if (!val) {
+                alert("Please declare a valid Google Client ID.");
+                return;
+            }
+            googleClientId = val;
+            localStorage.setItem('google_oauth_client_id', val);
+            initializeGoogleAuth();
+            alert("Google Sign-In Client ID updated successfully.");
+        }
+
+        // GitHub OAuth Integration Handlers
+        function handleGitHubOAuthCallback(code) {
+            const loader = document.getElementById('auth-loader');
+            const message = document.getElementById('loader-message');
+            
+            message.textContent = `Exchanging GitHub Authentication...`;
+            loader.classList.remove('opacity-0', 'pointer-events-none');
+            loader.classList.add('opacity-100', 'pointer-events-auto');
+
+            const cid = githubClientId;
+            const secret = githubClientSecret;
+
+            if (!cid || !secret) {
+                alert("GitHub Client ID or Secret is not configured. Please configure it first.");
+                loader.classList.add('opacity-0', 'pointer-events-none');
+                loader.classList.remove('opacity-100', 'pointer-events-auto');
+                showAuthScreen();
+                return;
+            }
+
+            // Call local python proxy server endpoint
+            fetch('/api/github/token', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    code: code,
+                    client_id: cid,
+                    client_secret: secret
+                })
+            })
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error("Failed to authenticate with GitHub. Check credentials and server logs.");
+                }
+                return res.json();
+            })
+            .then(userData => {
+                // Success! Set authentication profile
+                let userObj = {
+                    provider: 'GITHUB',
+                    email: userData.email || 'git.discipline@github.com',
+                    name: userData.name || userData.login || 'GitHub Explorer',
+                    avatar: userData.avatar_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80'
+                };
+
+                localStorage.setItem('quiet_discipline_auth', 'true');
+                localStorage.setItem('quiet_discipline_user', JSON.stringify(userObj));
+                state.isAuthenticated = true;
+                state.user = userObj;
+
+                loader.classList.add('opacity-0', 'pointer-events-none');
+                loader.classList.remove('opacity-100', 'pointer-events-auto');
+
+                updateProfileVisuals();
+                showAppWorkspace();
+            })
+            .catch(err => {
+                console.error(err);
+                alert("GitHub Authentication exchange failed: " + err.message);
+                loader.classList.add('opacity-0', 'pointer-events-none');
+                loader.classList.remove('opacity-100', 'pointer-events-auto');
+                showAuthScreen();
+            });
+        }
+
+        function checkGitHubAuthConfiguration() {
+            if (!githubClientId || !githubClientSecret) {
+                openGitHubConfigModal();
+            } else {
+                triggerGitHubRedirect();
+            }
+        }
+
+        function triggerGitHubRedirect() {
+            const redirectUrl = `https://github.com/login/oauth/authorize?client_id=${githubClientId}&scope=user:email`;
+            window.location.href = redirectUrl;
+        }
+
+        function openGitHubConfigModal() {
+            const modal = document.getElementById('githubConfigModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                setTimeout(() => modal.querySelector('.relative').classList.remove('scale-95'), 10);
+            }
+            const idInput = document.getElementById('github-setup-client-id');
+            const secretInput = document.getElementById('github-setup-client-secret');
+            if (idInput) idInput.value = githubClientId;
+            if (secretInput) secretInput.value = githubClientSecret;
+        }
+
+        function closeGitHubConfigModal() {
+            const modal = document.getElementById('githubConfigModal');
+            if (modal) {
+                modal.querySelector('.relative').classList.add('scale-95');
+                setTimeout(() => modal.classList.add('hidden'), 150);
+            }
+        }
+
+        function saveGitHubCredentialsFromModal() {
+            const cid = document.getElementById('github-setup-client-id').value.trim();
+            const secret = document.getElementById('github-setup-client-secret').value.trim();
+
+            if (!cid || !secret) {
+                alert("Please enter both a valid GitHub Client ID and Client Secret.");
+                return;
+            }
+
+            githubClientId = cid;
+            githubClientSecret = secret;
+            localStorage.setItem('github_oauth_client_id', cid);
+            localStorage.setItem('github_oauth_client_secret', secret);
+
+            const settingsCid = document.getElementById('settings-github-client-id');
+            const settingsSecret = document.getElementById('settings-github-client-secret');
+            if (settingsCid) settingsCid.value = cid;
+            if (settingsSecret) settingsSecret.value = secret;
+
+            closeGitHubConfigModal();
+            triggerGitHubRedirect();
+        }
+
+        function saveGitHubCredentials() {
+            const cid = document.getElementById('settings-github-client-id').value.trim();
+            const secret = document.getElementById('settings-github-client-secret').value.trim();
+
+            if (!cid || !secret) {
+                alert("Please enter both a valid GitHub Client ID and Client Secret.");
+                return;
+            }
+
+            githubClientId = cid;
+            githubClientSecret = secret;
+            localStorage.setItem('github_oauth_client_id', cid);
+            localStorage.setItem('github_oauth_client_secret', secret);
+            alert("GitHub OAuth Credentials updated successfully.");
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('quiet_discipline_auth');
+            localStorage.removeItem('quiet_discipline_user');
+            state.isAuthenticated = false;
+            state.user = {
+                name: "Quiet Discipline",
+                email: "Compounding Progress",
+                avatar: "",
+                provider: "System"
+            };
+            
+            // Revert profile visuals
+            updateProfileVisuals();
+            
+            // Re-initialize Google Sign-In on sign out to render the login buttons fresh
+            setTimeout(initializeGoogleAuth, 100);
+            
+            // Switch back to Login Screen
+            showAuthScreen();
+        }
+    </script>
+</body>
+</html>
