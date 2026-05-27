@@ -307,15 +307,15 @@
                     </button>
                 </li>
                 <li>
-                    <button class="nav-tab w-full flex items-center gap-stack-md px-stack-md py-stack-md rounded-lg text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface hover:bg-surface-container-low dark:hover:bg-on-tertiary-container/20 transition-all duration-200" data-target="view-mood-tracker">
-                        <span class="material-symbols-outlined">mood</span>
-                        <span class="font-label-md text-label-md">Mood Tracker</span>
-                    </button>
-                </li>
-                <li>
                     <button class="nav-tab w-full flex items-center gap-stack-md px-stack-md py-stack-md rounded-lg text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface hover:bg-surface-container-low dark:hover:bg-on-tertiary-container/20 transition-all duration-200" data-target="view-goal-streaks">
                         <span class="material-symbols-outlined">workspace_premium</span>
                         <span class="font-label-md text-label-md">Goal Streaks</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-tab w-full flex items-center gap-stack-md px-stack-md py-stack-md rounded-lg text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface hover:bg-surface-container-low dark:hover:bg-on-tertiary-container/20 transition-all duration-200" data-target="view-weekly-tasks">
+                        <span class="material-symbols-outlined">checklist</span>
+                        <span class="font-label-md text-label-md">Weekly Planner</span>
                     </button>
                 </li>
                 <li>
@@ -441,36 +441,46 @@
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
                 <!-- Left Column - Today's Checklist -->
                 <div class="lg:col-span-2 space-y-gutter">
-                    <div class="bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container p-gutter rounded-xl shadow-sm space-y-stack-lg">
-                        <div class="flex justify-between items-center pb-stack-sm border-b border-outline-variant/50 dark:border-on-tertiary-container/50">
-                            <h3 class="font-headline-md text-headline-md text-on-surface dark:text-inverse-on-surface">Daily Checklist</h3>
-                            <span class="font-label-sm text-label-sm bg-surface-container-high dark:bg-on-tertiary-container text-on-surface dark:text-inverse-on-surface px-stack-md py-1 rounded-full" id="completion-stats-label">0 / 0 Completed</span>
+                    <div class="bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container p-6 rounded-xl shadow-sm space-y-5">
+                        
+                        <!-- Premium Mobile-First Calendar Strip Header -->
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-[26px] text-secondary bg-secondary/10 p-2 rounded-xl">calendar_month</span>
+                                <h3 class="font-headline-md text-headline-md text-primary dark:text-inverse-primary font-bold" id="calendar-month-label">December 2023</h3>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <button onclick="jumpToToday()" class="font-label-md text-xs text-secondary hover:underline cursor-pointer bg-transparent border-0 font-bold">Today</button>
+                                <div class="flex items-center gap-1 border border-outline-variant/30 rounded-lg p-0.5">
+                                    <button onclick="scrollCalendarStrip(-1)" class="p-1 hover:bg-surface-container rounded cursor-pointer"><span class="material-symbols-outlined text-[16px]">chevron_left</span></button>
+                                    <button onclick="scrollCalendarStrip(1)" class="p-1 hover:bg-surface-container rounded cursor-pointer"><span class="material-symbols-outlined text-[16px]">chevron_right</span></button>
+                                </div>
+                            </div>
                         </div>
+
+                        <!-- Horizontal Scrollable Weekday Strip -->
+                        <div class="relative w-full border-b border-outline-variant/30 pb-4">
+                            <!-- Left and Right premium gradient fades for indicating scrollability -->
+                            <div class="absolute left-0 top-0 bottom-4 w-12 bg-gradient-to-r from-surface-container-lowest via-surface-container-lowest/80 to-transparent pointer-events-none z-10 dark:from-[#131b2e]"></div>
+                            <div class="absolute right-0 top-0 bottom-4 w-12 bg-gradient-to-l from-surface-container-lowest via-surface-container-lowest/80 to-transparent pointer-events-none z-10 dark:from-[#131b2e]"></div>
+                            
+                            <div class="flex overflow-x-auto gap-4 py-2 scroll-smooth no-scrollbar select-none" id="calendar-days-strip" style="-ms-overflow-style: none; scrollbar-width: none;">
+                                <!-- Dynamic day items injected here -->
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center pb-2">
+                            <h4 class="font-headline-md text-sm text-primary dark:text-inverse-primary font-bold" id="checklist-date-title">Protocols for Today</h4>
+                            <span class="font-label-sm text-[11px] bg-secondary/10 text-secondary border border-secondary/20 px-3 py-1 rounded-full font-bold" id="completion-stats-label">0 / 0 Completed</span>
+                        </div>
+
                         <!-- Daily checklist items injected here -->
                         <div class="space-y-stack-md" id="dashboard-checklist-container"></div>
                     </div>
                 </div>
                 <!-- Right Column - State Tracker & Highlights -->
                 <div class="flex flex-col gap-gutter">
-                    <!-- Mood Log Card -->
-                    <div class="bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container p-gutter rounded-xl shadow-sm text-center space-y-stack-lg">
-                        <h3 class="font-headline-md text-headline-md text-on-surface dark:text-inverse-on-surface">Current State</h3>
-                        <p class="font-label-sm text-label-sm text-on-surface-variant dark:text-outline">Log your clarity for today</p>
-                        <div class="flex justify-between px-stack-md" id="dashboard-mood-container">
-                            <button class="flex flex-col items-center gap-stack-sm text-outline hover:text-error transition-colors group" onclick="switchTab('view-mood-tracker')">
-                                <span class="text-3xl filter grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all">😫</span>
-                                <span class="font-label-sm text-label-sm">Foggy</span>
-                            </button>
-                            <button class="flex flex-col items-center gap-stack-sm text-outline hover:text-primary dark:hover:text-inverse-primary transition-colors group" onclick="switchTab('view-mood-tracker')">
-                                <span class="text-3xl filter grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all">😐</span>
-                                <span class="font-label-sm text-label-sm">Neutral</span>
-                            </button>
-                            <button class="flex flex-col items-center gap-stack-sm text-outline hover:text-secondary transition-colors group" onclick="switchTab('view-mood-tracker')">
-                                <span class="text-3xl filter grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all">🤩</span>
-                                <span class="font-label-sm text-label-sm">Clear</span>
-                            </button>
-                        </div>
-                    </div>
+
                     <!-- Dynamic Streaks Widget -->
                     <div class="bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container p-gutter rounded-xl shadow-sm space-y-stack-lg">
                         <h3 class="font-headline-md text-headline-md text-on-surface dark:text-inverse-on-surface pb-stack-sm border-b border-outline-variant/50 dark:border-on-tertiary-container/50">Habit Streaks</h3>
@@ -497,6 +507,103 @@
                     <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full border border-outline-variant dark:border-on-tertiary-container bg-surface dark:bg-on-primary-fixed"></span> Pending</span>
                 </div>
             </header>
+
+            <!-- ==================== PREMIUM HABIT LOGS ANALYTICS CARD ==================== -->
+            <section class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+                
+                <!-- Card 1: Laurel Streaks -->
+                <div class="bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container p-6 rounded-xl shadow-sm flex flex-col items-center justify-center gap-4">
+                    <h3 class="font-headline-md text-sm text-primary dark:text-inverse-primary font-bold text-center w-full pb-2 border-b border-outline-variant/30">Consistency Badges</h3>
+                    <div class="flex justify-around w-full items-center">
+                        <!-- Current Streak Wreath -->
+                        <div class="flex flex-col items-center">
+                            <span class="font-label-sm text-[10px] uppercase font-bold text-outline tracking-wider">Current Streak</span>
+                            <div class="relative w-28 h-28 flex flex-col items-center justify-center mt-2">
+                                <svg class="absolute inset-0 w-full h-full text-purple-600/75 dark:text-purple-400/70" viewBox="0 0 100 100" fill="currentColor">
+                                    <path d="M 45 85 C 25 85, 15 55, 25 25 C 20 35, 20 55, 32 70 C 38 77, 45 82, 45 85 Z" opacity="0.75"/>
+                                    <path d="M 23 32 C 12 25, 8 35, 20 42 Z"/>
+                                    <path d="M 20 48 C 9 42, 6 52, 17 58 Z"/>
+                                    <path d="M 22 64 C 11 58, 9 68, 20 72 Z"/>
+                                    <path d="M 55 85 C 75 85, 85 55, 75 25 C 80 35, 80 55, 68 70 C 62 77, 55 82, 55 85 Z" opacity="0.75"/>
+                                    <path d="M 77 32 C 88 25, 92 35, 80 42 Z"/>
+                                    <path d="M 80 48 C 91 42, 94 52, 83 58 Z"/>
+                                    <path d="M 78 64 C 89 58, 91 68, 80 72 Z"/>
+                                </svg>
+                                <div class="relative flex flex-col items-center justify-center text-center">
+                                    <span class="font-display text-[26px] font-extrabold text-purple-700 dark:text-purple-300 leading-none" id="analytics-current-streak">0</span>
+                                    <span class="font-label-sm text-[8px] text-on-surface-variant dark:text-outline font-bold mt-0.5 uppercase">days</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Best Streak Wreath -->
+                        <div class="flex flex-col items-center">
+                            <span class="font-label-sm text-[10px] uppercase font-bold text-outline tracking-wider">Best Streak</span>
+                            <div class="relative w-28 h-28 flex flex-col items-center justify-center mt-2">
+                                <svg class="absolute inset-0 w-full h-full text-purple-600/75 dark:text-purple-400/70" viewBox="0 0 100 100" fill="currentColor">
+                                    <path d="M 45 85 C 25 85, 15 55, 25 25 C 20 35, 20 55, 32 70 C 38 77, 45 82, 45 85 Z" opacity="0.75"/>
+                                    <path d="M 23 32 C 12 25, 8 35, 20 42 Z"/>
+                                    <path d="M 20 48 C 9 42, 6 52, 17 58 Z"/>
+                                    <path d="M 22 64 C 11 58, 9 68, 20 72 Z"/>
+                                    <path d="M 55 85 C 75 85, 85 55, 75 25 C 80 35, 80 55, 68 70 C 62 77, 55 82, 55 85 Z" opacity="0.75"/>
+                                    <path d="M 77 32 C 88 25, 92 35, 80 42 Z"/>
+                                    <path d="M 80 48 C 91 42, 94 52, 83 58 Z"/>
+                                    <path d="M 78 64 C 89 58, 91 68, 80 72 Z"/>
+                                </svg>
+                                <div class="relative flex flex-col items-center justify-center text-center">
+                                    <span class="font-display text-[26px] font-extrabold text-purple-700 dark:text-purple-300 leading-none" id="analytics-best-streak">0</span>
+                                    <span class="font-label-sm text-[8px] text-on-surface-variant dark:text-outline font-bold mt-0.5 uppercase">days</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Habit Strength Levels -->
+                <div class="bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container p-6 rounded-xl shadow-sm flex flex-col justify-center gap-6">
+                    <h3 class="font-headline-md text-sm text-primary dark:text-inverse-primary font-bold text-center w-full pb-2 border-b border-outline-variant/30">Habit Strength</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between items-center text-xs font-bold text-on-surface dark:text-inverse-on-surface mb-1">
+                                <span>Strength</span>
+                                <span class="text-purple-600 dark:text-purple-400" id="strength-weak-percent">24%</span>
+                            </div>
+                            <div class="h-3 bg-purple-100 dark:bg-purple-950/20 rounded-full overflow-hidden">
+                                <div class="h-full bg-purple-600 transition-all duration-500 rounded-full" id="strength-weak-bar" style="width: 24%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between items-center text-xs font-bold text-on-surface dark:text-inverse-on-surface mb-1">
+                                <span>Completion rate</span>
+                                <span class="text-purple-600 dark:text-purple-400" id="strength-completion-percent">66%</span>
+                            </div>
+                            <div class="h-3 bg-purple-100 dark:bg-purple-950/20 rounded-full overflow-hidden">
+                                <div class="h-full bg-purple-600 transition-all duration-500 rounded-full" id="strength-completion-bar" style="width: 66%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Dynamic SVG Strength Line Chart -->
+                <div class="bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container p-6 rounded-xl shadow-sm flex flex-col gap-3">
+                    <h3 class="font-headline-md text-sm text-primary dark:text-inverse-primary font-bold text-center w-full pb-2 border-b border-outline-variant/30">Historical Curve</h3>
+                    
+                    <!-- SVG Chart -->
+                    <div class="relative h-24 w-full">
+                        <svg class="w-full h-full overflow-visible" id="habit-logs-svg-chart" preserveAspectRatio="none" viewBox="0 0 100 100">
+                            <!-- Dynamic curve will be injected -->
+                        </svg>
+                        <div class="absolute bottom-0 left-0 w-full flex justify-between text-[8px] text-outline font-bold">
+                            <span id="chart-start-date">12 Dec</span>
+                            <span id="chart-mid-date">11 Jan</span>
+                            <span id="chart-end-date">Today</span>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
 
             <!-- Weekly Consistency Grid -->
             <section class="bg-surface dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container rounded-xl p-gutter shadow-sm space-y-stack-lg">
@@ -534,101 +641,7 @@
             </section>
         </div>
 
-        <!-- ==================== VIEW 3: MOOD TRACKER ==================== -->
-        <div class="view-pane max-w-container-max-width mx-auto p-margin-mobile md:p-margin-desktop pb-24 space-y-gutter hidden" id="view-mood-tracker">
-            <header>
-                <h2 class="font-headline-lg text-headline-lg text-primary dark:text-inverse-primary">Clarity Logging</h2>
-                <p class="font-body-lg text-body-lg text-on-surface-variant dark:text-outline mt-stack-sm">Document your mental state to map correlations with habit completions.</p>
-            </header>
 
-            <div class="grid grid-cols-1 xl:grid-cols-12 gap-gutter">
-                <!-- Log Entry Form (Span 5) -->
-                <div class="xl:col-span-5 bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container rounded-xl p-8 flex flex-col gap-6 shadow-sm relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-1.5 bg-secondary-fixed-dim"></div>
-                    <div>
-                        <label class="block font-headline-md text-headline-md text-on-surface dark:text-inverse-on-surface mb-4">Clarity Level</label>
-                        <!-- Selector -->
-                        <div class="flex justify-between items-center gap-1" id="mood-selector">
-                            <button class="mood-select-btn flex flex-col items-center gap-1 p-2 rounded-xl border border-transparent hover:bg-surface-container-low dark:hover:bg-on-tertiary-container/20 transition-all" data-mood="1" title="Terrible">
-                                <span class="text-3xl opacity-50 grayscale transition-all">😫</span>
-                                <span class="font-label-sm text-[10px] text-outline">Terrible</span>
-                            </button>
-                            <button class="mood-select-btn flex flex-col items-center gap-1 p-2 rounded-xl border border-transparent hover:bg-surface-container-low dark:hover:bg-on-tertiary-container/20 transition-all" data-mood="2" title="Foggy">
-                                <span class="text-3xl opacity-50 grayscale transition-all">🙁</span>
-                                <span class="font-label-sm text-[10px] text-outline">Foggy</span>
-                            </button>
-                            <button class="mood-select-btn flex flex-col items-center gap-1 p-2 rounded-xl border border-transparent hover:bg-surface-container-low dark:hover:bg-on-tertiary-container/20 transition-all" data-mood="3" title="Neutral">
-                                <span class="text-3xl opacity-50 grayscale transition-all">😐</span>
-                                <span class="font-label-sm text-[10px] text-outline">Neutral</span>
-                            </button>
-                            <button class="mood-select-btn flex flex-col items-center gap-1 p-2 rounded-xl border border-transparent hover:bg-surface-container-low dark:hover:bg-on-tertiary-container/20 transition-all" data-mood="4" title="Focused">
-                                <span class="text-3xl opacity-50 grayscale transition-all">🙂</span>
-                                <span class="font-label-sm text-[10px] text-outline">Focused</span>
-                            </button>
-                            <button class="mood-select-btn flex flex-col items-center gap-1 p-2 rounded-xl border border-transparent hover:bg-surface-container-low dark:hover:bg-on-tertiary-container/20 transition-all" data-mood="5" title="Unstoppable">
-                                <span class="text-3xl opacity-50 grayscale transition-all">🤩</span>
-                                <span class="font-label-sm text-[10px] text-outline">Clear</span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="flex-1 flex flex-col">
-                        <label class="block font-label-md text-label-md text-on-surface-variant dark:text-outline mb-2" for="journal">Journal Reflection</label>
-                        <textarea class="w-full flex-1 min-h-[140px] bg-transparent border-0 border-b border-outline-variant focus:border-primary dark:focus:border-inverse-primary focus:ring-0 resize-none font-body-md text-body-md text-on-surface dark:text-inverse-on-surface px-0 py-2 placeholder-outline/50 transition-colors" id="journal" placeholder="What influenced your focus or clarity today?" spellcheck="false"></textarea>
-                    </div>
-                    <div class="pt-4 flex justify-end">
-                        <button class="bg-primary dark:bg-secondary text-on-primary dark:text-on-secondary font-label-md text-label-md px-6 py-2.5 rounded-lg hover:opacity-90 active:scale-95 transition-all flex items-center gap-2" onclick="saveMoodEntry()">
-                            <span class="material-symbols-outlined text-[18px]">done</span>
-                            Save Daily State
-                        </button>
-                    </div>
-                </div>
-
-                <!-- 30-Day Trend Chart & Insights (Span 7) -->
-                <div class="xl:col-span-7 bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container rounded-xl p-8 flex flex-col shadow-sm relative space-y-6">
-                    <div class="flex justify-between items-center">
-                        <h3 class="font-headline-md text-headline-md text-on-surface dark:text-inverse-on-surface">30-Day Clarity Curve</h3>
-                        <div class="flex items-center gap-2 text-on-surface-variant dark:text-outline font-label-sm text-label-sm bg-surface-container dark:bg-on-tertiary-container py-1 px-3 rounded-full">
-                            <span class="w-2 h-2 rounded-full bg-secondary-fixed-dim"></span>
-                            Average: <span id="avg-mood-label">Neutral</span>
-                        </div>
-                    </div>
-                    <!-- SVN Chart Container -->
-                    <div class="flex-1 relative w-full min-h-[260px] flex items-end pb-8">
-                        <div class="absolute inset-0 flex flex-col justify-between pb-8 z-0">
-                            <div class="border-b border-outline-variant/20 w-full h-0"></div>
-                            <div class="border-b border-outline-variant/20 w-full h-0"></div>
-                            <div class="border-b border-outline-variant/20 w-full h-0"></div>
-                            <div class="border-b border-outline-variant/20 w-full h-0"></div>
-                            <div class="border-b border-on-surface/10 dark:border-inverse-on-surface/10 w-full h-0"></div>
-                        </div>
-                        <div class="absolute left-0 top-0 h-full flex flex-col justify-between pb-8 pr-4 font-label-sm text-[9px] text-outline z-0 translate-y-1.5 -translate-x-6">
-                            <span>Exc</span>
-                            <span>Good</span>
-                            <span>Okay</span>
-                            <span>Foggy</span>
-                            <span>Bad</span>
-                        </div>
-                        <!-- Reactive SVG Chart -->
-                        <svg class="w-full h-full overflow-visible z-10" id="mood-svg-chart" preserveAspectRatio="none" viewBox="0 0 100 100">
-                            <!-- Dynamically generated path and markers -->
-                        </svg>
-                        <div class="absolute bottom-0 left-0 w-full flex justify-between font-label-sm text-[9px] text-outline pt-2 z-0">
-                            <span>30 Days Ago</span>
-                            <span>15 Days Ago</span>
-                            <span>Today</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- List of Recent Reflection Logs -->
-            <div class="space-y-stack-md">
-                <h3 class="font-headline-md text-headline-md text-on-surface dark:text-inverse-on-surface">Recent Reflections</h3>
-                <div class="flex flex-col gap-3" id="mood-logs-container">
-                    <!-- Injected Entries -->
-                </div>
-            </div>
-        </div>
 
         <!-- ==================== VIEW 4: GOAL STREAKS ==================== -->
         <div class="view-pane max-w-container-max-width mx-auto p-margin-mobile md:p-margin-desktop pb-24 space-y-[64px] hidden" id="view-goal-streaks">
@@ -857,6 +870,218 @@
             </section>
         </div>
 
+        <!-- ==================== VIEW 4.5: WEEKLY PLANNER ==================== -->
+        <div class="view-pane max-w-container-max-width mx-auto p-margin-mobile md:p-margin-desktop pb-24 space-y-gutter hidden" id="view-weekly-tasks">
+            <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h2 class="font-headline-lg text-headline-lg text-primary dark:text-inverse-primary font-bold">Weekly Planner</h2>
+                    <p class="font-body-lg text-body-lg text-on-surface-variant dark:text-outline mt-stack-sm">General objectives and rolling daily to-do tasks.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="clearCompletedWeeklyTodos()" class="px-4 py-2 text-xs font-bold rounded-lg border border-outline-variant dark:border-on-tertiary-container hover:bg-surface-container-low dark:hover:bg-on-tertiary-container/20 transition-colors cursor-pointer text-on-surface dark:text-inverse-on-surface flex items-center gap-1.5 bg-transparent">
+                        <span class="material-symbols-outlined text-[16px]">clear_all</span> Clear Completed
+                    </button>
+                    <button onclick="resetWeeklyTodos()" class="px-4 py-2 text-xs font-bold rounded-lg bg-error hover:bg-error/90 text-white transition-colors cursor-pointer flex items-center gap-1.5 border-0">
+                        <span class="material-symbols-outlined text-[16px]">refresh</span> Reset Week
+                    </button>
+                </div>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+                <!-- Left Column - Dynamic Calendar & Progress -->
+                <div class="space-y-gutter">
+                    <!-- Dark Elegant Monthly Calendar Card -->
+                    <div class="bg-[#121214] text-white p-6 rounded-2xl shadow-xl space-y-4 border border-white/5">
+                        <!-- Calendar Header -->
+                        <div class="flex items-center justify-between">
+                            <button onclick="changeWeeklyMonth(-1)" class="p-1.5 hover:bg-white/10 rounded-lg transition-colors cursor-pointer text-white border-0 bg-transparent flex items-center justify-center">
+                                <span class="material-symbols-outlined text-[18px]">chevron_left</span>
+                            </button>
+                            <h3 class="font-bold text-sm tracking-wider uppercase text-center" id="weekly-calendar-month-label">December 2025</h3>
+                            <button onclick="changeWeeklyMonth(1)" class="p-1.5 hover:bg-white/10 rounded-lg transition-colors cursor-pointer text-white border-0 bg-transparent flex items-center justify-center">
+                                <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+                            </button>
+                        </div>
+                        
+                        <!-- Calendar Day Names Grid -->
+                        <div class="grid grid-cols-7 gap-1 text-center text-[10px] font-bold text-white/40 tracking-wider">
+                            <div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div><div>S</div>
+                        </div>
+                        
+                        <!-- Days Cells Grid -->
+                        <div class="grid grid-cols-7 gap-1 text-center text-xs font-semibold" id="weekly-calendar-days-grid">
+                            <!-- Generated cells injected here -->
+                        </div>
+                    </div>
+                    
+                    <!-- Get It Done. Daily Todos Completion Card -->
+                    <div class="bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container p-6 rounded-2xl shadow-sm text-center relative overflow-hidden space-y-4">
+                        <div class="absolute -right-4 -top-4 w-24 h-24 bg-[#fa5b32]/5 rounded-full blur-xl pointer-events-none"></div>
+                        
+                        <!-- Card Headline/Styling -->
+                        <div class="py-2">
+                            <h3 class="font-black text-2xl tracking-tighter text-on-surface dark:text-inverse-on-surface italic uppercase" style="font-family: 'Hanken Grotesk', sans-serif;">GET IT DONE.</h3>
+                            <p class="text-[10px] tracking-widest text-[#fa5b32] dark:text-[#fa5b32] font-black uppercase">Weekly Objectives</p>
+                        </div>
+                        
+                        <!-- Weekly statistics circle ring -->
+                        <div class="flex flex-col items-center justify-center space-y-2 py-2">
+                            <div class="relative w-28 h-28 flex items-center justify-center">
+                                <!-- SVG Progress Circle Ring -->
+                                <svg class="w-full h-full transform -rotate-90">
+                                    <circle cx="56" cy="56" r="48" stroke="currentColor" class="text-outline-variant/20 dark:text-outline/10" stroke-width="8" fill="transparent"/>
+                                    <circle cx="56" cy="56" r="48" stroke="currentColor" class="text-[#fa5b32] progress-ring__circle" stroke-width="8" fill="transparent" stroke-dasharray="301.6" stroke-dashoffset="301.6" id="weekly-todo-progress-circle"/>
+                                </svg>
+                                <!-- Text percentage centered -->
+                                <div class="absolute flex flex-col items-center">
+                                    <span class="text-2xl font-black text-on-surface dark:text-inverse-on-surface" id="weekly-todo-progress-percent">0%</span>
+                                    <span class="text-[9px] font-bold text-on-surface-variant dark:text-outline uppercase tracking-wider" id="weekly-todo-progress-ratio">0/0 Done</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-on-surface-variant dark:text-outline font-medium px-4">Keep completing tasks across the week to build momentum!</p>
+                    </div>
+                </div>
+                
+                <!-- Right Column - 7-Day Columns (General To-Dos) -->
+                <div class="lg:col-span-2 space-y-6">
+                    <!-- Weekday Grid (Monday - Friday) -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4">
+                        <!-- Monday -->
+                        <div class="bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container p-4 rounded-xl flex flex-col h-[280px] shadow-sm">
+                            <div class="flex items-center justify-between pb-2 border-b border-outline-variant/30 mb-2">
+                                <span class="font-bold text-xs bg-slate-100 dark:bg-black/20 text-slate-800 dark:text-slate-300 px-2.5 py-0.5 rounded-full uppercase tracking-wider">Monday</span>
+                                <span class="text-[10px] text-on-surface-variant dark:text-outline font-bold" id="weekly-count-Monday">0</span>
+                            </div>
+                            <div class="flex-1 overflow-y-auto space-y-1.5 pr-0.5 no-scrollbar" id="weekly-list-Monday">
+                                <!-- Items -->
+                            </div>
+                            <div class="mt-2 border-t border-outline-variant/20 pt-2 shrink-0">
+                                <div class="flex items-center gap-1.5 w-full">
+                                    <input type="text" id="weekly-input-Monday" placeholder="Add task..." autocomplete="new-password" class="flex-1 min-w-0 text-[11px] font-semibold bg-surface-container-low/50 dark:bg-black/20 border border-outline-variant/60 dark:border-on-tertiary-container/30 rounded-lg px-2.5 py-1.5 focus:border-[#fa5b32] focus:ring-1 focus:ring-[#fa5b32] outline-none text-on-surface dark:text-white placeholder-on-surface-variant/60 hover:bg-surface-container-low transition-colors" onkeydown="handleWeeklyTodoInput(event, 'Monday')">
+                                    <button type="button" onclick="clickAddWeeklyTodo('Monday')" class="shrink-0 w-7 h-7 rounded-lg bg-[#fa5b32] hover:bg-[#fa5b32]/90 text-white transition-all flex items-center justify-center cursor-pointer shadow-sm hover:scale-105 active:scale-95 border-0" title="Add Task">
+                                        <span class="material-symbols-outlined text-[15px] font-bold">add</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Tuesday -->
+                        <div class="bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container p-4 rounded-xl flex flex-col h-[280px] shadow-sm">
+                            <div class="flex items-center justify-between pb-2 border-b border-outline-variant/30 mb-2">
+                                <span class="font-bold text-xs bg-emerald-50 dark:bg-black/20 text-emerald-800 dark:text-emerald-300 px-2.5 py-0.5 rounded-full uppercase tracking-wider">Tuesday</span>
+                                <span class="text-[10px] text-on-surface-variant dark:text-outline font-bold" id="weekly-count-Tuesday">0</span>
+                            </div>
+                            <div class="flex-1 overflow-y-auto space-y-1.5 pr-0.5 no-scrollbar" id="weekly-list-Tuesday">
+                                <!-- Items -->
+                            </div>
+                            <div class="mt-2 border-t border-outline-variant/20 pt-2 shrink-0">
+                                <div class="flex items-center gap-1.5 w-full">
+                                    <input type="text" id="weekly-input-Tuesday" placeholder="Add task..." autocomplete="new-password" class="flex-1 min-w-0 text-[11px] font-semibold bg-surface-container-low/50 dark:bg-black/20 border border-outline-variant/60 dark:border-on-tertiary-container/30 rounded-lg px-2.5 py-1.5 focus:border-[#fa5b32] focus:ring-1 focus:ring-[#fa5b32] outline-none text-on-surface dark:text-white placeholder-on-surface-variant/60 hover:bg-surface-container-low transition-colors" onkeydown="handleWeeklyTodoInput(event, 'Tuesday')">
+                                    <button type="button" onclick="clickAddWeeklyTodo('Tuesday')" class="shrink-0 w-7 h-7 rounded-lg bg-[#fa5b32] hover:bg-[#fa5b32]/90 text-white transition-all flex items-center justify-center cursor-pointer shadow-sm hover:scale-105 active:scale-95 border-0" title="Add Task">
+                                        <span class="material-symbols-outlined text-[15px] font-bold">add</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Wednesday -->
+                        <div class="bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container p-4 rounded-xl flex flex-col h-[280px] shadow-sm">
+                            <div class="flex items-center justify-between pb-2 border-b border-outline-variant/30 mb-2">
+                                <span class="font-bold text-xs bg-purple-50 dark:bg-black/20 text-purple-800 dark:text-purple-300 px-2.5 py-0.5 rounded-full uppercase tracking-wider">Wednesday</span>
+                                <span class="text-[10px] text-on-surface-variant dark:text-outline font-bold" id="weekly-count-Wednesday">0</span>
+                            </div>
+                            <div class="flex-1 overflow-y-auto space-y-1.5 pr-0.5 no-scrollbar" id="weekly-list-Wednesday">
+                                <!-- Items -->
+                            </div>
+                            <div class="mt-2 border-t border-outline-variant/20 pt-2 shrink-0">
+                                <div class="flex items-center gap-1.5 w-full">
+                                    <input type="text" id="weekly-input-Wednesday" placeholder="Add task..." autocomplete="new-password" class="flex-1 min-w-0 text-[11px] font-semibold bg-surface-container-low/50 dark:bg-black/20 border border-outline-variant/60 dark:border-on-tertiary-container/30 rounded-lg px-2.5 py-1.5 focus:border-[#fa5b32] focus:ring-1 focus:ring-[#fa5b32] outline-none text-on-surface dark:text-white placeholder-on-surface-variant/60 hover:bg-surface-container-low transition-colors" onkeydown="handleWeeklyTodoInput(event, 'Wednesday')">
+                                    <button type="button" onclick="clickAddWeeklyTodo('Wednesday')" class="shrink-0 w-7 h-7 rounded-lg bg-[#fa5b32] hover:bg-[#fa5b32]/90 text-white transition-all flex items-center justify-center cursor-pointer shadow-sm hover:scale-105 active:scale-95 border-0" title="Add Task">
+                                        <span class="material-symbols-outlined text-[15px] font-bold">add</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Thursday -->
+                        <div class="bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container p-4 rounded-xl flex flex-col h-[280px] shadow-sm">
+                            <div class="flex items-center justify-between pb-2 border-b border-outline-variant/30 mb-2">
+                                <span class="font-bold text-xs bg-amber-50 dark:bg-black/20 text-amber-800 dark:text-amber-300 px-2.5 py-0.5 rounded-full uppercase tracking-wider">Thursday</span>
+                                <span class="text-[10px] text-on-surface-variant dark:text-outline font-bold" id="weekly-count-Thursday">0</span>
+                            </div>
+                            <div class="flex-1 overflow-y-auto space-y-1.5 pr-0.5 no-scrollbar" id="weekly-list-Thursday">
+                                <!-- Items -->
+                            </div>
+                            <div class="mt-2 border-t border-outline-variant/20 pt-2 shrink-0">
+                                <div class="flex items-center gap-1.5 w-full">
+                                    <input type="text" id="weekly-input-Thursday" placeholder="Add task..." autocomplete="new-password" class="flex-1 min-w-0 text-[11px] font-semibold bg-surface-container-low/50 dark:bg-black/20 border border-outline-variant/60 dark:border-on-tertiary-container/30 rounded-lg px-2.5 py-1.5 focus:border-[#fa5b32] focus:ring-1 focus:ring-[#fa5b32] outline-none text-on-surface dark:text-white placeholder-on-surface-variant/60 hover:bg-surface-container-low transition-colors" onkeydown="handleWeeklyTodoInput(event, 'Thursday')">
+                                    <button type="button" onclick="clickAddWeeklyTodo('Thursday')" class="shrink-0 w-7 h-7 rounded-lg bg-[#fa5b32] hover:bg-[#fa5b32]/90 text-white transition-all flex items-center justify-center cursor-pointer shadow-sm hover:scale-105 active:scale-95 border-0" title="Add Task">
+                                        <span class="material-symbols-outlined text-[15px] font-bold">add</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Friday -->
+                        <div class="bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container p-4 rounded-xl flex flex-col h-[280px] shadow-sm">
+                            <div class="flex items-center justify-between pb-2 border-b border-outline-variant/30 mb-2">
+                                <span class="font-bold text-xs bg-rose-50 dark:bg-black/20 text-rose-800 dark:text-rose-300 px-2.5 py-0.5 rounded-full uppercase tracking-wider">Friday</span>
+                                <span class="text-[10px] text-on-surface-variant dark:text-outline font-bold" id="weekly-count-Friday">0</span>
+                            </div>
+                            <div class="flex-1 overflow-y-auto space-y-1.5 pr-0.5 no-scrollbar" id="weekly-list-Friday">
+                                <!-- Items -->
+                            </div>
+                            <div class="mt-2 border-t border-outline-variant/20 pt-2 shrink-0">
+                                <div class="flex items-center gap-1.5 w-full">
+                                    <input type="text" id="weekly-input-Friday" placeholder="Add task..." autocomplete="new-password" class="flex-1 min-w-0 text-[11px] font-semibold bg-surface-container-low/50 dark:bg-black/20 border border-outline-variant/60 dark:border-on-tertiary-container/30 rounded-lg px-2.5 py-1.5 focus:border-[#fa5b32] focus:ring-1 focus:ring-[#fa5b32] outline-none text-on-surface dark:text-white placeholder-on-surface-variant/60 hover:bg-surface-container-low transition-colors" onkeydown="handleWeeklyTodoInput(event, 'Friday')">
+                                    <button type="button" onclick="clickAddWeeklyTodo('Friday')" class="shrink-0 w-7 h-7 rounded-lg bg-[#fa5b32] hover:bg-[#fa5b32]/90 text-white transition-all flex items-center justify-center cursor-pointer shadow-sm hover:scale-105 active:scale-95 border-0" title="Add Task">
+                                        <span class="material-symbols-outlined text-[15px] font-bold">add</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Weekend Grid (Saturday - Sunday) -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Saturday -->
+                        <div class="bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container p-4 rounded-xl flex flex-col h-[240px] shadow-sm">
+                            <div class="flex items-center justify-between pb-2 border-b border-outline-variant/30 mb-2">
+                                <span class="font-bold text-xs bg-sky-50 dark:bg-black/20 text-sky-800 dark:text-sky-300 px-2.5 py-0.5 rounded-full uppercase tracking-wider">Saturday</span>
+                                <span class="text-[10px] text-on-surface-variant dark:text-outline font-bold" id="weekly-count-Saturday">0</span>
+                            </div>
+                            <div class="flex-1 overflow-y-auto space-y-1.5 pr-0.5 no-scrollbar" id="weekly-list-Saturday">
+                                <!-- Items -->
+                            </div>
+                            <div class="mt-2 border-t border-outline-variant/20 pt-2 shrink-0">
+                                <div class="flex items-center gap-1.5 w-full">
+                                    <input type="text" id="weekly-input-Saturday" placeholder="Add task..." autocomplete="new-password" class="flex-1 min-w-0 text-[11px] font-semibold bg-surface-container-low/50 dark:bg-black/20 border border-outline-variant/60 dark:border-on-tertiary-container/30 rounded-lg px-2.5 py-1.5 focus:border-[#fa5b32] focus:ring-1 focus:ring-[#fa5b32] outline-none text-on-surface dark:text-white placeholder-on-surface-variant/60 hover:bg-surface-container-low transition-colors" onkeydown="handleWeeklyTodoInput(event, 'Saturday')">
+                                    <button type="button" onclick="clickAddWeeklyTodo('Saturday')" class="shrink-0 w-7 h-7 rounded-lg bg-[#fa5b32] hover:bg-[#fa5b32]/90 text-white transition-all flex items-center justify-center cursor-pointer shadow-sm hover:scale-105 active:scale-95 border-0" title="Add Task">
+                                        <span class="material-symbols-outlined text-[15px] font-bold">add</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Sunday -->
+                        <div class="bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container p-4 rounded-xl flex flex-col h-[240px] shadow-sm">
+                            <div class="flex items-center justify-between pb-2 border-b border-outline-variant/30 mb-2">
+                                <span class="font-bold text-xs bg-orange-50 dark:bg-black/20 text-orange-800 dark:text-orange-300 px-2.5 py-0.5 rounded-full uppercase tracking-wider">Sunday</span>
+                                <span class="text-[10px] text-on-surface-variant dark:text-outline font-bold" id="weekly-count-Sunday">0</span>
+                            </div>
+                            <div class="flex-1 overflow-y-auto space-y-1.5 pr-0.5 no-scrollbar" id="weekly-list-Sunday">
+                                <!-- Items -->
+                            </div>
+                            <div class="mt-2 border-t border-outline-variant/20 pt-2 shrink-0">
+                                <div class="flex items-center gap-1.5 w-full">
+                                    <input type="text" id="weekly-input-Sunday" placeholder="Add task..." autocomplete="new-password" class="flex-1 min-w-0 text-[11px] font-semibold bg-surface-container-low/50 dark:bg-black/20 border border-outline-variant/60 dark:border-on-tertiary-container/30 rounded-lg px-2.5 py-1.5 focus:border-[#fa5b32] focus:ring-1 focus:ring-[#fa5b32] outline-none text-on-surface dark:text-white placeholder-on-surface-variant/60 hover:bg-surface-container-low transition-colors" onkeydown="handleWeeklyTodoInput(event, 'Sunday')">
+                                    <button type="button" onclick="clickAddWeeklyTodo('Sunday')" class="shrink-0 w-7 h-7 rounded-lg bg-[#fa5b32] hover:bg-[#fa5b32]/90 text-white transition-all flex items-center justify-center cursor-pointer shadow-sm hover:scale-105 active:scale-95 border-0" title="Add Task">
+                                        <span class="material-symbols-outlined text-[15px] font-bold">add</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- ==================== VIEW 5: SETTINGS ==================== -->
         <div class="view-pane max-w-container-max-width mx-auto p-margin-mobile md:p-margin-desktop pb-24 space-y-gutter hidden" id="view-settings">
             <header>
@@ -954,41 +1179,134 @@
     </div> <!-- /#app-workspace -->
 
     <!-- ==================== DIALOG 1: CREATE NEW HABIT ==================== -->
-    <div class="fixed inset-0 z-50 flex items-center justify-center hidden" id="habitModal">
-        <div class="absolute inset-0 bg-primary/20 backdrop-blur-md" onclick="closeHabitModal()"></div>
-        <div class="relative bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container rounded-xl w-full max-w-md p-8 shadow-2xl flex flex-col gap-6 transform scale-95 transition-all">
-            <h3 class="font-headline-md text-headline-md text-primary dark:text-inverse-primary border-b border-outline-variant/30 pb-2">New Habit Protocol</h3>
+    <div class="fixed inset-0 z-50 flex items-center justify-center hidden animate-fade-in" id="habitModal">
+        <div class="absolute inset-0 bg-primary/25 backdrop-blur-sm" onclick="closeHabitModal()"></div>
+        <div class="relative bg-surface-container-lowest dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container rounded-2xl w-full max-w-md p-7 shadow-2xl flex flex-col gap-6 transform scale-95 transition-all overflow-hidden max-h-[90vh] overflow-y-auto">
             
-            <div class="space-y-4">
-                <div>
-                    <label class="block font-label-md text-label-md text-on-surface dark:text-inverse-on-surface mb-1">Habit Title</label>
-                    <input class="w-full bg-surface/50 dark:bg-on-tertiary-container/30 border border-outline-variant dark:border-on-tertiary-container rounded-lg p-3 focus:border-primary focus:ring-1 focus:ring-primary text-on-surface dark:text-inverse-on-surface placeholder:text-outline" id="modal-habit-title" placeholder="e.g. Cold Plunge" type="text"/>
+            <!-- Step 1 View: Habit Type Choice -->
+            <div id="habit-modal-step1" class="flex flex-col gap-6">
+                <div class="text-center">
+                    <h3 class="font-headline-md text-headline-md text-primary dark:text-inverse-primary text-[20px] font-bold">What type of a habit?</h3>
+                    <p class="font-label-sm text-xs text-on-surface-variant dark:text-outline mt-1">Select a protocol strategy below</p>
                 </div>
-                <div>
-                    <label class="block font-label-md text-label-md text-on-surface dark:text-inverse-on-surface mb-1">Target Duration/Details</label>
-                    <input class="w-full bg-surface/50 dark:bg-on-tertiary-container/30 border border-outline-variant dark:border-on-tertiary-container rounded-lg p-3 focus:border-primary focus:ring-1 focus:ring-primary text-on-surface dark:text-inverse-on-surface placeholder:text-outline" id="modal-habit-detail" placeholder="e.g. 3 minutes, deep breathing" type="text"/>
+                
+                <div class="flex flex-col gap-4">
+                    <!-- Option 1: BUILD -->
+                    <button onclick="setHabitCreationType('build')" class="w-full flex items-center gap-5 p-4 rounded-xl border border-outline-variant hover:border-secondary-fixed dark:hover:border-secondary bg-surface-container-low dark:bg-on-tertiary-container/20 text-left hover:shadow-lg active:scale-98 transition-all cursor-pointer">
+                        <div class="w-12 h-12 rounded-lg bg-green-100 dark:bg-green-950/40 text-green-600 dark:text-green-400 flex items-center justify-center shadow-sm">
+                            <span class="material-symbols-outlined text-[28px]">eco</span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h4 class="font-headline-md text-sm text-primary dark:text-inverse-primary font-bold">Build</h4>
+                            <p class="font-label-sm text-[11px] text-on-surface-variant dark:text-outline mt-0.5">Build a good habit, like flossing, reading, or exercising</p>
+                        </div>
+                    </button>
+
+                    <!-- Option 2: QUIT -->
+                    <button onclick="setHabitCreationType('quit')" class="w-full flex items-center gap-5 p-4 rounded-xl border border-outline-variant hover:border-error bg-surface-container-low dark:bg-on-tertiary-container/20 text-left hover:shadow-lg active:scale-98 transition-all cursor-pointer">
+                        <div class="w-12 h-12 rounded-lg bg-red-100 dark:bg-red-950/40 text-red-600 dark:text-red-400 flex items-center justify-center shadow-sm">
+                            <span class="material-symbols-outlined text-[28px]">local_fire_department</span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h4 class="font-headline-md text-sm text-primary dark:text-inverse-primary font-bold">Quit</h4>
+                            <p class="font-label-sm text-[11px] text-on-surface-variant dark:text-outline mt-0.5">Quit a bad habit, like smoking, drinking, or eating junk food</p>
+                        </div>
+                    </button>
                 </div>
-                <div>
-                    <label class="block font-label-md text-label-md text-on-surface dark:text-inverse-on-surface mb-1">Visual Symbol (Icon)</label>
-                    <select class="w-full bg-surface/50 dark:bg-on-tertiary-container/30 border border-outline-variant dark:border-on-tertiary-container rounded-lg p-3 focus:border-primary text-on-surface dark:text-inverse-on-surface" id="modal-habit-icon">
-                        <option value="self_improvement">🧘 Meditation (Self Improvement)</option>
-                        <option value="fitness_center">🏋️ Training (Fitness Center)</option>
-                        <option value="menu_book">📚 Learning (Menu Book)</option>
-                        <option value="ac_unit">❄️ Cold Exposure (AC Unit)</option>
-                        <option value="bolt">⚡ Energy (Bolt)</option>
-                        <option value="local_fire_department">🔥 Discipline (Fire)</option>
-                    </select>
+
+                <div class="flex justify-end pt-2 border-t border-outline-variant/30">
+                    <button class="py-2.5 px-5 border border-outline-variant rounded-lg font-label-md text-xs text-on-surface dark:text-outline hover:bg-surface-container-low transition-all cursor-pointer" onclick="closeHabitModal()">
+                        Cancel
+                    </button>
                 </div>
             </div>
 
-            <div class="flex gap-4 mt-2">
-                <button class="flex-1 py-3 px-4 border border-outline-variant dark:border-on-tertiary-container rounded-lg font-label-md text-label-md text-on-surface dark:text-inverse-on-surface hover:bg-surface-container dark:hover:bg-on-tertiary-container/30 transition-all" onclick="closeHabitModal()">
-                    Cancel
-                </button>
-                <button class="flex-1 py-3 px-4 bg-primary dark:bg-secondary text-on-primary dark:text-on-secondary rounded-lg font-label-md text-label-md hover:opacity-90 active:scale-95 transition-all" onclick="createNewHabitFromModal()">
-                    Establish Protocol
-                </button>
+            <!-- Step 2 View: Configuration Form -->
+            <div id="habit-modal-step2" class="hidden flex flex-col gap-5">
+                <div class="flex items-center gap-3 pb-3 border-b border-outline-variant/30">
+                    <button onclick="goBackToStep1()" class="p-1 rounded-full hover:bg-surface-container text-on-surface-variant dark:text-outline active:scale-95 transition-all cursor-pointer">
+                        <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+                    </button>
+                    <div>
+                        <h3 class="font-headline-md text-[18px] text-primary dark:text-inverse-primary font-bold" id="step2-modal-title">Configure Build Protocol</h3>
+                        <p class="font-label-sm text-[10px] text-on-surface-variant dark:text-outline tracking-wider uppercase font-bold" id="step2-modal-subtitle">Step 2 of 2</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block font-label-md text-label-md text-on-surface dark:text-inverse-on-surface mb-1">Habit Title</label>
+                        <input class="w-full bg-surface/50 dark:bg-on-tertiary-container/30 border border-outline-variant dark:border-on-tertiary-container rounded-lg p-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary text-on-surface dark:text-inverse-on-surface placeholder:text-outline" id="modal-habit-title" placeholder="e.g. Drink water" type="text"/>
+                    </div>
+                    
+                    <div>
+                        <label class="block font-label-md text-label-md text-on-surface dark:text-inverse-on-surface mb-1">Details / Affirmation</label>
+                        <input class="w-full bg-surface/50 dark:bg-on-tertiary-container/30 border border-outline-variant dark:border-on-tertiary-container rounded-lg p-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary text-on-surface dark:text-inverse-on-surface placeholder:text-outline" id="modal-habit-detail" placeholder="e.g. Hydrate consistently for cellular clarity" type="text"/>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block font-label-md text-label-md text-on-surface dark:text-inverse-on-surface mb-1">Visual Icon</label>
+                            <select class="w-full bg-surface/50 dark:bg-on-tertiary-container/30 border border-outline-variant dark:border-on-tertiary-container rounded-lg p-2.5 text-sm focus:border-primary text-on-surface dark:text-inverse-on-surface" id="modal-habit-icon">
+                                <option value="self_improvement">🧘 Meditation</option>
+                                <option value="fitness_center">🏋️ Training</option>
+                                <option value="menu_book">📚 Reading</option>
+                                <option value="ac_unit">❄️ Cold Exposure</option>
+                                <option value="bolt">⚡ Energy</option>
+                                <option value="shower">🚿 Hygiene</option>
+                                <option value="local_fire_department">🔥 Discipline</option>
+                                <option value="water_drop">💧 Hydration</option>
+                                <option value="coffee">☕ Coffee limit</option>
+                                <option value="directions_walk">🚶 Walking</option>
+                            </select>
+                        </div>
+                        
+                        <div id="modal-measurement-wrapper">
+                            <label class="block font-label-md text-label-md text-on-surface dark:text-inverse-on-surface mb-1">Type</label>
+                            <select onchange="handleMeasurementTypeChange()" class="w-full bg-surface/50 dark:bg-on-tertiary-container/30 border border-outline-variant dark:border-on-tertiary-container rounded-lg p-2.5 text-sm focus:border-primary text-on-surface dark:text-inverse-on-surface" id="modal-habit-measurement">
+                                <option value="yes_no">Simple Yes/No</option>
+                                <option value="countable">Countable Counter</option>
+                                <option value="timer">Timer-Based</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Subtype Option Fields -->
+                    <!-- Countable settings -->
+                    <div id="modal-field-countable" class="hidden grid grid-cols-2 gap-3 p-3 bg-surface-container-low dark:bg-on-tertiary-container/10 rounded-xl border border-outline-variant/30 animate-fade-in">
+                        <div>
+                            <label class="block font-label-md text-xs text-on-surface-variant dark:text-outline mb-1">Target Quantity</label>
+                            <input class="w-full bg-surface/50 dark:bg-on-tertiary-container/20 border border-outline-variant dark:border-on-tertiary-container rounded-lg p-2 text-sm focus:border-primary focus:ring-0 text-on-surface dark:text-inverse-on-surface" id="modal-countable-target" type="number" min="1" value="5"/>
+                        </div>
+                        <div>
+                            <label class="block font-label-md text-xs text-on-surface-variant dark:text-outline mb-1">Unit Label</label>
+                            <input class="w-full bg-surface/50 dark:bg-on-tertiary-container/20 border border-outline-variant dark:border-on-tertiary-container rounded-lg p-2 text-sm focus:border-primary focus:ring-0 text-on-surface dark:text-inverse-on-surface" id="modal-countable-unit" type="text" placeholder="e.g. Glasses, Coffees" value="Glasses"/>
+                        </div>
+                    </div>
+
+                    <!-- Timer settings -->
+                    <div id="modal-field-timer" class="hidden grid grid-cols-2 gap-3 p-3 bg-surface-container-low dark:bg-on-tertiary-container/10 rounded-xl border border-outline-variant/30 animate-fade-in">
+                        <div>
+                            <label class="block font-label-md text-xs text-on-surface-variant dark:text-outline mb-1">Hours Target</label>
+                            <input class="w-full bg-surface/50 dark:bg-on-tertiary-container/20 border border-outline-variant dark:border-on-tertiary-container rounded-lg p-2 text-sm focus:border-primary focus:ring-0 text-on-surface dark:text-inverse-on-surface" id="modal-timer-hours" type="number" min="0" max="23" value="0"/>
+                        </div>
+                        <div>
+                            <label class="block font-label-md text-xs text-on-surface-variant dark:text-outline mb-1">Minutes Target</label>
+                            <input class="w-full bg-surface/50 dark:bg-on-tertiary-container/20 border border-outline-variant dark:border-on-tertiary-container rounded-lg p-2 text-sm focus:border-primary focus:ring-0 text-on-surface dark:text-inverse-on-surface" id="modal-timer-minutes" type="number" min="0" max="59" value="30"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex gap-3 pt-3 border-t border-outline-variant/30">
+                    <button class="flex-1 py-2.5 px-4 border border-outline-variant rounded-lg font-label-md text-sm text-on-surface dark:text-outline hover:bg-surface-container-low transition-all cursor-pointer" onclick="closeHabitModal()">
+                        Cancel
+                    </button>
+                    <button class="flex-1 py-2.5 px-4 bg-primary dark:bg-secondary text-on-primary dark:text-on-secondary rounded-lg font-label-md text-sm hover:opacity-90 active:scale-95 transition-all cursor-pointer font-bold" onclick="createNewHabitFromModal()">
+                        Establish Protocol
+                    </button>
+                </div>
             </div>
+
         </div>
     </div>
 
@@ -1272,7 +1590,9 @@
             },
             settings: {
                 autoDarkMode: true
-            }
+            },
+            weeklyTodos: {},
+            weeklyTodoWeekKey: ""
         };
 
         // Seed default habits if localStorage is blank
@@ -1283,6 +1603,43 @@
             { id: "4", title: "Cold Exposure", detail: "3 minutes cold tub", icon: "ac_unit", streak: 42 },
             { id: "5", title: "Evening Review", detail: "Reflection & scheduling", icon: "menu_book", streak: 12 }
         ];
+
+        const DEFAULT_WEEKLY_TODOS = {
+            "Monday": [
+                { id: "wt-m1", text: "Morning cold plunge & deep breathing", completed: true },
+                { id: "wt-m2", text: "Plan high-impact weekly priorities", completed: true },
+                { id: "wt-m3", text: "Deep work block: Core strategy draft", completed: false },
+                { id: "wt-m4", text: "Gym lower-body focus", completed: false }
+            ],
+            "Tuesday": [
+                { id: "wt-t1", text: "Review key metrics & team dashboards", completed: true },
+                { id: "wt-t2", text: "Client alignment calls", completed: false },
+                { id: "wt-t3", text: "Read 15 pages in current book", completed: false }
+            ],
+            "Wednesday": [
+                { id: "wt-w1", text: "Mid-week progress review", completed: false },
+                { id: "wt-w2", text: "Deep work block: High-priority coding", completed: false },
+                { id: "wt-w3", text: "Zone 2 cardio training (45 mins)", completed: false }
+            ],
+            "Thursday": [
+                { id: "wt-th1", text: "Creative brainstorming session", completed: false },
+                { id: "wt-th2", text: "Outline next milestones checklist", completed: false },
+                { id: "wt-th3", text: "Fasting block (18 hours)", completed: false }
+            ],
+            "Friday": [
+                { id: "wt-f1", text: "Weekly reflections & learning logging", completed: false },
+                { id: "wt-f2", text: "File cleanup & workspace optimization", completed: false },
+                { id: "wt-f3", text: "Team retrospective & planning", completed: false }
+            ],
+            "Saturday": [
+                { id: "wt-sa1", text: "Nature trail hiking / Outdoor time", completed: false },
+                { id: "wt-sa2", text: "Deep recovery sauna & stretching", completed: false }
+            ],
+            "Sunday": [
+                { id: "wt-su1", text: "Meal prep for the upcoming week", completed: false },
+                { id: "wt-su2", text: "Prepare agenda and block calendars", completed: false }
+            ]
+        };
 
         const SEED_MOODS = [
             { date: "Oct 1", value: 3, note: "Felt steady, focused on cold plunge." },
@@ -1353,6 +1710,68 @@
             }
         });
 
+        // Selected Date and calendar offsets
+        let selectedDateString = getTodayString();
+        let calendarRangeOffset = 0;
+        let activeHabitCreationType = 'build';
+        let timerIntervals = {}; // habitId -> intervalId
+
+        // ISO-8601 week tracking calculation helper
+        function getYearWeekKey(date = new Date()) {
+            const tempDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+            // Set to nearest Thursday: current date + 4 - current day number (Sunday is 7)
+            tempDate.setUTCDate(tempDate.getUTCDate() + 4 - (tempDate.getUTCDay() || 7));
+            const yearStart = new Date(Date.UTC(tempDate.getUTCFullYear(), 0, 1));
+            const weekNo = Math.ceil((((tempDate - yearStart) / 86400000) + 1) / 7);
+            return `${tempDate.getUTCFullYear()}-W${String(weekNo).padStart(2, '0')}`;
+        }
+
+        // Automatic end-of-week rollover engine
+        function checkAndExecuteWeeklyRollover() {
+            const currentWeekKey = getYearWeekKey();
+            if (!state.weeklyTodoWeekKey) {
+                state.weeklyTodoWeekKey = currentWeekKey;
+                saveState();
+                return;
+            }
+            
+            if (state.weeklyTodoWeekKey !== currentWeekKey) {
+                console.log(`[Rollover] New week detected: ${state.weeklyTodoWeekKey} -> ${currentWeekKey}. Rolling over incomplete tasks forward...`);
+                
+                const incompleteTasks = [];
+                const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+                
+                // 1. Harvest incomplete to-dos across the entire past week
+                weekdays.forEach(day => {
+                    if (state.weeklyTodos && state.weeklyTodos[day]) {
+                        state.weeklyTodos[day].forEach(task => {
+                            if (!task.completed) {
+                                incompleteTasks.push({
+                                    id: "wt-rolled-" + Date.now() + "-" + Math.random().toString(36).substr(2, 5),
+                                    text: task.text.includes("(Rolled over)") ? task.text : task.text + " (Rolled over)",
+                                    completed: false
+                                });
+                            }
+                        });
+                    }
+                });
+                
+                // 2. Clear all days for a fresh weekly slate
+                weekdays.forEach(day => {
+                    state.weeklyTodos[day] = [];
+                });
+                
+                // 3. Deposit all rolled-over incomplete tasks into Monday of the new week!
+                state.weeklyTodos["Monday"] = incompleteTasks;
+                
+                // 4. Update state week key
+                state.weeklyTodoWeekKey = currentWeekKey;
+                saveState();
+                
+                console.log(`[Rollover] Successfully rolled forward ${incompleteTasks.length} incomplete tasks to Monday.`);
+            }
+        }
+
         // Load state from local storage or seed initial
         function loadState() {
             const raw = localStorage.getItem('quiet_discipline_state');
@@ -1372,19 +1791,63 @@
                     if (parsed.sobrietyLabel === undefined) {
                         parsed.sobrietyLabel = "of sobriety";
                     }
+                    
+                    // Backport habits subtypes
+                    if (parsed.habits) {
+                        parsed.habits.forEach(h => {
+                            if (h.type === undefined) h.type = 'build';
+                            if (h.measurement === undefined) h.measurement = 'yes_no';
+                        });
+                    }
+                    
+                    // Robust completions conversion from Array to Object map
+                    if (parsed.completions) {
+                        for (let date in parsed.completions) {
+                            if (Array.isArray(parsed.completions[date])) {
+                                const arr = parsed.completions[date];
+                                const obj = {};
+                                arr.forEach(id => {
+                                    obj[id] = true;
+                                });
+                                parsed.completions[date] = obj;
+                            }
+                        }
+                    } else {
+                        parsed.completions = {};
+                    }
+
+                    // Backport Weekly Planner Todos
+                    if (!parsed.weeklyTodos || Object.keys(parsed.weeklyTodos).length === 0) {
+                        parsed.weeklyTodos = JSON.parse(JSON.stringify(DEFAULT_WEEKLY_TODOS));
+                    }
+                    if (!parsed.weeklyTodoWeekKey) {
+                        parsed.weeklyTodoWeekKey = getYearWeekKey();
+                    }
+
                     state = parsed;
                 } catch (e) {
                     console.error("Error parsing stored state", e);
                 }
             } else {
                 state.habits = DEFAULT_HABITS;
+                // Backport default habits
+                state.habits.forEach(h => {
+                    h.type = 'build';
+                    h.measurement = 'yes_no';
+                });
                 state.moods = SEED_MOODS;
                 state.streakStartDate = Date.now() - (42 * 24 * 60 * 60 * 1000);
                 state.bestStreak = 119;
                 state.streakAttempts = 13;
                 state.sobrietyLabel = "of sobriety";
+                state.completions = {};
+                state.weeklyTodos = JSON.parse(JSON.stringify(DEFAULT_WEEKLY_TODOS));
+                state.weeklyTodoWeekKey = getYearWeekKey();
                 saveState();
             }
+
+            // Immediately check and process any end-of-week task rollover!
+            checkAndExecuteWeeklyRollover();
         }
 
         // Save state to local storage
@@ -1393,13 +1856,17 @@
         }
 
         // Synchronize and redraw all elements
-        function renderAll() {
+        function renderAll(isInitialLoad = false) {
+            renderCalendarStrip(isInitialLoad);
             renderDashboardChecklist();
             renderDashboardStreaks();
+            renderLogsAnalytics();
             renderHabitLogsGrid();
             renderHabitLogsCards();
             renderMoodAnalytics();
             renderGoalStreaksPage();
+            renderWeeklyMonthCalendar();
+            renderWeeklyTodos();
             updateTopBarStreakLabel();
         }
 
@@ -1417,28 +1884,653 @@
             labels.forEach(lbl => lbl.textContent = dateStr);
         }
 
-        // Toggle state completions
-        function toggleHabitCompletion(habitId) {
+        // --- NEW HABIT MODAL FLOW LOGIC ---
+        function setHabitCreationType(type) {
+            activeHabitCreationType = type;
+            document.getElementById('habit-modal-step1').classList.add('hidden');
+            document.getElementById('habit-modal-step2').classList.remove('hidden');
+            
+            const title = document.getElementById('step2-modal-title');
+            const subtitle = document.getElementById('step2-modal-subtitle');
+            const selectWrap = document.getElementById('modal-measurement-wrapper');
+            
+            if (type === 'build') {
+                title.textContent = "Configure Build Protocol";
+                subtitle.textContent = "STEP 2 OF 2 - BUILD HABIT";
+                selectWrap.classList.remove('hidden');
+            } else {
+                title.textContent = "Configure Quit Protocol";
+                subtitle.textContent = "STEP 2 OF 2 - QUIT HABIT";
+                selectWrap.classList.add('hidden');
+                document.getElementById('modal-habit-measurement').value = 'yes_no';
+                handleMeasurementTypeChange();
+            }
+        }
+
+        function goBackToStep1() {
+            document.getElementById('habit-modal-step1').classList.remove('hidden');
+            document.getElementById('habit-modal-step2').classList.add('hidden');
+        }
+
+        function handleMeasurementTypeChange() {
+            const val = document.getElementById('modal-habit-measurement').value;
+            const countableField = document.getElementById('modal-field-countable');
+            const timerField = document.getElementById('modal-field-timer');
+            
+            countableField.classList.add('hidden');
+            timerField.classList.add('hidden');
+            
+            if (val === 'countable') {
+                countableField.classList.remove('hidden');
+            } else if (val === 'timer') {
+                timerField.classList.remove('hidden');
+            }
+        }
+
+        // --- SCROLLABLE CALENDAR STRIP LOGIC ---
+        function renderCalendarStrip(shouldScrollIntoView = false) {
+            const strip = document.getElementById('calendar-days-strip');
+            if (!strip) return;
+            
+            // Capture current scroll offset so we can restore it exactly and avoid jumpy refreshes!
+            const oldScrollLeft = strip.scrollLeft;
+            
+            strip.innerHTML = '';
+            
+            const today = new Date();
+            const daysToRender = 31; // Render a wide 31-day window (approx. 1 month)
+            const startIndex = -15;  // Starts 15 days ago and goes 15 days into the future
+            
+            for (let i = 0; i < daysToRender; i++) {
+                const currentDay = new Date();
+                currentDay.setDate(today.getDate() + startIndex + i);
+                
+                const dateStr = `${currentDay.getFullYear()}-${String(currentDay.getMonth() + 1).padStart(2, '0')}-${String(currentDay.getDate()).padStart(2, '0')}`;
+                const isSelected = dateStr === selectedDateString;
+                const isToday = dateStr === getTodayString();
+                
+                const weekdayName = currentDay.toLocaleDateString('en-US', { weekday: 'short' });
+                const dayNum = currentDay.getDate();
+                
+                // Colored dots for completed habits
+                const completions = state.completions[dateStr] || {};
+                let dotsHTML = '';
+                let dotCount = 0;
+                for (let habitId in completions) {
+                    const val = completions[habitId];
+                    const hb = state.habits.find(h => h.id === habitId);
+                    if (hb && val) {
+                        const styleObj = getHabitPastelStyle(hb);
+                        dotsHTML += `<span class="w-1.5 h-1.5 rounded-full ${styleObj.dot}"></span>`;
+                        dotCount++;
+                        if (dotCount >= 5) break; // cap dots for neat layout
+                    }
+                }
+                
+                const dayCard = document.createElement('button');
+                dayCard.onclick = () => selectCalendarDate(dateStr);
+                dayCard.setAttribute('data-date', dateStr);
+                dayCard.style.cursor = 'pointer';
+                
+                if (isSelected) {
+                    dayCard.className = "flex flex-col items-center gap-1.5 p-3 rounded-full bg-[#fa5b32] text-white shadow-md active:scale-95 transition-all min-w-[52px] shrink-0 border border-[#fa5b32]";
+                } else if (isToday) {
+                    dayCard.className = "flex flex-col items-center gap-1.5 p-3 rounded-full border border-[#fa5b32]/40 bg-surface-container-low dark:bg-on-tertiary-container/30 text-on-surface dark:text-inverse-on-surface hover:border-[#fa5b32] active:scale-95 transition-all min-w-[52px] shrink-0";
+                } else {
+                    dayCard.className = "flex flex-col items-center gap-1.5 p-3 rounded-full border border-transparent text-on-surface-variant dark:text-outline hover:bg-surface-container-low active:scale-95 transition-all min-w-[52px] shrink-0";
+                }
+                
+                dayCard.innerHTML = `
+                    <span class="text-[10px] uppercase font-bold tracking-wider opacity-80">${weekdayName}</span>
+                    <span class="text-base font-extrabold leading-none ${isSelected ? 'text-white' : 'text-primary dark:text-inverse-primary'}">${dayNum}</span>
+                    <div class="flex gap-0.5 justify-center h-1.5 mt-0.5 overflow-hidden w-full max-w-[36px]">
+                        ${dotsHTML || '<span class="w-1 h-1 rounded-full bg-transparent"></span>'}
+                    </div>
+                `;
+                strip.appendChild(dayCard);
+            }
+            
+            if (shouldScrollIntoView) {
+                // Auto scroll selected date card into center of strip smoothly
+                setTimeout(() => {
+                    const selectedCard = strip.querySelector(`[data-date="${selectedDateString}"]`);
+                    if (selectedCard) {
+                        selectedCard.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                    }
+                    updateMonthLabelOnScroll();
+                }, 120);
+            } else {
+                // Instantly restore previous scroll offset to maintain view focus seamlessly
+                strip.scrollLeft = oldScrollLeft;
+                updateMonthLabelOnScroll();
+            }
+        }
+
+        function selectCalendarDate(dateStr) {
+            selectedDateString = dateStr;
+            const d = new Date(dateStr + "T00:00:00");
+            const options = { weekday: 'long', month: 'short', day: 'numeric' };
+            document.getElementById('checklist-date-title').textContent = "Protocols for " + d.toLocaleDateString('en-US', options);
+            renderCalendarStrip(true); // Center the newly clicked date card!
+            renderDashboardChecklist();
+        }
+
+        function jumpToToday() {
+            selectedDateString = getTodayString();
+            selectCalendarDate(selectedDateString);
+        }
+
+        function scrollCalendarStrip(direction) {
+            const strip = document.getElementById('calendar-days-strip');
+            if (strip) {
+                const scrollAmount = 210; // Scroll by about 3 items
+                strip.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+            }
+        }
+
+        // Live Month/Year text update based on scrolling view center
+        function updateMonthLabelOnScroll() {
+            const strip = document.getElementById('calendar-days-strip');
+            const label = document.getElementById('calendar-month-label');
+            if (!strip || !label) return;
+            
+            const stripRect = strip.getBoundingClientRect();
+            const centerPoint = stripRect.left + stripRect.width / 2;
+            
+            let closestCard = null;
+            let minDistance = Infinity;
+            
+            const cards = strip.querySelectorAll('[data-date]');
+            cards.forEach(card => {
+                const cardRect = card.getBoundingClientRect();
+                const cardCenter = cardRect.left + cardRect.width / 2;
+                const distance = Math.abs(cardCenter - centerPoint);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestCard = card;
+                }
+            });
+            
+            if (closestCard) {
+                const dateStr = closestCard.getAttribute('data-date');
+                const d = new Date(dateStr + "T00:00:00");
+                label.textContent = d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+            }
+        }
+
+        // Enable Drag to Scroll (Mouse swipes) for Desktop
+        function enableDragToScroll(element) {
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+
+            element.addEventListener('mousedown', (e) => {
+                isDown = true;
+                startX = e.pageX - element.offsetLeft;
+                scrollLeft = element.scrollLeft;
+                element.style.scrollBehavior = 'auto'; // Immediate scroll response on drag
+                element.style.cursor = 'grabbing';
+            });
+            element.addEventListener('mouseleave', () => {
+                isDown = false;
+                element.style.scrollBehavior = 'smooth';
+                element.style.cursor = 'grab';
+            });
+            element.addEventListener('mouseup', () => {
+                isDown = false;
+                element.style.scrollBehavior = 'smooth';
+                element.style.cursor = 'grab';
+            });
+            element.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - element.offsetLeft;
+                const walk = (x - startX) * 1.5;
+                element.scrollLeft = scrollLeft - walk;
+            });
+            element.style.cursor = 'grab';
+        }
+
+        // Mouse Wheel Horizontal scroll translation
+        function enableHorizontalWheelScroll(element) {
+            element.addEventListener('wheel', (e) => {
+                if (e.deltaY !== 0) {
+                    e.preventDefault();
+                    element.scrollLeft += e.deltaY * 0.9;
+                }
+            }, { passive: false });
+        }
+
+        // --- WEEKLY PLANNER CORE STATE & RENDER ENGINE ---
+        let weeklyCalendarDate = new Date(); // Track currently viewed calendar month
+
+        // Render the dark monthly calendar widget
+        function renderWeeklyMonthCalendar() {
+            const grid = document.getElementById('weekly-calendar-days-grid');
+            const label = document.getElementById('weekly-calendar-month-label');
+            if (!grid || !label) return;
+            
+            const year = weeklyCalendarDate.getFullYear();
+            const month = weeklyCalendarDate.getMonth();
+            
+            // Set calendar month label (e.g. December 2025)
+            label.textContent = weeklyCalendarDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+            
+            // First day of current month
+            const firstDay = new Date(year, month, 1);
+            // Calculate ISO offset: Monday is 0, Sunday is 6
+            let startOffset = firstDay.getDay() - 1;
+            if (startOffset < 0) startOffset = 6; // Sunday gets index 6
+            
+            // Total days in current month
+            const totalDays = new Date(year, month + 1, 0).getDate();
+            
+            grid.innerHTML = '';
+            
+            // Render empty cells for leading weekday alignment offsets
+            for (let s = 0; s < startOffset; s++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = "text-white/10 p-2 cursor-default select-none";
+                emptyCell.textContent = "";
+                grid.appendChild(emptyCell);
+            }
+            
             const todayStr = getTodayString();
+            
+            // Render day button cells
+            for (let day = 1; day <= totalDays; day++) {
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const isToday = dateStr === todayStr;
+                const isSelected = dateStr === selectedDateString;
+                
+                const dayBtn = document.createElement('button');
+                dayBtn.onclick = () => selectCalendarDateAndRedirect(dateStr);
+                dayBtn.textContent = day;
+                dayBtn.style.cursor = 'pointer';
+                
+                if (isSelected) {
+                    dayBtn.className = "p-2 rounded-lg font-extrabold bg-[#fa5b32] text-white shadow-md flex items-center justify-center border-0 w-full aspect-square";
+                } else if (isToday) {
+                    dayBtn.className = "p-2 rounded-lg font-bold border border-[#fa5b32]/60 text-[#fa5b32] hover:bg-[#fa5b32]/10 flex items-center justify-center bg-transparent w-full aspect-square";
+                } else {
+                    dayBtn.className = "p-2 rounded-lg font-semibold text-white/80 hover:bg-white/10 transition-colors flex items-center justify-center border-0 bg-transparent w-full aspect-square";
+                }
+                grid.appendChild(dayBtn);
+            }
+        }
+
+        // Previous/Next month transitions for monthly calendar
+        function changeWeeklyMonth(direction) {
+            weeklyCalendarDate.setMonth(weeklyCalendarDate.getMonth() + direction);
+            renderWeeklyMonthCalendar();
+        }
+
+        // Cross-tab alignment link: Click calendar cell to focus checklist date & redirect!
+        function selectCalendarDateAndRedirect(dateStr) {
+            selectedDateString = dateStr;
+            selectCalendarDate(dateStr);
+            switchTab('view-dashboard');
+        }
+
+        // Main Weekly Planner columns and analytics card renderer
+        function renderWeeklyTodos() {
+            const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+            
+            let totalTasks = 0;
+            let completedTasks = 0;
+            
+            weekdays.forEach(day => {
+                const listContainer = document.getElementById(`weekly-list-${day}`);
+                const countBadge = document.getElementById(`weekly-count-${day}`);
+                if (!listContainer) return;
+                
+                listContainer.innerHTML = '';
+                const todos = state.weeklyTodos[day] || [];
+                
+                // Set task count badge text
+                if (countBadge) {
+                    countBadge.textContent = todos.length;
+                }
+                
+                if (todos.length === 0) {
+                    listContainer.innerHTML = `
+                        <div class="text-[10px] text-center py-8 text-on-surface-variant/40 dark:text-outline/40 font-medium select-none">
+                            No tasks.
+                        </div>`;
+                } else {
+                    todos.forEach(task => {
+                        totalTasks++;
+                        if (task.completed) completedTasks++;
+                        
+                        const isDone = task.completed;
+                        const taskItem = document.createElement('div');
+                        taskItem.className = `group flex items-start justify-between p-2 rounded-lg transition-all duration-200 gap-1.5 ${
+                            isDone 
+                            ? 'bg-surface-container-low/40 dark:bg-black/10 text-on-surface-variant/40 dark:text-outline/40' 
+                            : 'bg-surface hover:bg-surface-container-low dark:bg-black/20 dark:hover:bg-black/35 text-on-surface dark:text-white'
+                        } border border-outline-variant/10 shadow-sm`;
+                        
+                        taskItem.innerHTML = `
+                            <button onclick="toggleWeeklyTodo('${day}', '${task.id}')" class="w-4.5 h-4.5 rounded border ${
+                                isDone 
+                                ? 'bg-[#fa5b32] border-[#fa5b32] text-white' 
+                                : 'border-outline-variant dark:border-outline/40 hover:border-[#fa5b32] bg-transparent'
+                            } flex items-center justify-center transition-all cursor-pointer mt-0.5 shrink-0">
+                                ${isDone ? '<span class="material-symbols-outlined text-[11px] font-extrabold">check</span>' : ''}
+                            </button>
+                            <span class="text-xs font-semibold leading-normal flex-1 break-words select-none ${isDone ? 'line-through opacity-50' : ''}">
+                                ${task.text}
+                            </span>
+                            <button onclick="deleteWeeklyTodo('${day}', '${task.id}')" class="text-error/60 hover:text-error transition-all p-0.5 border-0 bg-transparent flex items-center justify-center cursor-pointer shrink-0 ml-1">
+                                <span class="material-symbols-outlined text-[13px]">delete</span>
+                            </button>
+                        `;
+                        listContainer.appendChild(taskItem);
+                    });
+                }
+            });
+            
+            // Calculate and render progress statistics
+            const percentLabel = document.getElementById('weekly-todo-progress-percent');
+            const ratioLabel = document.getElementById('weekly-todo-progress-ratio');
+            const progressCircle = document.getElementById('weekly-todo-progress-circle');
+            
+            const ratioPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+            
+            if (percentLabel) percentLabel.textContent = `${ratioPercent}%`;
+            if (ratioLabel) ratioLabel.textContent = `${completedTasks}/${totalTasks} Done`;
+            
+            if (progressCircle) {
+                // Circumference formula: 2 * Math.PI * r (r = 48) => 301.6px
+                const circumference = 301.6;
+                const progressRatio = totalTasks > 0 ? (completedTasks / totalTasks) : 0;
+                const strokeOffset = circumference - (progressRatio * circumference);
+                progressCircle.setAttribute('stroke-dashoffset', strokeOffset);
+            }
+        }
+
+        // Click button listener to add task
+        function clickAddWeeklyTodo(day) {
+            const input = document.getElementById(`weekly-input-${day}`);
+            if (input) {
+                const text = input.value.trim();
+                if (text) {
+                    addWeeklyTodo(day, text);
+                    input.value = ''; // Clear input field
+                }
+            }
+        }
+
+        // Keydown listener on input box
+        function handleWeeklyTodoInput(event, day) {
+            if (event.key === 'Enter') {
+                const text = event.target.value.trim();
+                if (text) {
+                    addWeeklyTodo(day, text);
+                    event.target.value = ''; // Clear input field
+                }
+            }
+        }
+
+        // Add task to a specific day column
+        function addWeeklyTodo(day, text) {
+            if (!state.weeklyTodos[day]) {
+                state.weeklyTodos[day] = [];
+            }
+            
+            const newTodo = {
+                id: "wt-" + Date.now() + "-" + Math.random().toString(36).substr(2, 5),
+                text: text,
+                completed: false
+            };
+            
+            state.weeklyTodos[day].push(newTodo);
+            saveState();
+            renderWeeklyTodos();
+            playEffectiveAudioFeedback('plus');
+        }
+
+        // Toggle task completion status
+        function toggleWeeklyTodo(day, id) {
+            if (!state.weeklyTodos[day]) return;
+            const task = state.weeklyTodos[day].find(t => t.id === id);
+            if (task) {
+                task.completed = !task.completed;
+                if (task.completed) {
+                    playEffectiveAudioFeedback('complete');
+                } else {
+                    playEffectiveAudioFeedback('minus');
+                }
+                saveState();
+                renderWeeklyTodos();
+            }
+        }
+
+        // Remove task from checklist
+        function deleteWeeklyTodo(day, id) {
+            if (!state.weeklyTodos[day]) return;
+            state.weeklyTodos[day] = state.weeklyTodos[day].filter(t => t.id !== id);
+            saveState();
+            renderWeeklyTodos();
+            playEffectiveAudioFeedback('pause'); // soft confirmation sound
+        }
+
+        // Clear only the checked/completed tasks in the entire week
+        function clearCompletedWeeklyTodos() {
+            const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+            let clearedCount = 0;
+            
+            weekdays.forEach(day => {
+                if (state.weeklyTodos[day]) {
+                    const originalLength = state.weeklyTodos[day].length;
+                    state.weeklyTodos[day] = state.weeklyTodos[day].filter(t => !t.completed);
+                    clearedCount += (originalLength - state.weeklyTodos[day].length);
+                }
+            });
+            
+            if (clearedCount > 0) {
+                saveState();
+                renderWeeklyTodos();
+                playEffectiveAudioFeedback('pause');
+            }
+        }
+
+        // Wipe the entire week for a clean restart
+        function resetWeeklyTodos() {
+            if (confirm("Reset Planner? This will permanently wipe all general tasks for this week.")) {
+                const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+                weekdays.forEach(day => {
+                    state.weeklyTodos[day] = [];
+                });
+                saveState();
+                renderWeeklyTodos();
+                playEffectiveAudioFeedback('pause');
+            }
+        }
+
+        // --- MAPPING HARMONIOUS PASTEL THEMES ---
+        function getHabitPastelStyle(habit) {
+            const icon = habit.icon || 'bolt';
+            const themes = {
+                self_improvement: { bg: 'bg-[#eefae6] dark:bg-[#152312]', text: 'text-green-800 dark:text-green-300', dot: 'bg-green-500', avatar: 'bg-green-500 text-white' },
+                fitness_center: { bg: 'bg-[#fae6f4] dark:bg-[#251221]', text: 'text-pink-800 dark:text-pink-300', dot: 'bg-pink-500', avatar: 'bg-pink-500 text-white' },
+                menu_book: { bg: 'bg-[#f4e6fa] dark:bg-[#201225]', text: 'text-purple-800 dark:text-purple-300', dot: 'bg-purple-500', avatar: 'bg-purple-500 text-white' },
+                ac_unit: { bg: 'bg-[#e6f4fa] dark:bg-[#122025]', text: 'text-blue-800 dark:text-blue-300', dot: 'bg-blue-500', avatar: 'bg-blue-500 text-white' },
+                bolt: { bg: 'bg-[#fafae0] dark:bg-[#232412]', text: 'text-yellow-800 dark:text-yellow-300', dot: 'bg-yellow-500', avatar: 'bg-yellow-500 text-white' },
+                shower: { bg: 'bg-[#e6fcf5] dark:bg-[#102420]', text: 'text-teal-800 dark:text-teal-300', dot: 'bg-teal-500', avatar: 'bg-teal-500 text-white' },
+                water_drop: { bg: 'bg-[#e6f4fa] dark:bg-[#122025]', text: 'text-blue-800 dark:text-blue-300', dot: 'bg-blue-500', avatar: 'bg-blue-500 text-white' },
+                coffee: { bg: 'bg-[#faeae6] dark:bg-[#251512]', text: 'text-orange-800 dark:text-orange-300', dot: 'bg-orange-500', avatar: 'bg-orange-500 text-white' },
+                local_fire_department: { bg: 'bg-[#faeae6] dark:bg-[#251212]', text: 'text-red-800 dark:text-red-300', dot: 'bg-red-500', avatar: 'bg-red-500 text-white' },
+                directions_walk: { bg: 'bg-[#f0f4f8] dark:bg-[#151a23]', text: 'text-slate-800 dark:text-slate-300', dot: 'bg-slate-500', avatar: 'bg-slate-500 text-white' }
+            };
+            return themes[icon] || { bg: 'bg-surface dark:bg-on-tertiary-container/10', text: 'text-on-surface dark:text-inverse-on-surface', dot: 'bg-secondary', avatar: 'bg-secondary text-on-secondary' };
+        }
+
+        // Toggle state completions or subtypes
+        function toggleHabitCompletion(habitId) {
+            const todayStr = selectedDateString;
             if (!state.completions[todayStr]) {
-                state.completions[todayStr] = [];
+                state.completions[todayStr] = {};
             }
 
-            const idx = state.completions[todayStr].indexOf(habitId);
-            if (idx > -1) {
-                // Remove completion
-                state.completions[todayStr].splice(idx, 1);
-                // Adjust individual habit streak tracker
-                const hb = state.habits.find(h => h.id === habitId);
-                if (hb && hb.streak > 0) hb.streak--;
+            const hb = state.habits.find(h => h.id === habitId);
+            if (!hb) return;
+
+            if (hb.measurement === 'countable' || hb.measurement === 'timer') {
+                // Done on card controls instead, ignore simple toggle click
+                return;
+            }
+
+            const current = state.completions[todayStr][habitId];
+            if (current) {
+                delete state.completions[todayStr][habitId];
+                if (hb.streak > 0) hb.streak--;
+                playEffectiveAudioFeedback('minus');
             } else {
-                // Add completion
-                state.completions[todayStr].push(habitId);
-                const hb = state.habits.find(h => h.id === habitId);
-                if (hb) hb.streak++;
+                state.completions[todayStr][habitId] = true;
+                hb.streak++;
+                playEffectiveAudioFeedback('complete');
             }
             saveState();
             renderAll();
+        }
+
+        // Countable increments
+        function incrementCountableHabit(habitId, amount) {
+            const todayStr = selectedDateString;
+            if (!state.completions[todayStr]) {
+                state.completions[todayStr] = {};
+            }
+            
+            const current = state.completions[todayStr][habitId] || 0;
+            const hb = state.habits.find(h => h.id === habitId);
+            if (!hb) return;
+            
+            const target = hb.targetQty || 5;
+            let newVal = current + amount;
+            if (newVal < 0) newVal = 0;
+            
+            state.completions[todayStr][habitId] = newVal;
+            
+            if (newVal >= target && current < target) {
+                playEffectiveAudioFeedback('complete');
+            } else if (amount > 0) {
+                playEffectiveAudioFeedback('plus');
+            } else {
+                playEffectiveAudioFeedback('minus');
+            }
+            
+            saveState();
+            renderAll();
+        }
+
+        // Timer controller Play/Pause
+        function toggleTimerHabit(habitId) {
+            const todayStr = selectedDateString;
+            if (!state.completions[todayStr]) {
+                state.completions[todayStr] = {};
+            }
+            
+            if (timerIntervals[habitId]) {
+                // Pause timer
+                clearInterval(timerIntervals[habitId]);
+                delete timerIntervals[habitId];
+                playEffectiveAudioFeedback('pause');
+                saveState();
+                renderAll();
+            } else {
+                // Play timer
+                playEffectiveAudioFeedback('play');
+                
+                timerIntervals[habitId] = setInterval(() => {
+                    if (selectedDateString !== todayStr) {
+                        // date changed, clear timer automatically
+                        clearInterval(timerIntervals[habitId]);
+                        delete timerIntervals[habitId];
+                        return;
+                    }
+                    
+                    if (!state.completions[todayStr][habitId]) {
+                        state.completions[todayStr][habitId] = 0;
+                    }
+                    state.completions[todayStr][habitId]++;
+                    
+                    // Live update elapsed text inside checklist to avoid flashing redraws
+                    const elapsed = state.completions[todayStr][habitId];
+                    const elapsedEl = document.getElementById(`timer-elapsed-${habitId}`);
+                    if (elapsedEl) elapsedEl.textContent = formatTimerDuration(elapsed);
+                    
+                    const hb = state.habits.find(h => h.id === habitId);
+                    if (hb && elapsed === (hb.targetTime * 60)) {
+                        playEffectiveAudioFeedback('complete');
+                    }
+                }, 1000);
+                
+                renderAll();
+            }
+        }
+
+        function formatTimerDuration(totalSeconds) {
+            const hrs = Math.floor(totalSeconds / 3600);
+            const mins = Math.floor((totalSeconds % 3600) / 60);
+            const secs = totalSeconds % 60;
+            return `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+
+        function formatMinutesToHoursMins(totalMinutes) {
+            const hrs = Math.floor(totalMinutes / 60);
+            const mins = totalMinutes % 60;
+            return `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:00`;
+        }
+
+        // Web Audio API Synthesis for direct tactile feedback ticks
+        function playEffectiveAudioFeedback(type) {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                if (type === 'play') {
+                    osc.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
+                    osc.frequency.exponentialRampToValueAtTime(783.99, ctx.currentTime + 0.15); // G5
+                    gain.gain.setValueAtTime(0.08, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.005, ctx.currentTime + 0.15);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.15);
+                } else if (type === 'pause') {
+                    osc.frequency.setValueAtTime(783.99, ctx.currentTime); // G5
+                    osc.frequency.exponentialRampToValueAtTime(523.25, ctx.currentTime + 0.15); // C5
+                    gain.gain.setValueAtTime(0.08, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.005, ctx.currentTime + 0.15);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.15);
+                } else if (type === 'plus') {
+                    osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
+                    gain.gain.setValueAtTime(0.05, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.005, ctx.currentTime + 0.1);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.1);
+                } else if (type === 'minus') {
+                    osc.frequency.setValueAtTime(349.23, ctx.currentTime); // F4
+                    gain.gain.setValueAtTime(0.05, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.005, ctx.currentTime + 0.1);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.1);
+                } else if (type === 'complete') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(659.25, ctx.currentTime); // E5
+                    osc.frequency.exponentialRampToValueAtTime(1046.50, ctx.currentTime + 0.3); // C6
+                    gain.gain.setValueAtTime(0.12, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.3);
+                }
+            } catch (e) {
+                console.warn("Web audio playback bypassed due to browser user restrictions.");
+            }
         }
 
         // RENDER 1: Dashboard Protocols Checklist
@@ -1447,8 +2539,8 @@
             const statsLabel = document.getElementById('completion-stats-label');
             container.innerHTML = '';
 
-            const todayStr = getTodayString();
-            const completed = state.completions[todayStr] || [];
+            const todayStr = selectedDateString;
+            const completions = state.completions[todayStr] || {};
 
             if (state.habits.length === 0) {
                 container.innerHTML = `
@@ -1459,43 +2551,94 @@
                 return;
             }
 
+            let completedCount = 0;
+
             state.habits.forEach(hb => {
-                const isDone = completed.includes(hb.id);
+                const styleObj = getHabitPastelStyle(hb);
+                const firstLetter = hb.title.charAt(0).toUpperCase() || 'H';
+                
                 const item = document.createElement('div');
-                item.className = `group flex items-center justify-between p-stack-md border rounded-lg transition-all cursor-pointer ${
-                    isDone 
-                    ? 'border-secondary-container bg-secondary-container/5 dark:bg-on-tertiary-container/30' 
-                    : 'border-outline-variant dark:border-on-tertiary-container bg-surface dark:bg-on-tertiary-container/10 hover:border-surface-tint'
-                }`;
-                item.onclick = () => toggleHabitCompletion(hb.id);
+                item.className = `${styleObj.bg} ${styleObj.text} flex items-center justify-between p-4 rounded-full border border-outline-variant/30 hover:shadow-md transition-all animate-fade-in gap-3`;
+                
+                let isDone = false;
+                let detailsLabelHTML = '';
+                let actionBtnHTML = '';
+
+                // Handle Subtype Rendering and Actions
+                if (hb.measurement === 'countable') {
+                    const currentQty = completions[hb.id] || 0;
+                    const targetQty = hb.targetQty || 5;
+                    isDone = currentQty >= targetQty;
+                    if (isDone) completedCount++;
+                    
+                    detailsLabelHTML = `<p class="font-body-md text-xs font-semibold opacity-85">${currentQty}/${targetQty} ${hb.unit || 'Glasses'}</p>`;
+                    
+                    actionBtnHTML = `
+                        <div class="flex items-center gap-1 bg-white/40 dark:bg-black/25 rounded-full p-1 border border-outline-variant/20">
+                            <button onclick="incrementCountableHabit('${hb.id}', -1)" class="w-6 h-6 rounded-full flex items-center justify-center hover:bg-black/10 dark:hover:bg-white/10 transition-colors font-bold text-sm cursor-pointer">-</button>
+                            <button onclick="incrementCountableHabit('${hb.id}', 1)" class="w-6 h-6 rounded-full flex items-center justify-center hover:bg-black/10 dark:hover:bg-white/10 transition-colors font-bold text-sm cursor-pointer">+</button>
+                        </div>
+                    `;
+                } else if (hb.measurement === 'timer') {
+                    const elapsedSeconds = completions[hb.id] || 0;
+                    const targetSeconds = (hb.targetTime || 30) * 60;
+                    isDone = elapsedSeconds >= targetSeconds;
+                    if (isDone) completedCount++;
+                    
+                    const isTimerRunning = !!timerIntervals[hb.id];
+                    const elapsedStr = formatTimerDuration(elapsedSeconds);
+                    const targetStr = formatMinutesToHoursMins(hb.targetTime || 30);
+                    
+                    detailsLabelHTML = `<p class="font-body-md text-xs font-semibold opacity-85" id="timer-elapsed-${hb.id}">${elapsedStr}</p><p class="text-[9px] opacity-75">Target: ${targetStr}</p>`;
+                    
+                    actionBtnHTML = `
+                        <button onclick="toggleTimerHabit('${hb.id}')" class="w-8 h-8 rounded-full flex items-center justify-center bg-white/60 dark:bg-black/40 hover:bg-white/80 dark:hover:bg-black/60 transition-all cursor-pointer">
+                            <span class="material-symbols-outlined text-[18px]">${isTimerRunning ? 'pause' : 'play_arrow'}</span>
+                        </button>
+                    `;
+                } else {
+                    // Standard Yes/No
+                    isDone = !!completions[hb.id];
+                    if (isDone) completedCount++;
+                    
+                    detailsLabelHTML = `<p class="font-body-md text-xs font-semibold opacity-85">${isDone ? 'Completed' : 'Not completed'}</p>`;
+                    
+                    actionBtnHTML = `
+                        <button onclick="toggleHabitCompletion('${hb.id}')" class="w-7 h-7 rounded-full border-2 ${
+                            isDone 
+                            ? 'bg-secondary border-secondary text-on-secondary' 
+                            : 'border-outline-variant dark:border-on-tertiary-container hover:border-primary dark:hover:border-inverse-primary'
+                        } flex items-center justify-center transition-all cursor-pointer">
+                            ${isDone ? '<span class="material-symbols-outlined text-[15px] font-extrabold">check</span>' : ''}
+                        </button>
+                    `;
+                }
 
                 item.innerHTML = `
-                    <div class="flex items-center gap-stack-md">
-                        <button class="w-6 h-6 rounded-full flex items-center justify-center transition-all ${
-                            isDone 
-                            ? 'bg-secondary text-on-secondary' 
-                            : 'border-2 border-outline-variant dark:border-on-tertiary-container group-hover:border-primary dark:group-hover:border-inverse-primary'
-                        }">
-                            ${isDone ? '<span class="material-symbols-outlined text-[16px]">check</span>' : ''}
-                        </button>
-                        <div>
-                            <p class="font-body-md text-body-md text-on-surface dark:text-inverse-on-surface font-medium ${isDone ? 'line-through opacity-60' : ''}">${hb.title}</p>
-                            <p class="font-label-sm text-label-sm text-on-surface-variant dark:text-outline opacity-70">${hb.detail}</p>
+                    <div class="flex items-center gap-4 flex-1 min-w-0">
+                        <!-- Prominent avatar letter -->
+                        <div class="w-10 h-10 rounded-full bg-white dark:bg-black/20 flex items-center justify-center font-extrabold text-sm shadow-inner shrink-0">
+                            ${firstLetter}
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="font-headline-md text-sm font-bold truncate ${isDone ? 'line-through opacity-60' : ''}">${hb.title}</p>
+                            <div class="flex items-center gap-2 mt-0.5">
+                                ${detailsLabelHTML}
+                            </div>
                         </div>
                     </div>
-                    <span class="font-label-sm text-label-sm font-bold transition-all ${isDone ? 'text-secondary opacity-100' : 'text-on-surface-variant dark:text-outline opacity-0 group-hover:opacity-100'}">
-                        ${isDone ? 'Checked' : 'Log Daily'}
-                    </span>
+                    ${actionBtnHTML}
                 `;
                 container.appendChild(item);
             });
 
-            statsLabel.textContent = `${completed.length} / ${state.habits.length} Completed`;
+            statsLabel.textContent = `${completedCount} / ${state.habits.length} Completed`;
         }
 
         // RENDER 2: Dashboard Streaks Side-Widget
         function renderDashboardStreaks() {
             const container = document.getElementById('dashboard-streaks-widget');
+            if (!container) return;
             container.innerHTML = '';
 
             const sublist = state.habits.slice(0, 3);
@@ -1508,8 +2651,7 @@
                 const row = document.createElement('div');
                 row.className = 'space-y-stack-sm';
                 
-                // Calculate percentage
-                const val = hb.streak;
+                const val = hb.streak || 0;
                 const width = Math.min((val / 30) * 100, 100);
 
                 row.innerHTML = `
@@ -1530,6 +2672,7 @@
         // RENDER 3: Habit Logs Weekly Grid Table
         function renderHabitLogsGrid() {
             const tbody = document.getElementById('weekly-grid-body');
+            if (!tbody) return;
             tbody.innerHTML = '';
 
             if (state.habits.length === 0) {
@@ -1545,25 +2688,30 @@
                 tr.className = 'group hover:bg-surface-container-lowest dark:hover:bg-on-tertiary-container/30 transition-colors';
 
                 let weeklyButtons = '';
-                // Render Monday to Sunday checks (mocking previous completed logs based on state values)
-                for (let i = 0; i < 7; i++) {
-                    const isCompletedMock = (hb.streak > i);
+                for (let i = 6; i >= 0; i--) {
+                    const d = new Date();
+                    d.setDate(d.getDate() - i);
+                    const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+                    
+                    const comps = state.completions[dateStr] || {};
+                    const isCompleted = !!comps[hb.id];
+                    
                     weeklyButtons += `
                         <td class="text-center py-stack-md">
                             <button onclick="toggleHabitCompletion('${hb.id}')" class="w-6 h-6 rounded-full flex items-center justify-center mx-auto transition-all ${
-                                isCompletedMock 
+                                isCompleted 
                                 ? 'bg-secondary text-on-secondary border border-secondary hover:scale-115' 
                                 : 'bg-surface dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container hover:border-primary dark:hover:border-inverse-primary'
                             }">
-                                ${isCompletedMock ? '<span class="material-symbols-outlined text-[12px]">check</span>' : ''}
+                                ${isCompleted ? '<span class="material-symbols-outlined text-[12px]">check</span>' : ''}
                             </button>
                         </td>`;
                 }
 
                 tr.innerHTML = `
                     <td class="py-stack-md flex items-center gap-stack-md text-on-surface dark:text-inverse-on-surface font-medium pl-2">
-                        <div class="w-8 h-8 rounded bg-surface-container dark:bg-on-tertiary-container flex items-center justify-center text-on-surface-variant dark:text-outline">
-                            <span class="material-symbols-outlined text-[18px]">${hb.icon}</span>
+                        <div class="w-8 h-8 rounded bg-surface-container dark:bg-on-tertiary-container flex items-center justify-center text-on-surface-variant dark:text-outline font-bold text-xs">
+                            ${hb.title.charAt(0).toUpperCase()}
                         </div>
                         ${hb.title}
                     </td>
@@ -1571,6 +2719,147 @@
                 `;
                 tbody.appendChild(tr);
             });
+        }
+
+        // --- RENDER LOGS ANALYTICS CARD (Wreaths, Strength bars, Curve) ---
+        function calculateCurrentStreak() {
+            let streak = 0;
+            let checkDate = new Date();
+            while (true) {
+                const dateStr = `${checkDate.getFullYear()}-${String(checkDate.getMonth() + 1).padStart(2, '0')}-${String(checkDate.getDate()).padStart(2, '0')}`;
+                const comps = state.completions[dateStr] || {};
+                let completedCount = 0;
+                for (let id in comps) {
+                    if (comps[id]) completedCount++;
+                }
+                
+                if (state.habits.length > 0 && completedCount >= Math.ceil(state.habits.length / 2)) {
+                    streak++;
+                    checkDate.setDate(checkDate.getDate() - 1);
+                } else {
+                    if (streak === 0 && dateStr === getTodayString()) {
+                        checkDate.setDate(checkDate.getDate() - 1);
+                        continue;
+                    }
+                    break;
+                }
+            }
+            return streak;
+        }
+
+        function renderLogsAnalytics() {
+            const currentStreak = calculateCurrentStreak();
+            if (currentStreak > (state.bestStreak || 0)) {
+                state.bestStreak = currentStreak;
+                saveState();
+            }
+
+            const currentStreakEl = document.getElementById('analytics-current-streak');
+            const bestStreakEl = document.getElementById('analytics-best-streak');
+            if (currentStreakEl) currentStreakEl.textContent = currentStreak;
+            if (bestStreakEl) bestStreakEl.textContent = state.bestStreak || 0;
+
+            // Habit strength over past 7 days
+            let totalCompletions7Days = 0;
+            for (let i = 0; i < 7; i++) {
+                const d = new Date();
+                d.setDate(d.getDate() - i);
+                const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+                const comps = state.completions[dateStr] || {};
+                for (let id in comps) {
+                    if (comps[id]) totalCompletions7Days++;
+                }
+            }
+            const maxComps = Math.max(state.habits.length * 7, 1);
+            const strength = Math.round((totalCompletions7Days / maxComps) * 100);
+            
+            const weakPercentEl = document.getElementById('strength-weak-percent');
+            const weakBarEl = document.getElementById('strength-weak-bar');
+            if (weakPercentEl) weakPercentEl.textContent = `${strength}%`;
+            if (weakBarEl) weakBarEl.style.width = `${strength}%`;
+
+            // Completion Rate today
+            const todayStr = getTodayString();
+            const compsToday = state.completions[todayStr] || {};
+            let compsCount = 0;
+            for (let id in compsToday) {
+                if (compsToday[id]) compsCount++;
+            }
+            const maxToday = Math.max(state.habits.length, 1);
+            const completionRate = Math.round((compsCount / maxToday) * 100);
+
+            const compPercentEl = document.getElementById('strength-completion-percent');
+            const compBarEl = document.getElementById('strength-completion-bar');
+            if (compPercentEl) compPercentEl.textContent = `${completionRate}%`;
+            if (compBarEl) compBarEl.style.width = `${completionRate}%`;
+
+            drawHabitLogsStrengthChart();
+        }
+
+        function drawHabitLogsStrengthChart() {
+            const svg = document.getElementById('habit-logs-svg-chart');
+            if (!svg) return;
+            svg.innerHTML = '';
+            
+            const past7Days = [];
+            for (let i = 6; i >= 0; i--) {
+                const d = new Date();
+                d.setDate(d.getDate() - i);
+                const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+                
+                const comps = state.completions[dateStr] || {};
+                let completed = 0;
+                for (let id in comps) {
+                    if (comps[id]) completed++;
+                }
+                const rate = state.habits.length > 0 ? (completed / state.habits.length) * 100 : 0;
+                past7Days.push({ dateStr, rate });
+            }
+            
+            const coords = past7Days.map((pt, idx) => {
+                const x = (idx / 6) * 100;
+                const y = 85 - (pt.rate / 100) * 70;
+                return { x, y };
+            });
+            
+            let dStr = `M ${coords[0].x},${coords[0].y}`;
+            for (let i = 1; i < coords.length; i++) {
+                const cpX1 = coords[i-1].x + 8;
+                const cpY1 = coords[i-1].y;
+                const cpX2 = coords[i].x - 8;
+                const cpY2 = coords[i].y;
+                dStr += ` C ${cpX1},${cpY1} ${cpX2},${cpY2} ${coords[i].x},${coords[i].y}`;
+            }
+            
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', dStr);
+            path.setAttribute('fill', 'none');
+            path.setAttribute('stroke', '#a855f7');
+            path.setAttribute('stroke-width', '3');
+            path.setAttribute('stroke-linecap', 'round');
+            path.setAttribute('stroke-linejoin', 'round');
+            svg.appendChild(path);
+            
+            coords.forEach(pt => {
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('cx', pt.x);
+                circle.setAttribute('cy', pt.y);
+                circle.setAttribute('r', '3');
+                circle.setAttribute('fill', '#ffffff');
+                circle.setAttribute('stroke', '#8b5cf6');
+                circle.setAttribute('stroke-width', '2');
+                svg.appendChild(circle);
+            });
+            
+            const startD = new Date();
+            startD.setDate(startD.getDate() - 6);
+            document.getElementById('chart-start-date').textContent = startD.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+            
+            const midD = new Date();
+            midD.setDate(midD.getDate() - 3);
+            document.getElementById('chart-mid-date').textContent = midD.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+            
+            document.getElementById('chart-end-date').textContent = "Today";
         }
 
         // RENDER 4: Habit Cards list with CRUD support
@@ -1627,9 +2916,9 @@
             container.appendChild(addCard);
         }
 
-        // RENDER 5: Mood Analytics Logs & Dynamic SVG
         function renderMoodAnalytics() {
             const container = document.getElementById('mood-logs-container');
+            if (!container) return;
             container.innerHTML = '';
 
             if (state.moods.length === 0) {
@@ -1671,6 +2960,7 @@
 
         function redrawMoodSVGChart() {
             const svg = document.getElementById('mood-svg-chart');
+            if (!svg) return;
             svg.innerHTML = '';
 
             const points = state.moods.slice(-5); // take last 5 entries
@@ -1841,6 +3131,7 @@
         let selectedMoodValue = 3; // default neutral
         function initializeMoodSelectorButtons() {
             const btnGroup = document.querySelectorAll('.mood-select-btn');
+            if (btnGroup.length === 0) return;
             btnGroup.forEach(btn => {
                 btn.addEventListener('click', () => {
                     btnGroup.forEach(b => {
@@ -2132,8 +3423,8 @@
             const titles = {
                 'view-dashboard': 'Day at a Glance',
                 'view-habit-logs': 'Habit Logs',
-                'view-mood-tracker': 'Clarity Log',
                 'view-goal-streaks': 'Mastery Streak',
+                'view-weekly-tasks': 'Weekly Planner',
                 'view-settings': 'System Settings'
             };
             document.title = "Quiet Discipline - " + (titles[targetId] || 'Personal Growth Hub');
@@ -2294,6 +3585,15 @@
                     }
                 });
             }
+
+            // Enable Drag-to-Scroll & horizontal wheel scroll on the calendar strip
+            const calendarStrip = document.getElementById('calendar-days-strip');
+            if (calendarStrip && !calendarStrip.dataset.scrollBound) {
+                calendarStrip.dataset.scrollBound = 'true';
+                enableDragToScroll(calendarStrip);
+                enableHorizontalWheelScroll(calendarStrip);
+                calendarStrip.addEventListener('scroll', updateMonthLabelOnScroll);
+            }
         }
 
         // Toggle header profile dropdown with smooth animations
@@ -2406,7 +3706,7 @@
             document.getElementById('auth-screen').classList.remove('flex');
             document.getElementById('app-workspace').classList.remove('hidden');
             document.getElementById('sidebar-toggle-btn').classList.remove('hidden');
-            renderAll();
+            renderAll(true);
         }
 
         function handleSimulatedLogin(provider) {
