@@ -2367,8 +2367,8 @@
         }
 
         // Toggle state completions or subtypes
-        function toggleHabitCompletion(habitId) {
-            const todayStr = selectedDateString;
+        function toggleHabitCompletion(habitId, dateStr = null) {
+            const todayStr = dateStr || selectedDateString;
             if (!state.completions[todayStr]) {
                 state.completions[todayStr] = {};
             }
@@ -2688,9 +2688,15 @@
                 tr.className = 'group hover:bg-surface-container-lowest dark:hover:bg-on-tertiary-container/30 transition-colors';
 
                 let weeklyButtons = '';
-                for (let i = 6; i >= 0; i--) {
-                    const d = new Date();
-                    d.setDate(d.getDate() - i);
+                const today = new Date();
+                const currentDay = today.getDay();
+                const distanceToMonday = currentDay === 0 ? -6 : 1 - currentDay;
+                const monday = new Date(today);
+                monday.setDate(today.getDate() + distanceToMonday);
+
+                for (let i = 0; i < 7; i++) {
+                    const d = new Date(monday);
+                    d.setDate(monday.getDate() + i);
                     const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
                     
                     const comps = state.completions[dateStr] || {};
@@ -2698,7 +2704,7 @@
                     
                     weeklyButtons += `
                         <td class="text-center py-stack-md">
-                            <button onclick="toggleHabitCompletion('${hb.id}')" class="w-6 h-6 rounded-full flex items-center justify-center mx-auto transition-all ${
+                            <button onclick="toggleHabitCompletion('${hb.id}', '${dateStr}')" class="w-6 h-6 rounded-full flex items-center justify-center mx-auto transition-all ${
                                 isCompleted 
                                 ? 'bg-secondary text-on-secondary border border-secondary hover:scale-115' 
                                 : 'bg-surface dark:bg-on-primary-fixed border border-outline-variant dark:border-on-tertiary-container hover:border-primary dark:hover:border-inverse-primary'
